@@ -1,7 +1,0 @@
-
- If ~gameOver then
-   currentPlayer:=
-     'x' if even(|Gamma|);
-     'o' otherwise
- 
- 
