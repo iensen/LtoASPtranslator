@@ -1,0 +1,25 @@
+
+/---
+ If ~gameOver then
+   currentPlayer:=
+     'x' if even(|Gamma|);
+     'o' otherwise
+
+
+ If ~gameOver then
+   currentPlayer:=
+     'x' if even(|Gamma|);
+     'o' otherwise
+
+ 
+ 
+---/
+
+
+
+blablabla
+/---
+c := 2
+---/
+
+
