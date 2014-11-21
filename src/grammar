@@ -1,0 +1,26 @@
+program(Rs) ::= rules(Rs) 
+s0(atom I) ::= identifier(I)
+s0(atom I Ts) ::= identifier(I) lparen terms(Ts) rparen
+s1(literal A) ::= s0(A)
+s1(neg_literal A) ::= not s0(A)
+s2(unit L) ::= s1(L)
+s2(conj L1 L2) ::= s2(L1) and s1(L2)
+s3(T) ::= s2(T)
+s3(disj T1 T2) ::= s3(T1) or s2(T2)
+sentence(S) ::= s3(S)
+term(constant C) ::= identifier(C)
+term(variable V) ::= identifier(V)
+term(num N) ::= numeral(N)
+term(quantifier Q P) ::= quantifier(Q) identifier(P)
+quantifier(E) ::= every(E)
+quantifier(A) ::= any(A)
+terms(terms T) ::= term(T)
+terms(terms T cut_root(Ts)) ::= term(T) comma terms(Ts) 
+rule(fact S) ::= s0(S) dot
+rule(rule P Ts S) ::=  identifier(P) lparen terms(Ts) rparen if sentence(S) dot
+rule(rule P S) ::=  identifier(P) if sentence(S) dot
+rules(rules R) ::= rule(R)
+rules(rules R cut_root(Rs)) ::= rule(R) rules(Rs)
+ 
+
+

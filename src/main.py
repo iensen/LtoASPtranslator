@@ -26,10 +26,11 @@ The views and conclusions contained in the software and documentation are those
 of the authors and should not be interpreted as representing official policies,
 either expressed or implied, of the FreeBSD Project.
 """
-
+import os
 from optparse import OptionParser
-
-from preprocessor import *
+from astgen.src.astgen.parsing.lexer import *
+from astgen.src.astgen.parsing.parser import *
+from preprocessor import Preprocessor
 
 
 def parse_arguments():
@@ -41,12 +42,6 @@ def parse_arguments():
 
 
 def main():
-    """
-    Main entry point into the program.  Parse the command line arguments of the
-    form  [program_file].
-    Initialize the preprocessor with the contents of the file.
-    Remove comments and print the list of program elements found in the file.
-    """
 
     # read arguments
     args = parse_arguments()
@@ -57,9 +52,20 @@ def main():
     # create preprocessor instance
     preprocessor_instance = Preprocessor(program_file)
 
-    # print the list of program elements
-    print(preprocessor_instance.get_elements())
+    rule_chunks = preprocessor_instance.get_rule_chunks()
+    lexicon_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "lexicon")
+    grammar_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "grammar")
 
+    lexer = Lexer(lexicon_file, False)
+    parser = Parser(grammar_file, lexer.lexicon_dict.keys())
+
+    for chunk in rule_chunks:
+        rule_tokens = lexer.get_lexing_sequence(chunk.text)
+        rule_tree = parser.get_ast(rule_tokens)
+        if rule_tree is None:
+            print("wrong rule: " + chunk.text + " at line number " + str(chunk.line_number))
+        else:
+            print(rule_tree.children[0])
 
 if __name__ == '__main__':
     main()

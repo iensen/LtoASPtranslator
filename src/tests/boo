@@ -1,8 +1,0 @@
-/------------------------------------------
-gameOverDisplay := 
-   alwaysDisplay U gameResultDisplay
-
- display := 
-   gameOverDisplay   if gameOver;
-   gameInPlayDisplay otherwise
-------------------------------------------/

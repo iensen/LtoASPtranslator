@@ -27,192 +27,161 @@ of the authors and should not be interpreted as representing official policies,
 either expressed or implied, of the FreeBSD Project.
 """
 
-import os
-from genparser.src.astgen.parsing.lexer import *
-from genparser.src.astgen.parsing.parser import *
+import re
+
+
+
 
 
 class Preprocessor:
-    """The preprocessor takes a LED program, removes comments from it, and splits
-    it into a list of separate program elements (as defined by LED grammar)
+    """The preprocessor takes an L program, removes comments from it, and splits
+    it into a list of substring each of which stores a rule
+    (if the program has the right syntax)
+    In case the program has syntax errors, either exception is thrown or
+    some of the chunks may not store a valid rules
     """
 
     def __init__(self, program_file):
         """Read the program file; initialize lexer and parser instances
         """
-        with open(program_file) as lf:
-            self.contents = lf.read()
 
-        #initialize lexer and parser
-        lexicon_file = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                    "genparser", "src", "astgen", "tests", "led", "lexicon")
-        grammar_file = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                    "genparser", "src", "astgen", "tests", "led", "grammar_1")
-        self.lexer = Lexer(lexicon_file, False)
-        self.parser = Parser(grammar_file, self.lexer.lexicon_dict.keys())
+        self.program_file = open(program_file)
 
-    def get_elements(self):
-        """ get the list of program elements
+        # the number of the line that contains the
+        # first character that has not been read yet (by calling next_char function)
+        self.line_number = 1
+
+        # in_comment is true if /* was read from the file
+        # but the corresponding matching end was not reached
+        self.in_comment = False
+
+        # a buffer that may store some characters in the set {/,*}
+        # that have been read from the file
+        # when next_char is called, it should first check
+        # if the buffer is empty
+        # if it is not, then it should return the first character
+        # and remove it from the buffer
+        self.buf = []
+
+
+
+    def get_rule_chunks(self):
+        chunks = []
+        chunk = self.next_rule_chunk()
+        while chunk is not None:
+            chunks.append(chunk)
+            chunk = self.next_rule_chunk()
+        return chunks
+
+    def next_rule_chunk(self):
+        """
+        :return: next chunk representing a rule (if it exists) or None if the part
+        of file  that has not been read only contains comments and spaces
+        throws syntax error if the file has some non-space characters left, but does not
+        have a dot before the next comment or the end of the file.
+        the function must be called when self.in_comment is False!
+
         """
 
-        done = False
-        elements = []
-        cur_contents = self.contents
-        cur_line = 1
-        while not done:
-            # search for the start of the next program region
-            region_start_comment = re.search(r"/-+", cur_contents)
-            if region_start_comment is None:
-                done = True
-                continue
+        self.skip_comments()
 
-            cur_line += cur_contents[:region_start_comment.start()].count('\n')
+        chunk = []
+        char = self.next_nonspace_char()
+        while char != '.' and char != None:
 
-            # find matching end of the program region
-            region_end_comment = re.search(r"-+/", cur_contents)
+           if char == '*' and chunk and chunk[-1] == '/':
+               # comment starts inside a rule
+               chunk = chunk[:-1]
+               self.buf.append('/')
+               self.buf.append('*')
+               self.skip_comments()
+           else:
+               chunk.append(char)
+           char = self.next_char()
+        if char is not None:
+            # append the last dot
+            chunk.append(char)
+        chunk = ''.join(chunk)
+        spaces_regex = re.compile(r"^\s*\Z")
+        if spaces_regex.match(chunk) is not None:
+            return None
+        else:
+            return RuleChunk(chunk, self.line_number)
 
-            if region_end_comment.start() is None:
-                raise UnmatchedRegionComment(cur_line)
 
-            # get the elements from the found region
+    def skip_comments(self):
+        charb1 = self.next_nonspace_char()
+        if charb1 == '/':
+            comment_begin_line = self.line_number
+            charb2 = self.next_char()
+            if charb2 == '*':
+                # find the matching end of the comment
+                found = False
+                while not found:
+                    charf1 = self.next_char()
+                    while charf1 != '*' and charf1 is not None:
+                         charf1 = self.next_char()
+                    charf2 = self.next_char()
+                    # the comment may end with ***...***/;
+                    # skip all stars before /,
+                    while charf2 == '*' and charf1 is not None:
+                         charf2 = self.next_char()
+                    if charf1 is None or charf2 is None:
+                        raise UnmatchedComment(comment_begin_line)
+                    if charf2 == '/':
+                        self.skip_comments()
+                        found = True
+        else:
+            self.buf = [charb1]
 
-            region = cur_contents[region_start_comment.end() + 1:region_end_comment.start()]
-            elements.extend(self.get_elements_from_region(region, cur_line))
 
-            # update line numbers
-            cur_line += cur_contents[:region_end_comment.start()].count('\n')
 
-            # remove the region from the beginning of cur_contents
-            cur_contents = cur_contents[region_end_comment.end() + 1:]
-
-        return elements
-
-    @staticmethod
-    def all_spaces(lexing_sequence):
-        """Checks if the lexing sequence contains only spaces
+    def next_char(self):
+        """returns the next character in the file
         """
-        for c in lexing_sequence:
-            if c[0] != 'spaces':
-                return False
-        return True
+        if len(self.buf) == 0:
+             char = self.program_file.read(1)
+        else:
+             char = self.buf[0]
+             self.buf = self.buf[1:]
 
-    @staticmethod
-    def find_guard_if_idx(lexing_sequence, then_idx):
-        """
-        Find the index for matching If given the index of then in the
-        lexing sequence
-        """
-        idx = then_idx
-        # go left until the corresponding If  is found
-        while idx > 0 and lexing_sequence[idx][0] != 'If':
-            idx -= 1
-        return idx
+        if char == '':
+            return None # end of file
 
-    @staticmethod
-    def find_element_start_idx(lexing_sequence, spec_sym_idx):
-        if lexing_sequence[spec_sym_idx][0] in ['def', 'iff']:
-            # we found a constant, function or relation definition
-            # need to go back through [guard][id][ params]
-            # first, check if there are params
+        if char == '\n':
+            self.line_number += 1
 
-            spec_sym_idx -= 1  # shift to the symbol which is being defined
+        return char
 
-            # if there are parameters (the definition  is of the form f(...):= (iff), we
-            # go left until a matching left parenthesis is found)
-            if spec_sym_idx >= 0 and lexing_sequence[spec_sym_idx][0] == "rparen":
-                # find matching opened parenthesis (lparen)
-                closed_paren_count = 1
-                while spec_sym_idx - 1 >= 0 and closed_paren_count > 0:
-                    spec_sym_idx -= 1
-                    if lexing_sequence[spec_sym_idx][0] == "rparen":
-                        closed_paren_count += 1
-                    if lexing_sequence[spec_sym_idx][0] == "lparen":
-                        closed_paren_count -= 1
-
-                if closed_paren_count != 0:
-                    return -1
-
-                # shift from opening left parenthesis to the function (relation)
-                # name
-                spec_sym_idx -= 1
-
-            # look up previous symbol
-            spec_sym_idx -= 1
-            # is there a guard?
-            if spec_sym_idx >= 0 and lexing_sequence[spec_sym_idx][0] == "then":
-                return Preprocessor.find_guard_if_idx(lexing_sequence, spec_sym_idx)
-            else:  # there is no guard, we were at the beginning of the definition
-                return spec_sym_idx + 1
-
-        elif lexing_sequence[spec_sym_idx][0] == 'ddef':
-            # found a type definition
-            return spec_sym_idx - 1
-        elif lexing_sequence[spec_sym_idx][0] in ['var', 'vars']:
-            return spec_sym_idx
-
-    def get_elements_from_region(self, region, line_number):
-        # obtain lexing sequence from the region starting at line_number
-        lexing_sequence = self.lexer.get_lexing_sequence(region)
-        lexing_sequence = [l for l in lexing_sequence if l[0] != 'spaces']
-        done = False
-        elements = []
-        while not done:
-            i = Preprocessor.find_first_special_lexeme_idx(lexing_sequence)
-            if i is None:
-                if not Preprocessor.all_spaces(lexing_sequence):
-                    raise InvalidProgramElement(region, line_number)
-                else:
-                    break
-            next_i = self.find_first_special_lexeme_idx(lexing_sequence[i + 1:])
-            if next_i is None:
-                ast = self.parser.get_ast(lexing_sequence, False)
-                if ast is None:
-                    raise InvalidProgramElement(region, line_number)
-                elements.append(ast.children[0])
-                break
-            else:
-                elem_last_idx = Preprocessor.find_element_start_idx(lexing_sequence, next_i + i + 1) - 1
-                if elem_last_idx < 0:
-                    raise InvalidProgramElement(Preprocessor.get_text_from_lexemes(lexing_sequence),  line_number)
-                ast = self.parser.get_ast(lexing_sequence[:elem_last_idx + 1], False)
-                if ast is None:
-                    raise InvalidProgramElement(region,  line_number)
-                elements.append(ast.children[0])
-                lexing_sequence = lexing_sequence[elem_last_idx + 1:]
-
-        return elements
-
-    special_lexemes = ["var", "vars", "def", "ddef", "iff"]
-
-    @staticmethod
-    def find_first_special_lexeme_idx(lexing_sequence):
-        for i in range(len(lexing_sequence)):
-            if lexing_sequence[i][0] in Preprocessor.special_lexemes:
-                return i
-
-        return None
-
-    @staticmethod
-    def get_text_from_lexemes(lexing_sequence):
-        text = ""
-        for l in lexing_sequence:
-            text += l[1] + " "
-        return text
+    def next_nonspace_char(self):
+        char = self.next_char()
+        if char is None :
+            return None
+        if char.isspace():
+            return self.next_nonspace_char()
+        return char
 
 
-class UnmatchedRegionComment(Exception):
+
+
+
+
+
+
+
+class UnmatchedComment(Exception):
     """
     Defines a class for representing exceptions which are thrown in the event of
     an invalid lexeme declaration in the lexicon file
     """
 
     def __init__(self, line_number):
-        super(UnmatchedRegionComment, self).__init__()
+        super(UnmatchedComment, self).__init__()
         self.line_number = line_number
 
     def __repr__(self):
         return "The program file contains an unmatched " \
-               "program region starting from line " \
+               "comment starting from line " \
                "number " + str(self.line_number) + "."
 
     def __str__(self):
@@ -238,3 +207,17 @@ class InvalidProgramElement(Exception):
 
     def __str__(self):
         return self.__repr__()
+
+
+class RuleChunk:
+    """ the class represents a substring of the input file
+        ending with a dot
+        which stores a rule (given the has no syntax errors)
+    """
+    def __init__(self, text, line_number):
+        self.text = text
+        self.line_number = line_number
+
+
+
+

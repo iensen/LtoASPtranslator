@@ -1,0 +1,112 @@
+
+
+Hello, Dr.Rushton.
+
+I wrote a parser for L language.
+
+The implementation consists of the same components as for LED (preprocessor + parser based on my previous work):
+
+
+
+Lexicon file:
+
+Grammar File:
+
+(Corrected) L sample:
+
+Trees for each Statement for the program:
+
+
+
+
+
+Below are few questions/comments/corrections:
+
+
+
+1. The grammar does not contain an occurrence of terminal named 'numeral', however you give the definition of a numeral.
+I think a numeral should be a term.
+
+
+I have added the following rule:
+
+term(num N) ::= numeral(N)
+
+
+2. In your grammar you have the rule
+
+term --> constant | variable | quantifier predicate
+
+Both constant and variable are identifiers.
+I translated it to my parser grammar rules as follows:
+
+term (constant C) ::= identifier(C)
+term (variable V) ::= identifier(V)
+
+
+How are we supposed to distinguish between a variable and a constant?
+For any valid parse tree that has 'constant' as a label of its node there exists
+another parser tree which has 'variable' instead of a constant.
+How do we select the right tree? 
+
+Some languages(including answer set prolog) require a variable to start from a capital letter.
+
+3. According to the grammar you have
+
+
+safetyObligationsMet if
+   requirementsCertified and
+   validationProcessFollowed and
+   passed(every requiredInspection).
+
+is not a valid rule (as well as "a if b.")
+
+This is because you require parenthesis after the predicate in the LHS of a rule:
+
+rule --> s0 . | predicate ( terms ) if sentence . 
+
+I added one more rule production rule to fix the problem. 
+
+rule --> predicate  if sentence  .
+
+
+
+4. In the grammar file you have a rule
+
+program --> rules. 
+
+It should be 
+
+program --> rules
+
+(Unless you want an extra dot at the end, which is not present in the example you have).
+
+
+5. In L program you have the rule:
+
+
+passed(epa_i_652_6B_714_B) if
+  paid(all epaFine_j_652_6B_710_C).
+
+
+The quantifier 'all' was not defined in the grammar.
+
+I replaced it with 'every'.
+
+
+
+
+Evgenii.
+
+
+
+
+
+
+
+
+
+
+
+
+
