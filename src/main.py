@@ -28,8 +28,8 @@ either expressed or implied, of the FreeBSD Project.
 """
 import os
 from optparse import OptionParser
-from astgen.src.astgen.parsing.lexer import *
-from astgen.src.astgen.parsing.parser import *
+from genparser.src.astgen.parsing.lexer import *
+from genparser.src.astgen.parsing.parser import *
 from preprocessor import Preprocessor
 
 
