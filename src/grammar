@@ -1,26 +1,133 @@
-program(Rs) ::= rules(Rs) 
+program(program Cs Ts Rs) ::= const_decls(Cs) type_decls(Ts) rules(Rs)
+program(program Ts Rs) ::= type_decls(Ts) rules(Rs)
+program(program Rs) ::= rules(Rs)
+type_decls(type_decls T) ::= type_decl(T)
+type_decls(type_decls T cut_root(Ts)) ::= type_decl(T) type_decls(Ts)
+const_decls(type_decls T) ::= const_decl(T)
+const_decls(const_decls T cut_root(Ts)) ::= const_decl(T) const_decls(Ts)
+
+number(pos N) ::= numeral(N)
+number(neg N) ::= minus numeral(N)
+
+term(bt T) ::= basic_term(T)
+term(qt T) ::= quantified_term(T)
+basic_term(const C) ::= identifier(C)
+basic_term(var V) ::= variable(V)
+basic_term(num N) ::= number(N)
+basic_term(tvar T V) ::= identifier(T) variable(V)
+basic_term(T) ::= arithmetic_term(T)
+basic_term(F) ::= functional_term(F)
+
+arithmetic_term(ar_term T) ::= minus lparen T0(T) rparen
+arithmetic_term(ar_term T1 I T2) ::= lparen T0(T1) infix_1(I) T1(T2) rparen
+arithmetic_term(ar_term T1 I T2) ::= lparen T1(T1) infix_2(I) T2(T2) rparen
+arithmetic_term(ar_term T1 I T2) ::= T0(T1) infix_1(I) T1(T2)
+arithmetic_term(ar_term T1 I T2) ::= T1(T1) infix_2(I) T2(T2)
+
+infix_1(P) ::= plus(P)
+infix_1(M) ::= minus(M)
+infix_2(M) ::= mult(M)
+infix_2(D) ::= div(D)
+infix_2(M) ::= mod(M)
+infix(I) ::= infix_1(I)
+infix(I) ::= infix_2(I)
+T0(T) ::= T1(T)
+T0(add T1 I T2) ::= T0(T1) infix_1(I) T1(T2)
+T1(T) ::= T2(T)
+T1(mult T1 I T2) ::= T1 infix_2(I) T2
+T2(T) ::= lparen T0(T) rparen
+T2(V) ::= variable(V)
+T2(tvar I V) ::= identifier(I) variable(V)
+T2(N) ::= number(N)
+T2(I) ::= identifier(I)
+quantifier(E) ::= every(E)
+quantifier(A) ::= some(A)
+functional_term(func I Args) ::= identifier(I) lparen terms(Args) rparen
+basic_terms(bterms T) ::= basic_term(T)
+basic_terms(bterm T cut_root(Ts)) ::= basic_term(T) comma basic_terms(Ts)
+
+quantified_term(qterm Q I V) ::= quantifier(Q) identifier(I) variable(V)
+quantified_term(qterm Q I) ::= quantifier(Q) identifier(I)
+
+const_decl(cdecl C T) ::= identifier(C) eq arithmetic_term(T) dot
+const_decl(cdecl C C1) ::= identifier(C) eq identifier(C1) dot
+const_decl(cdecl C N) ::= identifier(C) eq number(N) dot
+
+type_decl(tdecl I E) ::= identifier(I) eq set_expr(E) dot
+
+set_expr(terms Ts) ::= lcurparen basic_terms(Ts) rcurparen
+
+
+set(terms Ts) ::= lcurparen basic_terms(Ts) rcurparen
+set(empty) ::= lcurparen  rcurparen
+
+set_expr(empty) ::= lcurparen  rcurparen
+limit(I) ::= identifier(I)
+limit(N) ::= number(N)
+limit(A) ::= arithmetic_term(A)
+range(range L R) ::= lcurparen limit(L) dot dot limit(R) rcurparen
+set_expr(S) ::= ST0(S)
+set_constr(sconstr T Vs) ::= basic_term(T) where tvars(Vs)
+tvars(tvars V) ::= tvar(V)
+tvars(tvars V cut_root(Vs)) ::= tvar(V) comma tvars(Vs)
+tvar(tvar V T) ::= variable(V) in identifier(T)
+
+ST0(S) ::= ST1(S)
+ST0(union S1 S2) ::=  ST0(S1) plus ST1(S2)
+ST1(S) ::= ST2(S)
+ST1(inters S1 S2) ::= ST1(S1)  mult ST2(S2)
+ST1(diff S1 S2) ::= ST1(S1) backslash ST2(S2)
+ST2(S) ::= lparen ST0(S) rparen
+ST2(C) ::= set_constr(C)
+ST2(R) ::= range(R)
+ST2(S) ::= set(S)
+ST2(I) ::= identifier(I)
+
+
+
+
+rules(rules R) ::= rule(R)
+rules(rules R cut_root(Rs)) ::= rule(R) rules(Rs)
+
 s0(atom I) ::= identifier(I)
 s0(atom I Ts) ::= identifier(I) lparen terms(Ts) rparen
+
+s0(batom T1 O T2) ::= basic_term(T1) op(O) basic_term(T2)
+op(O) ::= less(O)
+op(O) ::= greater(O)
+op(O) ::= lessoreq(O)
+op(O) ::= greateroreq(O)
+op(O) ::= noteq(O)
+op(O) ::= eq(O)
+
+
 s1(literal A) ::= s0(A)
 s1(neg_literal A) ::= not s0(A)
 s2(unit L) ::= s1(L)
 s2(conj L1 L2) ::= s2(L1) and s1(L2)
 s3(T) ::= s2(T)
 s3(disj T1 T2) ::= s3(T1) or s2(T2)
-sentence(S) ::= s3(S)
-term(constant C) ::= identifier(C)
-term(variable V) ::= identifier(V)
-term(num N) ::= numeral(N)
-term(quantifier Q P) ::= quantifier(Q) identifier(P)
-quantifier(E) ::= every(E)
-quantifier(A) ::= any(A)
+sentence(sent S) ::= s3(S)
+
+maybe_lit(mlit I Ts) ::= maybe identifier(I) lparen basic_terms(Ts) rparen
+bound(A) ::= arithmetic_term(A)
+bound(I) ::= identifier(I)
+bound(N) ::= number(N)
+card_constr(cconst A1 I Ts A2) ::= bound(A1) lessoreq bar lcurparen identifier(I) lparen basic_terms(Ts) rparen rcurparen bar lessoreq bound(A2)
+card_constr(cconst A1 I A2) ::= bound(A1) lessoreq bar lcurparen identifier(I) rcurparen bar lessoreq bound(A2)
+
 terms(terms T) ::= term(T)
-terms(terms T cut_root(Ts)) ::= term(T) comma terms(Ts) 
-rule(fact S) ::= s0(S) dot
-rule(rule P Ts S) ::=  identifier(P) lparen terms(Ts) rparen if sentence(S) dot
-rule(rule P S) ::=  identifier(P) if sentence(S) dot
-rules(rules R) ::= rule(R)
-rules(rules R cut_root(Rs)) ::= rule(R) rules(Rs)
+terms(terms T cut_root(Ts)) ::= term(T) comma terms(Ts)
+
+rule(rule H) ::= head(H) dot
+rule(rule H S) ::= head(H) if sentence(S) dot
+head(H) ::= sentence(H)
+head(H) ::= maybe_lit(H)
+head(H) ::= card_constr(H)
+
+
+
+
  
 
 

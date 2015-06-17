@@ -26,6 +26,7 @@ The views and conclusions contained in the software and documentation are those
 of the authors and should not be interpreted as representing official policies,
 either expressed or implied, of the FreeBSD Project.
 """
+from enum import Enum
 import os
 from optparse import OptionParser
 from genparser.src.astgen.parsing.lexer import *
@@ -40,6 +41,68 @@ def parse_arguments():
     parser = OptionParser()
     return parser.parse_args()[1]
 
+# enumerate of the types of program elements
+class Element(Enum):
+     type_decl = "type declaration"
+     const_decl = "constant declaration"
+     rule = "rule"
+
+def parse_program(chunks, lexer, parser):
+    """
+    Each chunk in chunks is either a constant declaration,
+    type declaration or a rule
+    Returns a list of trees (one tree for each chunk) or None if there is a syntax error
+    """
+
+    # result
+    trees = []
+
+    # the name of an element of a program which is expected to be in the current chunk
+    expected_element = Element.const_decl
+
+
+    for chunk in chunks:
+        tokens = lexer.get_lexing_sequence(chunk.text)
+        current_expected_element = expected_element
+        if expected_element == Element.const_decl:
+            # try to parse a constant declaration
+            starting_symbol = "const_decl"
+            const_decl_tree = parser.get_ast(tokens, True, starting_symbol)
+            if const_decl_tree is not None:
+                trees.append(const_decl_tree)
+            else:
+                expected_element = Element.type_decl
+
+        if expected_element == Element.type_decl:
+            # try to parse a type declaration
+            starting_symbol = "type_decl"
+            type_decl_tree = parser.get_ast(tokens, True, starting_symbol)
+            if type_decl_tree is not None:
+                trees.append(type_decl_tree)
+            else:
+                expected_element = Element.rule
+
+        if expected_element == Element.rule:
+            # try to parse a rule
+            starting_symbol = "rule"
+            rule_tree = parser.get_ast(tokens, True, starting_symbol)
+            if rule_tree is not None:
+                trees.append(rule_tree)
+                continue
+            else:
+                 if current_expected_element == Element.const_decl:
+                     program_element = "constant declaration, type declaration or rule"
+                 elif current_expected_element == Element.type_decl:
+                     program_element = "type declaration or rule"
+                 else:
+                     program_element = "rule"
+
+                 print("wrong "+program_element +": "
+                       + chunk.text + " at line number " + str(chunk.line_number))
+
+
+    return trees
+
 
 def main():
 
@@ -52,20 +115,16 @@ def main():
     # create preprocessor instance
     preprocessor_instance = Preprocessor(program_file)
 
-    rule_chunks = preprocessor_instance.get_rule_chunks()
+    chunks = preprocessor_instance.get_chunks()
     lexicon_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "lexicon")
     grammar_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "grammar")
 
     lexer = Lexer(lexicon_file, False)
     parser = Parser(grammar_file, lexer.lexicon_dict.keys())
 
-    for chunk in rule_chunks:
-        rule_tokens = lexer.get_lexing_sequence(chunk.text)
-        rule_tree = parser.get_ast(rule_tokens)
-        if rule_tree is None:
-            print("wrong rule: " + chunk.text + " at line number " + str(chunk.line_number))
-        else:
-            print(rule_tree.children[0])
+    print(parse_program(chunks, lexer, parser))
+
+
 
 if __name__ == '__main__':
     main()

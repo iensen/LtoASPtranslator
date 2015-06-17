@@ -65,15 +65,15 @@ class Preprocessor:
 
 
 
-    def get_rule_chunks(self):
+    def get_chunks(self):
         chunks = []
-        chunk = self.next_rule_chunk()
+        chunk = self.next_chunk()
         while chunk is not None:
             chunks.append(chunk)
-            chunk = self.next_rule_chunk()
+            chunk = self.next_chunk()
         return chunks
 
-    def next_rule_chunk(self):
+    def next_chunk(self):
         """
         :return: next chunk representing a rule (if it exists) or None if the part
         of file  that has not been read only contains comments and spaces
@@ -87,7 +87,9 @@ class Preprocessor:
 
         chunk = []
         char = self.next_nonspace_char()
-        while char != '.' and char != None:
+
+        opened_curly_braces = 0
+        while (char != '.' or opened_curly_braces !=0) and char != None:
 
            if char == '*' and chunk and chunk[-1] == '/':
                # comment starts inside a rule
@@ -96,6 +98,10 @@ class Preprocessor:
                self.buf.append('*')
                self.skip_comments()
            else:
+               if char == '}':
+                   opened_curly_braces-=1
+               if char == '{':
+                   opened_curly_braces+=1
                chunk.append(char)
            char = self.next_char()
         if char is not None:
