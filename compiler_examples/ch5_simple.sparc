@@ -126,7 +126,6 @@ modification_made(#all).
 modification_specified(#all).
 complies_with_recommended_practice(#all).
 validated(#all).
-risk556(#all).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -304,14 +303,14 @@ masps_height_keeping_accuracy_met :- crm_valid .
 
 crm_valid.
 
-controlled(R) :- risk556(R),
-	mitigated(H), hazard556(H),
+controlled(R) :- #risk556(R),
+	mitigated(H), #hazard556(H),
 	R = r(H).
 	
-controlled(R) :- risk556(R), tolerable(R).
+controlled(R) :- #risk556(R), tolerable(R).
 
 tolerable(r(hm_1_14)).
-torerable(r(hm_1_3)).
+tolerable(r(hm_1_3)).
 
 atc_procedure_design_complies_with_SRs:-
                                       atc_transition_procedures,
