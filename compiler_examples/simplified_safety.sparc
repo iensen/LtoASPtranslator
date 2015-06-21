@@ -1,7 +1,7 @@
 sorts
 
-#requiredInspection = [epa_i_652_6B_714_][a..b].
-#code_825_A_6 = [code_825_A_6_][a..e].
+#requiredInspection = {epa_i_652_6B_714_A, epa_i_652_6B_714_B}.
+#code_825_A_6 = {code_825_A_6_A, code_825_A_6_B, code_825_A_6_C, code_825_A_6_D, code_825_A_6_E}.
 
 predicates
 
@@ -24,12 +24,12 @@ requirementsCertified :-
 	requirementsComplete.
 
 validationProcessFollowed :-
-	satisfied(code_825_A_6_a),
-	satisfied(code_825_A_6_b),
-	satisfied(code_825_A_6_c),
-	satisfied(code_825_A_6_d),
-	satisfied(code_825_A_6_e).
+	satisfied(code_825_A_6_A),
+	satisfied(code_825_A_6_B),
+	satisfied(code_825_A_6_C),
+	satisfied(code_825_A_6_D),
+	satisfied(code_825_A_6_E).
 
-passed(epa_i_652_6B_714_a).
+passed(epa_i_652_6B_714_A).
 
-passed(epa_i_652_6B_714_b).
+passed(epa_i_652_6B_714_B).

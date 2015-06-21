@@ -2,9 +2,9 @@ L-SPARC COMPILER SPECIFICATION
 
 1. FUNCTIONALITY
 
-The compiler translates an L program into a SPARC program. For example, the compiler should be able to convert
+The compiler translates an L program into a SPARC program. For example, the compiler converts
 https://github.com/iensen/LtoASPtranslator/blob/master/compiler_examples/simplified_safety.l
-into
+into this form
 https://github.com/iensen/LtoASPtranslator/blob/master/compiler_examples/simplified_safety.sparc
 
 For more detail, L spec is at
