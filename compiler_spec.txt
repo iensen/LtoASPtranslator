@@ -2,12 +2,10 @@ L-SPARC COMPILER SPECIFICATION
 
 1. FUNCTIONALITY
 
-The compiler translates an L program into a SPARC program. For example, the compiler converts
-https://github.com/iensen/LtoASPtranslator/blob/master/compiler_examples/simplified_safety.l
-into this form
-https://github.com/iensen/LtoASPtranslator/blob/master/compiler_examples/simplified_safety.sparc
+The compiler translates an L program into a SPARC program. Examples of .l programs and their target .sparc translations are found here:
+https://github.com/iensen/LtoASPtranslator/tree/master/compiler_examples
 
-For more detail, L spec is at
+For more detail, L spec is given at
 https://github.com/iensen/LtoASPtranslator/blob/master/L_spec.pdf
 and SPARC manual is at
 https://github.com/iensen/sparc/blob/master/User_Manual/Sparc_Manual.pdf
