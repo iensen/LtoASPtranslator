@@ -3,7 +3,7 @@ sorts
 #residual_risk = {level_busts, asac_usage_risks, wake_vortices, mountain_waves, operation_errors}.
 #hazard527 = {ht_1_8, ht_1_10, ht_2_2, ht_3_6, ht_1_11}.
 #risk527 = risk(#hazard527).
-#hazard = {ht_3_5, hm_1_8, hm_2_2, hm_1_15}.
+#hazard537 = {ht_3_5, hm_1_8, hm_2_2, hm_1_15}.
 #hazard546 = {ht_1_9, ht_3_5, hm_2_2, hm_1_6, hm_1_8, hm_1_15}.
 #hazard556 = {hm_1_3, hm_1_14}.
 #risk556 = r(#hazard556).
@@ -14,7 +14,7 @@ sorts
 #hazard5810 = {hm_2_6, hm_2_5, hm_2_17, hm_1_2, hm_2_7, hm_2_8, hm_2_13, hm_2_10, hm_2_11, ht_1_9, hm_2_27}.
 #hazard5910 = {hm_2_2, hm_1_1}.
 
-#all = #residual_risk + #hazard527 + #risk527 + #hazard + #hazard546 + #hazard556 + #risk556 + #hazard565 + #hazard575 + #mod_to_to_display_apprv_aircraft + #modification + #hazard5810 + #hazard5910 +
+#all = #residual_risk + #hazard527 + #risk527 + #hazard537 + #hazard546 + #hazard556 + #risk556 + #hazard565 + #hazard575 + #mod_to_to_display_apprv_aircraft + #modification + #hazard5810 + #hazard5910 +
 {to_display_apprv_aircraft, operational_errors}. % due to the predicates modification_made(to_display_apprv_aircraft) and tolerable(operational_errors)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
