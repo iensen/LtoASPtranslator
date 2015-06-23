@@ -6,8 +6,8 @@ hazard527 = {ht_1_8, ht_1_10, ht_2_2, ht_3_6, ht_1_11}.
 
 risk527 = risk(H) where H in hazard527.
 
-hazard = {ht_3_5, hm_1_8, hm_2_2, hm_1_15}. % This declaration was hazard527 = {ht_3_5, hm_1_8, hm_2_2, hm_1_15}, but we had already had hazard527 = {ht_1_8, ht_1_10, ht_2_2, ht_3_6, ht_1_11}, and it is hazard = {ht_3_5, hm_1_8, hm_2_2, hm_1_15} here https://github.com/iensen/LtoASPtranslator/blob/master/compiler_examples/ch5.L
-
+hazard = {ht_3_5, hm_1_8, hm_2_2, hm_1_15}. /* This type declaration is originally hazard527 = {ht_3_5, hm_1_8, hm_2_2, hm_1_15}, but we previously declare hazard527 = {ht_1_8, ht_1_10, ht_2_2, ht_3_6, ht_1_11}, and it is hazard = {ht_3_5, hm_1_8, hm_2_2, hm_1_15} here https://github.com/iensen/LtoASPtranslator/blob/master/compiler_examples/ch5.L */
+ 
 hazard546 = {ht_1_9, ht_3_5, hm_2_2, hm_1_6, hm_1_8, hm_1_15}.
 
 

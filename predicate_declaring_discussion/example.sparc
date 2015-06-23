@@ -3,7 +3,7 @@ sorts
 #type1	=	{0,1}.
 #type2	=	{a,b}.
 
-#pred1_	=	#type1	+	#type2. % pred1 is unary, and its domain is the union of its sets of arguments from the L program
+#pred1_	=	#type1	+	#type2. % pred1 is unary, and its domain is the union of all sets of its arguments from https://github.com/iensen/LtoASPtranslator/blob/master/predicate_declaring_discussion/example.l
 
 #pred2_2_1	=	#type1. % pred2's domain is a 2-set Cartesian product in which the 1st set is #type1
 #pred2_2_2	=	#type2.
