@@ -2,16 +2,15 @@ L-SPARC COMPILER SPECIFICATION
 
 1. FUNCTIONALITY
 
-The compiler translates an L program into a SPARC program. Examples of .l programs and their target .sparc translations are found here: https://github.com/iensen/LtoASPtranslator/tree/master/compiler_examples
+The compiler translates an L program into a SPARC program. Examples of .l programs and their target .sparc translations are found at https://github.com/iensen/LtoASPtranslator/tree/master/compiler_examples.
 
-For more detail, L spec is given at https://github.com/iensen/LtoASPtranslator/blob/master/L_spec.pdf and SPARC manual is at https://github.com/iensen/sparc/blob/master/User_Manual/Sparc_Manual.pdf
+For more detail, L spec is given at https://github.com/iensen/LtoASPtranslator/blob/master/L_spec.pdf, and SPARC manual is provided at https://github.com/iensen/sparc/blob/master/User_Manual/Sparc_Manual.pdf.
 
 2. MODULES
 
 The compiler comprises three modules: L-parser, L-SPARC translator, and SPARC-unparser.
 
-L-parser reads an L program and generates a list of L parse trees. L-parser is introduced at https://github.com/iensen/LtoASPtranslator/blob/master/README.txt
-L-parser is based on a generic parser whose spec is located at https://github.com/iensen/genparser/blob/master/docs/main/astgen.pdf
+L-parser reads an L program and generates a list of L parse trees. L-parser is introduced at https://github.com/iensen/LtoASPtranslator/blob/master/README.txt. L-parser is based on a generic parser whose spec is located at https://github.com/iensen/genparser/blob/master/docs/main/astgen.pdf.
 
 L-SPARC translator converts a list of L-parse trees into a list of SPARC parse trees.
 
