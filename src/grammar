@@ -83,8 +83,8 @@ ST2(I) ::= identifier(I)
 
 atom(atom I) ::= identifier(I)
 atom(atom I Ts) ::= identifier(I) lparen terms(Ts) rparen
-s0(A) ::= atom(A)
-s0(batom T1 O T2) ::= basic_term(T1) op(O) basic_term(T2)
+atom(B) ::= build_in_atom(B)
+build_in_atom(batom T1 O T2) ::= basic_term(T1) op(O) basic_term(T2)
 op(O) ::= less(O)
 op(O) ::= greater(O)
 op(O) ::= lessoreq(O)
@@ -93,6 +93,8 @@ op(O) ::= noteq(O)
 op(O) ::= eq(O)
 
 
+s0(A) ::= atom(A)
+s0(S) ::= lparen s3(S) rparen
 s1(literal A) ::= s0(A)
 s1(neg_literal A) ::= not s0(A)
 s2(unit L) ::= s1(L)
@@ -101,8 +103,7 @@ s3(T) ::= s2(T)
 s3(disj T1 T2) ::= s3(T1) or s2(T2)
 sentence(sent S) ::= s3(S)
 
-disj(disj A cut_root(D)) ::= atom(A) or disj(D)
-disj(disj A) ::= atom(A)
+
 
 maybe_lit(mlit I Ts) ::= maybe identifier(I) lparen basic_terms(Ts) rparen
 bound(A) ::= arithmetic_term(A)
@@ -116,8 +117,9 @@ terms(terms T cut_root(Ts)) ::= term(T) comma terms(Ts)
 
 rule(rule H) ::= head(H) dot
 rule(rule H S) ::= head(H) if sentence(S) dot
-head(A) ::= atom(A)
 head(D) ::= disj(D)
+disj(disj A cut_root(D)) ::= atom(A) or disj(D)
+disj(disj A) ::= atom(A)
 head(H) ::= maybe_lit(H)
 head(H) ::= card_constr(H)
 
