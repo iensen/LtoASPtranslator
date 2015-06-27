@@ -1,4 +1,3 @@
-
 residual_risk = {level_busts, asac_usage_risks, wake_vortices, mountain_waves,
                   operation_errors}.
          
@@ -13,7 +12,7 @@ hazard546 = {ht_1_9, ht_3_5, hm_2_2, hm_1_6, hm_1_8, hm_1_15}.
 
 hazard556 = {hm_1_3, hm_1_14}.
 
-risk556 = r(H) where H in hazard556.
+risk556 = risk(H) where H in hazard556. /* I guess you intended to change the function r into the function risk but missed some occurrences. I am replacing all leftover occurrences of r with risk. */
 
 
 
@@ -224,12 +223,12 @@ masps_height_keeping_accuracy_met if crm_valid .
 
 crm_valid. 
 
-controlled(risk556 R) if mitigated(hazard556 H) and R = r(H).
+controlled(risk556 R) if mitigated(hazard556 H) and R = risk(H).
 
 controlled(risk556 R) if tolerable(R).
 
-tolerable(r(hm_1_14)).
-torerable(r(hm_1_3)).
+tolerable(risk(hm_1_14)).
+tolerable(risk(hm_1_3)).
 
 atc_procedure_design_complies_with_SRs if
                                       atc_transition_procedures and
@@ -381,12 +380,39 @@ safety_constraints_satisfied if
 safety_proven_for_2001_levels. 
 safety_justified_for_2000plus_levels. 
      
+/* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMPLEX %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
+
+risks_controlled if 
+                  controlled(risk(every hazard527)).
+/* Because we already declared the type risk527 = risk(H) where H in hazard527, this rule can be simplified to risks_controlled if controlled(every risk527). */
+
+hazards_mitigated if mitigated(every hazard527).
 
 
-                    
+hazards_mitigated if mitigated(every hazard546).
+
+tls_met if required_height_keeping_accuracy_met.
 
 
+risks_controlled if 
+                  controlled(risk(every hazard556)).
+
+hazards_mitigated if mitigated(every hazard565).
+
+hazards_mitigated if mitigated(every hazard5910).
 
 
-                     
-                     
+residual_risks_are_controlled if
+          controlled(every residual_risk).
+
+
+hazards_mitigated if mitigated(every hazard575).
+
+
+complies_with_recommended_practice(every modification). 
+validated(every modification). 
+
+hazards_mitigated if mitigated(every hazard5810).
+
+
+mitigated(every hazard5810). 

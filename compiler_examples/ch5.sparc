@@ -6,7 +6,7 @@ sorts
 #hazard537 = {ht_3_5, hm_1_8, hm_2_2, hm_1_15}.
 #hazard546 = {ht_1_9, ht_3_5, hm_2_2, hm_1_6, hm_1_8, hm_1_15}.
 #hazard556 = {hm_1_3, hm_1_14}.
-#risk556 = r(#hazard556).
+#risk556 = risk(#hazard556).
 #hazard565 = {ht_1_1, ht_1_2, ht_1_5, ht_1_8, ht_1_9, ht_2_2, ht_3_5, ht_3_6, hm_1_10, hm_1_13, hm_2_1, hm_2_4, hm_2_5, hm_1_9, hm_1_15, hm_2_17, hm_2_7, hm_2_9}.
 #hazard575 = {ht_1_1, ht_1_2, ht_1_5, ht_1_8, ht_1_9, ht_2_2, ht_3_5, ht_3_6, hm_1_10, hm_1_13, hm_2_1, hm_2_4, hm_2_5, hm_1_9, hm_1_15, hm_2_17, hm_2_7, hm_2_9}.
 #mod_to_to_display_apprv_aircraft  = {ifps, rdps, fdps_fps, oldi, back_up_systems}.
@@ -118,15 +118,25 @@ crm_shows_tls_met().
 safety_proven_for_2001_levels().
 safety_justified_for_2000plus_levels().
 
-risk(#all).
-r(#all).
-controlled(#all).
 mitigated(#all).
 tolerable(#all).
 modification_made(#all).
 modification_specified(#all).
 complies_with_recommended_practice(#all).
 validated(#all).
+
+controlled_every_risk527().
+controlled_every_risk556().
+controlled_every_residual_risk().
+mitigated_every_hazard527().
+mitigated_every_hazard546().
+mitigated_every_hazard565().
+mitigated_every_hazard5910().
+mitigated_every_hazard575().
+mitigated_every_hazard5810().
+residual_risks_are_controlled().
+
+controlled(#all).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -309,12 +319,12 @@ crm_valid.
 
 controlled(R) :- #risk556(R),
 	mitigated(H), #hazard556(H),
-	R = r(H).
+	R = risk(H).
 	
 controlled(R) :- #risk556(R), tolerable(R).
 
-tolerable(r(hm_1_14)).
-tolerable(r(hm_1_3)).
+tolerable(risk(hm_1_14)).
+tolerable(risk(hm_1_3)).
 
 atc_procedure_design_complies_with_SRs:-
                                       atc_transition_procedures,
@@ -463,3 +473,48 @@ safety_constraints_satisfied:-
 
 safety_proven_for_2001_levels. 
 safety_justified_for_2000plus_levels.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMPLEX %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+-controlled_every_risk527 :- #risk527(R), not controlled(R).
+controlled_every_risk527 :- not -controlled_every_risk527.
+risks_controlled :- controlled_every_risk527.
+
+-controlled_every_risk556 :- #risk556(R), not controlled(R).
+controlled_every_risk556 :- not -controlled_every_risk556.
+risks_controlled :- controlled_every_risk556.
+
+-controlled_every_residual_risk :- #residual_risk(R), not controlled(R).
+controlled_every_residual_risk :- not -controlled_every_residual_risk.
+residual_risks_are_controlled :- controlled_every_residual_risk.
+
+-mitigated_every_hazard527 :- #hazard527(H), not mitigated(H).
+mitigated_every_hazard527 :- not -mitigated_every_hazard527.
+hazards_mitigated :- mitigated_every_hazard527.
+
+-mitigated_every_hazard546 :- #hazard546(H), not mitigated(H).
+mitigated_every_hazard546 :- not -mitigated_every_hazard546.
+hazards_mitigated :- mitigated_every_hazard546.
+
+-mitigated_every_hazard565 :- #hazard565(H), not mitigated(H).
+mitigated_every_hazard565 :- not -mitigated_every_hazard565.
+hazards_mitigated :- mitigated_every_hazard565.
+
+-mitigated_every_hazard5910 :- #hazard5910(H), not mitigated(H).
+mitigated_every_hazard5910 :- not -mitigated_every_hazard5910.
+hazards_mitigated :- mitigated_every_hazard5910.
+
+-mitigated_every_hazard575 :- #hazard575(H), not mitigated(H).
+mitigated_every_hazard575 :- not -mitigated_every_hazard575.
+hazards_mitigated :- mitigated_every_hazard575.
+
+-mitigated_every_hazard5810 :- #hazard5810(H), not mitigated(H).
+mitigated_every_hazard5810 :- not -mitigated_every_hazard5810.
+hazards_mitigated :- mitigated_every_hazard5810.
+
+tls_met :- required_height_keeping_accuracy_met.
+
+complies_with_recommended_practice(M) :- #modification(M).
+validated(M) :- #modification(M).
+
+mitigated(H) :- #hazard5810(H).
