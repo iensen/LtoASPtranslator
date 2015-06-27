@@ -1,0 +1,937 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\newtheorem{definition}{Definition}
+\newtheorem{claim}{Claim}
+\newtheorem{theorem}{Theorem}
+\newtheorem{example}{Example}
+\newtheorem{condition}{Condition}
+\newtheorem{proposition}{Proposition}
+\usepackage{graphicx}
+\definecolor{mygreen}{RGB}{0,150,0}
+\newtheorem{lemma}{Lemma}
+\usepackage{color}
+\usepackage{calrsfs}
+\usepackage{latexsym}
+\usepackage{listings}
+\usepackage{mathrsfs}
+\usepackage[colorlinks=true]{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=blue,
+    urlcolor=blue
+}
+\usepackage{ulem}
+\def\st{\noindent}
+\renewcommand\em{\it}
+\renewcommand\emph{\textit}
+\newcommand\red[1]{{\color{red}#1}}
+\newcommand\blue[1]{{\color{blue}#1}}
+\newcommand\green[1]{{\color{mygreen}#1}}
+\newcommand\cancelr[1]{{\color{red}\sout{#1}}}
+\newcommand\cancelg[1]{{\color{mygreen}\sout{#1}}}
+%\newcommmand{\red}[1]{\textcolor{red}{#1}}
+%\renewcommand\red[1]{{\color{red}#1}}
+%opening
+\title{L specification (draft)}
+\author{Evgenii Balai}
+\def\no{{ not}\;}
+\begin{document}
+
+\maketitle
+\st
+\setcounter{tocdepth}{2}
+\tableofcontents
+\section{Syntax}
+\subsection{Symbols}\label{symbols}
+L symbols are non-empty strings of ascii characters divided into the following disjoint categories:
+\begin{itemize}
+\item integer numerals
+\item identifiers
+\item special characters
+\end{itemize}
+
+\textbf{\textit{An integer numeral}} is a string of one or more decimal digits (0-9) possibly preceding by a minus sign
+
+
+An \textbf{\textit{identifier}} is a  string of one or more letters, digits and underscore characters beginning with a letter. 
+
+A \textbf{\textit{special character}} is one of the following characters:
+\begin{verbatim}
+'>','=','<','+','-','*','-','{','}','(',')',',','.','|'
+\end{verbatim}
+
+A \textbf{\textit{symbol}} is an integer numeral, an identifier or a special character.
+\subsection{Basic Terms}
+Basic terms are divided into the following categories:
+\begin{itemize}
+\item constants
+\item variables
+\item typed variables
+\item arithmetic terms
+\item functional terms
+\end{itemize}
+
+A \textit{\textbf{constant}} is either an identifier starting with a lowercase letter or an integer numeral. 
+
+
+
+A \textit{\textbf{variable}} is an identifier starting with an uppercase letter. 
+
+A \textit{\textbf{typed variable}} is a string of the form $id~var$, where $id$ is an identifier also referred to as $type~name$ and $var$ is a variable.
+
+An \textit{\textbf{arithmetic term}} is a string of one of the following forms: 
+\begin{itemize}
+\item  $-(t)$ 
+\item $(t \diamond u)$
+\end{itemize} 
+where each of $t$ and $u$ is   either an integer numeral, a variable, a numeric constant  or an  arithmetic terms; and $\diamond$ is a special symbol in the set \texttt{\{'+', '-', '*', '/', '\%'\}}; (\texttt{'\%'} stands for modulo operation). Parentheses can optionally be omitted in which case standard operator precedences apply. 
+
+A \textbf{\textit{functional term}} is a string of the form $f(t_1,\ldots t_n)$ where $t_1,\dots,t_n$ are basic terms, f  is an identifier also referred to as an \textit{\textbf{functional symbol}} and $n>0$. 
+
+We will say that a basic term $t^\prime$ is a \textbf{\textit{subterm}} of $t$ iff at least one of the following condition holds:
+\begin{itemize}
+\item $t  = t^\prime$ 
+\item $t$ is of the form $-(t^\prime)$
+\item $t$ is of the form $(t^\prime \diamond t_1)$
+\item $t$ is of the form $(t_1 \diamond t^\prime)$
+\item $t$ is of the form $f(t_1,\ldots t_n)$ and $t^\prime \in \{t_1,\ldots,t_n\}$
+\item there exists a term $t^{\prime\prime}$ such that $t^\prime$ is a subterm of  $t^{\prime\prime}$ and  $t^{\prime\prime}$ is a subterm of $t$
+\end{itemize}
+
+\noindent
+A term $t$ is called \textbf{\textit{ground}} iff
+\begin{itemize}
+\item $t$ is an identifier of an integer numeral; or 
+\item all of the subterms of $t$ other than $t$ itself  are ground 
+\end{itemize}
+
+
+
+\subsection{Constant Declarations}\label{cd}
+A \textit{\textbf{constant declaration}} is of the form 
+\begin{equation}\label{cdecl}
+c = v.
+\end{equation}
+where  $c$ is an identifier also referred to as  
+\textbf{\textit{constant name}}  and $v$ is a ground arithmetic term, an integer numeral  or an identifier.
+We will say that the constant $c$ is \textit{defined} by a program if it contains a declaration of the form (\ref{cdecl}).
+\subsection{Set Expressions}\label{sexpr}
+
+A \textbf{\textit{set expression}}  is of one of the following forms:
+\begin{itemize}
+\item $\{t_1,t_2, \ldots, t_n\}$
+
+ where $t_1,\ldots,t_n$ are ground terms. 
+
+A shorthand $\{l..r\}$, where each of $l$ and $r$ is either a constant name, integer numeral or an arithmetic term may be used to represent the  set of all integers in the range $n..m$.
+
+\item An identifier.
+
+\item $t~$\texttt{where} $~V_1~in~type_1,\ldots, V_n~in~type_n$
+ 
+where $t$ is a term, $\{V_1, \ldots, V_n\}$ is a set of all variables occurring in $t$ and $type_1, \ldots type_n$ are identifiers.
+
+\item $(S_1 \diamond S_2)$ , where $S_1$ and $S_2$ are set expressions and $\diamond$ is a set theoretic operation, one of the special characters in the set $\{+,*,/\}$. Parentheses can be omitted in which case $*$ and $/$ have higher precedence than $+$ and all operations are left-associative.
+\end{itemize}
+
+\subsection{Type Declarations}
+A \textit{\textbf{type declaration}} is of the form 
+\begin{equation}\label{tdecl}
+t = set\_expr.
+\end{equation}
+where $t$ is an identifier and $set\_expr$ is a set expression defined in section \ref{sexpr}.
+We will say that the type $t$ is \textit{defined} by a program if it contains a declaration of the form (\ref{tdecl}). 
+ 
+\subsection{Quantified Terms}
+
+A \textit{\textbf{quantified term}} is of one of the forms:
+\begin{itemize}
+\item $ quantifier~p $
+\item $ \mbox{\texttt{some}}~t\_Var$
+\end{itemize} 
+
+
+Where $quantifier$ is an identifier in the set $\{\mbox{\texttt{every}, \texttt{some}}\}$, $p$ is an identifier also referred to as $type$,  and $t\_Var$ is a typed variable.
+
+We will refer to a quantified term starting with a quantifier $\mbox{\texttt{some}}$($\mbox{\texttt{every}}$) as an \textbf{\textit{existentially quantified}}(\textbf{\textit{universally quantified}}).  
+
+\subsection{Terms}
+A \textit{\textbf{term}} is either a basic term or a quantified term.
+\subsection{Atoms}
+
+Atoms are divided into two categories:
+\begin{itemize}
+\item predicate atoms
+\item built-in atoms
+\end{itemize}
+
+A \textit{\textbf{predicate atom}} is a string of the form $p(t_1,\ldots t_n)$ where 
+$p$ is an identifier also referred to as a \textbf{\textit{predicate name}} and $t_1,\ldots,t_n$ are terms.
+
+A \textit{\textbf{built-in atom}} is a string of the form $t_1 \preceq t_2$ where $t_1$ and $t_2$ are terms and $\preceq \in$ \texttt{\{'<','>', '>=','<=','=','<>'\}} is a string of special characters.
+
+An atom is called \textit{ground} if all the terms occurring in the atom are ground.
+\subsection{Sentences}
+
+A \textit{\textbf{sentence}} is either an atom or an expression of the form $(not~A)$, $(A~or~B)$, $(A~and~B)$, where $A$ and $B$ are atoms. Parentheses can be omitted in which case $not$ has highest precedence and $or$ has the lowest precedence. 
+
+\subsection{Maybe Literals}
+
+A \textbf{\textit{maybe literal}} is of the form $$\mbox{\texttt{maybe}}~p(t_1,\ldots t_n).$$ where $t_1,\ldots,t_n$ are basic terms.
+
+\subsection{Cardinality Constraints}
+
+A \textit{\textbf{cardinality constraint}} is of the form 
+$$v_1 <= |\{p(t_1,\ldots t_n)\}| <= v_2.$$
+where
+\begin{enumerate}
+\item each of $v_1$ and $v_2$ is a ground arithmetic term, integer numeral or a constant name, 
+\item $t_1,\ldots,t_n$ are basic terms.
+\end{enumerate}
+\subsection{Rules} \label{rl}
+
+A \textit{\textbf{rule}} can be of the two forms:
+\begin{equation}\label{eq1}
+  head. 
+\end{equation}
+
+or 
+\begin{equation}
+head~\mbox{\texttt{if}}~sentence.
+\end{equation}
+
+Where $head$ is either a predicate atom not containing quantified terms, or a maybe literal, or a cardinality constraint.
+
+\subsection{Program} \label{progdef}
+A \textbf{\textit{program}} is a collection of statements, each of which is either a constant declarations, a
+ type declaration, or a rule.
+
+\noindent\vspace{0.2cm}
+
+Constant declarations of a program must satisfy the following conditions:
+\begin{enumerate}
+\item Each constant name must not occur in the left hand side of a constant declaration at most once.
+\item Each identifier which is a subterm of the right hand side of a constant declaration must occur in the left hand side of a preceding constant declaration.   
+
+\end{enumerate}
+
+
+
+Type declarations of a program must satisfy the following conditions:
+\begin{enumerate}
+\item Each type name must occur in the left hand side of a type declaration at most once.
+\item Each identifier occurring as  a subexpression of an expression on the right hand side of a  type declaration must be a type name defined by a preceding type declaration. 
+\end{enumerate}
+
+
+Rules of a program must satisfy the following conditions:
+
+\begin{enumerate}
+
+
+\item The leftmost occurrence of any variable  $V$ in a rule is preceeded by a type name (also referred to as \textit{the type} of the variable), which can also be preceed by a quantifier.
+All other occurrences of $V$ are subterms of a basic term.
+\item For every typed variable $t~Var$ the identifier $t$ is a type 
+ defined by the program.
+\item Every identifier  occurring in the rule as a subterm of an arithmetic term is a constant name defined by the program.
+\item Every variable occurring in a rule which does not  occur in a quantified term also occurs in the head of the rule.
+\item Every predicate atom $p(t_1,\ldots,t_n)$ occurring in $r$ does not contain two different variables $X$ and $Y$ such that $X$ occurs in a universally quantified term $every X$ in $r$ and $Y$ occurs in an existentially quantified term $some Y$ in $r$.
+\end{enumerate}
+\subsection{Language Grammar}
+
+
+\subsubsection{Terms}
+
+
+$term$ ::= $basic\_term~|~quantified\_term$ \\ 
+$basic\_term$ ::= $numeric\_constant~|~variable~|~identifier~|~identifier~variable$ \\
+$~~~~~~~~~~~~~~~~~~~~~|~arithmetic\_term~|~functional\_term$\\
+$arithmetic\_term$ ::= $-(T0) | (T0~infix_1~T1)|(T1~infix_2~T2)| T0~infix_1~T1|T1~infix_2~T2$\\
+$infix_1$ ::= $ \texttt{+} | \texttt{-} $\\
+$infix_2$ ::= $ \texttt{*} | / | \% $\\
+$infix$ ::= $infix_1 | infix_2$\\
+$T0$ ::= $T1~|~T0~infix_1~T1$\\
+$T1$ ::= $T2~|~T1~infix_2~T2$ \\
+$T2$ ::= $(T0)~|~variable~|~numeric\_constant~|~identifier~|~identifier~variable$ \\
+$functional\_term$ ::= $identifier~(~terms~)~$\\
+$quantified\_term$ ::= $quantifier~identifier~variable~|~quantifier~identifier$\\
+$quantifier$ ::= $every | some$ \\
+$basic\_terms$ ::= $basic\_term | basic\_term\texttt{,} ~basic\_terms$ \\
+$terms$ ::= $term | term\texttt{,}~ terms$ \\
+
+\subsubsection{Constant Declarations}
+$const\_decl$ ::= $identifier \texttt{=} arithmetic\_term.~|~identifier \texttt{=} identifier.~$\\
+~~~~~~~~~~$~~~~~~~~~~~~~~~~~~~~|~identifier \texttt{=} numeric\_constant.$
+\subsubsection{Type Declarations}
+
+$type\_decl$ ::= $identifier~ \texttt{=} ~set\_expr.$\\
+$limit$ ::= $identifier~|~numeric\_constant~|~arithmetic\_term$\\
+$set$ ::= $\{ [basic\_terms] \}$\\
+$range$ ::= $\{limit..limit\}$\\
+$set\_expr$ ::= $ST0 $ \\  
+$set\_constr$ ::= $basic\_term~\texttt{where}~tvars $\\
+$tvars$ ::= $tvar~|~tvar, tvars$\\
+$tvar$ ::= $variable~\texttt{in}~identifier$  \\
+$ST0$ ::= $ST1~|~ST0~\texttt{+}~ST1$\\
+$ST1$ ::= $ST2~|~ST1~*~ST2~|~ST1~\backslash~ST2$ \\
+$ST2$ ::= $(ST0)~|~set~|~range~|~set\_constr~|~identifier$  \\
+
+\subsubsection{Atoms}
+$atom$::= $identifier [( terms )] | built\_in $\\
+$built\_in$ ::= $ basic\_term~op~basic\_term$\\
+$op$ ::= $\texttt{>}~|~\texttt{<}~|~\texttt{>=}~|~\texttt{<=}~|~\texttt{=}~|~\texttt{!=}$ \\
+\subsubsection{Sentences}
+
+$sentence$ ::= $s3$ \\
+$s3$ ::= $s2~|~s3~\texttt{or}~s2$\\
+$s2$ ::= $s1~|~s2~\texttt{and}~s1$\\
+$s1$ ::= $s0~|~\texttt{not}~s0$\\ 
+$s0$ ::= $atom~|~\texttt{(}s3\texttt{)}$ 
+\subsubsection{Maybe Literals}
+$maybe\_lit$ ::= $\texttt{maybe}~identifier \texttt{(} basic\_terms \texttt{)}$
+\subsubsection{Cardinality Constraints}
+$bound$ ::= $arithmetic\_term~|~numeric\_constant~|~identifier$\\
+$card\_constr$ ::= $bound~ \texttt{<= |\{} identifier \texttt{(} basic\_terms \texttt{)} \texttt{\}| <=} ~bound | $\\
+$~~~~~~~~~~~~~~~~~~~~~~bound~ \texttt{<= |\{} identifier\texttt{\}| <=}~ bound$
+\subsubsection{Rules}
+$rule$ ::= $head \texttt{.} | head~\texttt{if}~sentence \texttt{.} $ \\
+$basic\_terms$ ::= $basic\_term~|~basic\_term, basic\_terms$ \\
+$disj ::= atom~\texttt{or}~atoms~|~atom$\\
+$head$ ::= $disj~|~maybe\_lit~|~card\_constr$
+ 
+\subsubsection{Program}
+$program$ ::= $statements$\\
+$statements$ ::= $statement~|~statement,~statements$\\
+$statement$ ::= $ const\_decl~|~type\_decl~|~rule$ 
+
+
+\subsection{Comments}
+
+L programs can have comments starting with \texttt{/*} and ending with \texttt{*/} . For example:
+
+\begin{verbatim}
+/*
+ This is a
+ multiline comment
+*/
+type t = {1,2,3}. /* this is a type declaration */
+p(t X) if /* this is a rule */ q(X). 
+\end{verbatim}
+
+
+\section{Semantics}
+We define the semantics of an $L$ program $\Pi$ in terms of \textit{models} of $P$. A model is a set of atoms which, intuitively, satisfies the rules of the program. The notion of satisfiability is defined in section \ref{rsat} with all necessary background provided in sections 
+\ref{constants} - \ref{grp}.
+
+The semantics of a program $P$ containing a comment coincide with the semantics of the program obtained from $P$ by removing the comments. In the rest of this section we will consider programs not containing comments.
+
+
+
+
+\subsection{Constant Declarations} \label{constants}
+
+
+Let $\Pi$ be an $L$ program starting with constant declaration of the form
+$$cn = gar\_term.$$
+
+Where $cn$ is referred to as a constant name and $gar\_term$ is a ground arithmetic term.
+By condition 2 for constant declarations defined in section \ref{progdef}, $gar\_term$ cannot contain identifiers as subterms,
+therefore its value $v$ can be obtained as defined in section \ref{at}. 
+
+The models $\Pi$ coincide with the models of program $\Pi^\prime$ obtained from $\Pi$ by:
+\begin{enumerate}
+\item Removing the declaration $cn = gar\_term.$
+\item Replacing every subterm of a term $\Pi$ equal to $cn$ with numeric constant $v$. 
+\end{enumerate} 
+
+
+\medskip\noindent
+By condition 2 for constant declarations defined in section \ref{progdef}, if the program $\Pi^\prime$ starts another constant declaration, its right hand side cannot contain numeric constants, therefore its semantics can be defined in the same manner as for $\Pi$.
+ 
+\medskip\noindent
+Therefore, it is sufficient to define the semantics for programs not containing constant declarations (and, therefore, not containing constant names in arithmetic terms too).
+
+\subsection{Arithmetic Terms}\label{at}
+
+A program may contain ground arithmetic terms constructed from integer numerals and operations `+` (plus),  `-` (minus), `*` (multiplication), `/` (integer division), `\%` (modulo)\footnote{Current implementation allows only numerals in the range -2,147,483,648 to 2,147,483,647. Moreover, correct evaluation for an arithmetic term is guaranteed only if all its subterms have values within the range.} Each arithmetic term  has \textit{a value}. 
+The meaning and precedence of operations  `+`,  `-`, `*` is as usual. The  operation `/` has the same precedence as `*` and is defined as $$a/b := sgn(a*b) *(|a|~div~|b|)$$
+where 
+\begin{enumerate}
+\item $sgn(a*b) = \begin{cases} 1 &\mbox{if } a *b \ge 0 \\
+-1 & \mbox{otherwise }. \end{cases} $
+\item for $a\ge 0$ and $b\ge0$ $a~div~b$ is a floor division, i.e, $a~div~b$ is the largest integer such that $b * (a~div~b)  \le  a$.
+\end{enumerate}
+The  operation `/` has the same precedence as `*` and is defined as $$a\%b := a - n * (a/n) $$
+All operations are associated from left to right. 
+
+
+\medskip\noindent
+The semantics of programs containing undefined arithmetic operations (division by zero or modulo with its second operand equal to zero) is undefined.  
+
+  
+
+
+\subsection{Type Declarations} \label{types}
+Type declarations of a program $\Pi$  define a mapping $\mathcal{D}_\Pi$ from identifiers (also called type names) and set expressions of $\Pi$  to sets of ground terms. If $q$ is a type name or a sort expression, $\mathcal{D}_\Pi(q)$  denotes the set of ground terms it is mapped to. 
+
+
+\medskip\noindent 
+The mapping is defined as follows:
+
+\begin{enumerate}
+\item For every sort expression of the form $$\{t_1,\ldots,t_n\}$$   $\mathcal{D}_\Pi(\{t_1,\ldots,t_n\})$ is $ \{t_1,\ldots,t_n\}$
+\item For every sort expression of the form   $$t~\mbox{\texttt{where}} ~V_1~in~type_1,\ldots, V_n~in~type_n$$
+ 
+\noindent
+$\mathcal{D}_\Pi(t~\mbox{\texttt{where}} ~V_1~in~type_1,\ldots, V_n~in~type_n)$ is $\{t| V_1 \in \mathcal{D}_\Pi(type_1),\ldots, V_n \in \mathcal{D}_\Pi(type_n)\}$ 
+\item For every sort expression of the form $$S_1 \diamond S_2$$ 
+$\mathcal{D}_\Pi(S_1 \diamond S_2)$ is $ \mathcal{D}_\Pi(S_1) \odot  \mathcal{D}_\Pi(S_2)$, where $\odot$ is a set operation: union, intersection, or difference when $\diamond$ is $+$, $*$ or $/$ correspondingly.
+
+\item For every type declaration of the form $$tn = set\_expr$$
+
+$\mathcal{D}_\Pi(tn)$ is $\mathcal{D}_\Pi(set\_expr)$  
+
+
+\end{enumerate}
+
+\medskip\noindent
+In the remainder of the section  we will mostly  use   $\mathcal{D}_\Pi$ to obtain the values  which correspond to the type names of $\Pi$.
+
+
+
+\subsection{Programs with Free Variables and Ground Programs}\label{grp}
+
+Let $\Pi$ be an $L$ program and $r$ be a rule of $P$. 
+A variable $V$ occurring in  $r$  is called a \textit{free} variable if at least one of the following conditions is satisfied:
+\begin{enumerate}
+\item $V$ occurs in the  head of $r$, and the head of $r$ is either a sentence or a maybe literal.
+\item $V$ occurs in the head of $r$ and in the body of $r$.
+\end{enumerate}
+Other variables occurring in $r$ are \textit{quantified} variables.
+
+For a program $\Pi$ we obtain a corresponding \textit{ground} program $\Pi^g$ as follows:
+\begin{enumerate}
+\item each rule $r$ containing free variables is replaced with a maximal collection of rules, each of which corresponds to a unique substitution 
+of free variables (together with possibly preceeding type names)  with ground terms. A variable $v$ can be replaced with a term $f$ if
+\begin{itemize}
+\item there in an occurrence of a typed variable $t~v$ in $r$, and
+\item  $f\in \mathcal{D}(t)$
+\end{itemize}  
+\item each arithmetic term is evaluated as described in section  \ref{at}.
+\end{enumerate}
+
+\medskip\noindent
+For example, consider the program 
+\begin{verbatim}
+type1 = {1,2,5}.
+type2 = {1,2}.
+
+p(type1 X, type2 Y) if X+Y = 7.
+maybe q(type1 X).
+1<=|{t(type1 X, type2 Y)}| <= 2 if q(Y).
+\end{verbatim}
+
+\medskip\noindent
+The corresponding ground program is:
+\begin{verbatim}
+p(1, 1) if 2 = 7
+p(1, 2) if 3 = 7
+p(2, 1) if 3 = 7
+p(2, 2) if 4 = 7
+p(5, 1) if 6 = 7
+p(5, 2) if 7 = 7
+maybe q(1).
+maybe q(2).
+maybe q(5).
+1<=|{t(type1 X, 1)}| <= 2 if q(1).
+1<=|{t(type1 X, 2)}| <= 2 if q(2).
+\end{verbatim}
+
+\medskip\noindent
+Therefore, any program $\Pi$ can be viewed as a shorthand for the corresponding ground program $\Pi^g$.
+In the following sections we will define the semantics of ground programs.
+
+
+\subsection{Program Models}\label{rsat}
+A model of $\Pi$ is a set of ground atoms satisfying certain conditions.
+
+To describe the conditions,  we  first introduce some definitions.
+ We will call a predicate atom $p(t_1,\ldots, t_n)$ \textit{basic} if all the terms $t_1,\ldots t_n$ are basic.
+Similarly, a sentence is called basic if all the atoms occurring in the sentence are basic.
+
+\begin{definition}(A set ground atoms satisfying a basic predicate atom) \\
+\rm{
+A set of ground atoms $A$ satisfies a simple predicate atom $p(t_1,\ldots t_n)$  if and only if $p(t_1,\ldots t_n) \in A$.
+%Let $A$ be a set of ground atoms and $p(t_1,\ldots,t_n)$ be a predicate atom.
+%Let $E = [e_1,\ldots,e_k]$ be a set of all natural numbers in $[1..n]$ such that for every $j \in E$ $t_j$ is an existentially %quantified term. Similarly, let  
+}
+
+\hfill$\Box$
+\end{definition}
+
+\begin{definition} (A set of ground atoms satisfying a built-in  atom)\\
+{\rm
+A set of ground atoms satisfies a ground built-in atom $t_1 \diamond t_2$ iff one of the following conditions is satisfied:
+\begin{enumerate}
+\item $\diamond$ is $=$($\not =$) and $t_1 = t_2$($t_1 \not= t_2$);
+\item $\diamond$ is $<$ ($\le,\ge, >$), $t_1$ and $t_2$ are integer numerals representing numbers $N_1$ and $N_2$ respectively and
+ $N_1 < N_2$ ($N_1 \le N_2, N_1 \ge N_2, N_1 > N_2$);
+\item $\diamond$ is $<$ ($\le,\ge, >$),  $t_1$ and $t_2$ are identifiers starting with a lowercase letter, and $t_1$  lexicographically smaller than (smaller than or equal to, greater than or equal to, greater) $t_2$.
+\end{enumerate}
+} 
+
+
+\hfill$\Box$
+\end{definition}
+
+\medskip\noindent
+The semantics of a program containing a built-in atom $t_1 \diamond t_2$ where $\diamond~\in~\{<, \le, \ge, >\}$ is \textit{defined} if and only of both $t_1$, $t_2$ are both constants or integer numerals.
+
+\begin{definition}(A set of ground atoms satisfying a basic sentence) \\
+\rm{
+A set of of ground atoms $A$ satisfies a basic sentence $S$ ($A \vdash S$) if one of the following conditions is satisfied:
+\begin{enumerate}
+\item $S$ is a basic atom, and $S \in A$
+\item $S$ is of the form $not~S^\prime$, and $A$ does not satisfy $S^\prime$
+\item $S$ is of the form $S_1~or~S_2$ ($S_1~and~S_2$) and $A$ satisfies one (both) of the sentences  $S_1$ and $S_2$
+\end{enumerate}
+}
+
+\hfill$\Box$
+\end{definition}
+
+\noindent\medskip
+Let $S$ be a sentence. By $S^\prime$ we denote the sentence obtained from $S$ by replacing each  quantified term 
+$$quantifier~p $$
+with $$ quantifier~p~X$$
+ where $X$ is a variable not occurring in $S$ and unique for each quantified term in $S$.
+
+\noindent\medskip
+Let
+\begin{itemize}
+\item $X_1,\ldots X_n$ be the variables occurring in existentially quantified terms of $S^\prime$ of types $Tx_1,\ldots, Tx_n$ correspondingly
+\item $Y_1, \ldots Y_m$ be the variables occurring in universally quantified terms of $S^\prime$ of types $Ty_1, \ldots, Ty_m$ correspondingly
+\end{itemize}
+
+\noindent\medskip
+For a sentence $S$ by $S|_{\{Z_1 = z_1, \ldots, Z_n = z_n\}}$ we denote the sentence obtained from $S$ by 
+\begin{enumerate}
+\item for each variable $Z_i \in \{Z_1,\ldots, Z_n\}$ replacing every occurrence of a quantified term 
+$$ quantifier~p~Z_i$$ with $z_i$;
+\item replacing all other occurrences of each $Z_i \in  \{Z_1,\ldots, Z_n\}$ with $z_i$.
+\end{enumerate}
+
+\begin{definition}(A set of ground atoms satisfying a sentence)\\
+\rm{
+   A set of ground terms $A$ satisfies  $S$ iff
+  $$ \exists (x_1,\ldots,x_n)  \in \mathcal{D}(Tx_1) \times \ldots \times \mathcal{D}(Tx_n): 
+\forall (y_1,\ldots,y_m) \in  \mathcal{D}(Ty_1) \times \ldots \times \mathcal{D}(Ty_m):$$ $$(A \vdash S^\prime|_{\{X_1 = x_1, \ldots, X_n = x_n, Y_1 = y_m,\ldots Y_m = y_m\}})$$
+}
+
+\hfill$\Box$
+\end{definition}
+
+\begin{definition}(A set of ground atoms satisfying a cardinality constraint)\\
+\rm{
+Let $A$ be a set of ground atoms and $$v_1 <= |\{p(t_1,\ldots t_n)\}| <= v_2.$$ be a cardinality constraint of a program $\Pi$.
+Let $X_1\ldots,X_n$ be all variables occurring in the constraint and $Tx_1,\ldots Tx_n$ be the types of the variables $X_1\ldots,X_n$ correspondingly. Let $S$ be a set of ground atoms of $\Pi$ of the form $p(t_1^\prime,\ldots t_n^\prime)$ each of which is obtained from $p(t_1,\ldots t_n)$ by replacing all occurrences of variables  with elements of their corresponding types.
+
+\noindent\medskip
+$A$ satisfies  the constraint $v_1 <= |\{p(t_1,\ldots t_n)\}| <= v_2$ iff $v_1 \le |S| \le v_2$. 
+
+\hfill$\Box$
+
+}
+\end{definition}
+
+
+As described in section \ref{rl}, program rules may be in one of the two forms. We sometimes say that a rule of the form $$head.$$ has a body which is satisfied by any set of ground atoms and use a canonical form $$head~\mbox{\texttt{if}}~body.$$ even if the body is not present.
+
+
+
+\begin{definition}(A set of ground atoms satisfying a rule)\\
+\rm{
+A set of ground atoms $A$ satisfies a rule 
+ head is either a cardinality constraint or a sentence and one of the following conditions holds:
+\begin{enumerate}
+\item $A$ does not satisfy $body$;
+\item $A$ satisfies both $body$ and $head$.
+\end{enumerate}
+}
+\hfill $\Box$
+\end{definition}
+
+
+
+
+
+
+\begin{definition}(A model of a program)\\
+\rm{
+Let $A$ be a set of ground atoms of a program $\Pi$; $M$ be the sets of all literals $l$ such that $\Pi$ contains a rule
+$$\mbox{\texttt{maybe}}~l~\mbox{\texttt{if}}~body.$$ where $body$ is satisfied by $A$.
+$A$ is a model of $\Pi$ if and only if it can be written as a union  $M^\prime \cup C$, where
+\begin{enumerate}
+\item $M^\prime$ is $M \cap A$;
+\item $C$ is the smallest set of ground literals such that $M^\prime \cup C$ satisfies all the rules of $\Pi$ whose heads are sentences;
+\item $M^\prime \cup C$ satisfies all the rules of $\Pi$ whose heads are cardinality constraints.
+\end{enumerate}
+}
+\hfill $\Box$
+\end{definition}
+\subsection*{Alternative Definition for program models(by Dr.Gelfond)}
+
+\begin{definition}(Program reduct) \\
+\rm{
+Let $\Pi$ be an L program and $A$ be a set of ground atoms.
+We obtain an L program $\Pi^A$ (the \textit{reduct} of $\Pi$ with respect to $S$) from $\Pi$ as follows:
+\begin{enumerate}
+\item For every rule  $r$ of $\Pi$ of the form
+$$\mbox{\texttt{maybe}}~l~\mbox{\texttt{if}}~body.$$ 
+if $body$ is satisfied by $S$, add the rule $l~ \texttt{if} body$ and remove $r$.
+\item For every rule  $r$ of $\Pi$ of the form
+$$\mbox{\texttt{maybe}}~l~\mbox{\texttt{if}}~body.$$  where $body$ is not satisfied by $S$, remove $r$.
+\end{enumerate}
+}
+\hfill$\Box$
+\end{definition}
+Note that the reduct of $\Pi$ is an $L$ program  not containing rules with maybe literals in heads.
+\begin{definition}(A model of a program)\\
+\rm{
+Let $A$ be a set of ground atoms of a program $\Pi$; $A$ is a model of $\Pi$ if and only if the following conditions are satisfied:
+\begin{enumerate}
+\item $A$ is the mimimal set satisfying the rules of $\Pi^A$ whose heads are sentences.
+\item $A$ satisfies all the rules of $\Pi^A$ whose heads are cardinality constraints.
+\end{enumerate}
+}
+\hfill$\Box$
+\end{definition}
+
+\section{Examples}
+
+\subsection{Simple Examples} 
+
+The program $\Pi_1$:
+\begin{verbatim}
+a.
+b if a.
+\end{verbatim}
+has exactly one model $\{a,b\}$.
+
+\medskip\noindent
+The program $\Pi_2$:
+\begin{verbatim}
+a if b.
+\end{verbatim}
+has exactly one model $\{\}$, because it  does not contain maybe literals or cardinality constraints, and $\{\}$ is the minimal set of atoms satisfying the only rule of the program.
+
+\medskip\noindent
+The program $\Pi_3$:
+\begin{verbatim}
+
+t1 = {5,6,7}.
+t2 = {0,1,2}
+p(t2 N) if q(N+5).
+maybe q(t1 N).
+1{q(t1 N)}2. 
+\end{verbatim}
+has three models:
+\begin{verbatim}
+{q(5),q(6),p(1),p(0)}; 
+{q(6),q(7),p(1),p(2)}; 
+{q(5),q(7),p(0),p(2)}.
+\end{verbatim}
+
+\medskip\noindent
+Note that, for example, \texttt{\{q(5),q(6),p(1),p(0),p(2)\}} is not a model of $\Pi_3$, because $C =$ \texttt{\{p(1),p(0),p(2)\}} is not the smallest set of ground atoms such that \texttt{\{q(5),q(6)\}} $\cup~C$ satisfies the rules
+\begin{verbatim}
+p(0) if q(5).
+p(1) if q(6).
+p(2) if q(7).
+\end{verbatim}
+ 
+
+\subsection{Safety Obligations}
+
+The safety obligations are met if
+\begin{enumerate}
+ \item The system requirements have been certified;
+ \item The process for insuring validation has been followed, and
+  \item The system has passed all required inspections.
+\end{enumerate}
+
+\medskip\noindent
+The 3 conditions for meeting safety obligations can be defined by the following L rule:
+
+\begin{verbatim}
+safetyObligationsMet if
+   requirementsCertified and
+   validationProcessFollowed and
+   passed(every requiredInspection).
+\end{verbatim}
+
+
+%The required inspections are of various sorts, and new ones are
+%added from time to time.
+
+\medskip\noindent
+The system requirements are certified if they are sound and complete. This is expressed by the following L rule:
+
+\begin{verbatim}
+requirementsCertified if
+   requirementsSound and
+   requirementsComplete.
+\end{verbatim}
+
+\medskip\noindent
+The validation process has been followed if sections $A-E$ of code  $825/A/6$ have been satisfied. The code sections are represented by identifiers of the form \texttt{825\_A\_6\_}$X$, where $X$ is a character in the range A-Z. The corresponding $L$ rule is:
+
+\begin{verbatim}
+validationProcessFollowed if
+   satisfied(code_825_A_6_A) and
+   satisfied(code_825_A_6_B) and
+   satisfied(code_825_A_6_C) and
+   satisfied(code_825_A_6_D) and
+   satisfied(code_825_A_6_E).
+\end{verbatim}
+
+
+\medskip\noindent
+The set of required inspection is represented by a type consisting of two elements:
+\begin{verbatim}
+requiredInspection = {epa_i_652_6B_714_A, epa_i_652_6B_714_B}.
+\end{verbatim} 
+
+\medskip\noindent
+The first inspection named EPA i/652/6B/714/A is  passed if we have completed all 
+   required forms and have no EPA safety hearings pending:
+
+\begin{verbatim}
+passed(epa_i_652_6B_714_A) if
+   completed(every requiredFromEPA714) and
+   not pending(every epaFine_j_652_6B_710_C).
+\end{verbatim}
+
+\medskip\noindent
+The second inspection named  EPA i/652/6B/714/B is passed if we have paid all fines 
+required under previous infractions under EPA code j/652/6B/710/C:
+
+\begin{verbatim}
+passed(epa_i_652_6B_714_B) if
+   paid(every epaFine_j_652_6B_710_C).
+\end{verbatim}
+
+\medskip\noindent
+All the forms, hearings and infractions mentioned in the previous two definitions are defined by types:
+
+\begin{verbatim}
+epaSafetyHearing = {}.
+requiredFromEPA714 = {} .
+epaFine_j_652_6B_710_C = {}.
+\end{verbatim}
+
+\medskip\noindent
+A complete program with type declarations and rules put in the right order is given in appendix \ref{A}
+   
+\subsection{K-vertex Connectivity of Graphs}
+
+A graph is called \textit{K-vertex-connected} (or simply \textit{K-connected})  if it has more than $K$ vertices and remains connected whenever fewer than $K$ vertices are removed.
+
+\medskip\noindent
+We consider the undirected graph shown in Figure 1.
+
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.3]{drawing}
+\caption{Complete undirected graph with 5 nodes}
+\end{figure}\label{fig1}
+
+
+\noindent
+
+
+\medskip\noindent
+The number of nodes in the graph is stored in a constant $n$:
+\begin{verbatim}
+n = 5.
+\end{verbatim}
+
+\medskip\noindent
+The number $K$ is also a constant:
+\begin{verbatim}
+k = 2.
+\end{verbatim} 
+
+\medskip\noindent
+The nodes of the graph are represented with a type $node$.
+
+\begin{verbatim}
+node = {1..n}.
+\end{verbatim}
+
+
+\medskip\noindent
+The edges of the graph are represented with the facts below. The atom $edge(i,j)$ for integers $i$ and $j$ is true if and only if there is an edge from node $i$ to node $j$ in the graph. The edges are defined as follows\footnote{for this example we could also define the edges using a single rule \texttt{edge(node X, node Y)}, however we use a more sophisticated description for demonstration purpose. Similar rules can be used to define, for example, graphs with double ring topologies.}  :
+
+\begin{verbatim}
+edge(node X, node Y) if X%n = (Y+1)%n.
+edge(node X, node Y) if X%n = (Y+2)%n.
+\end{verbatim}
+
+\medskip\noindent
+We will check $K-connectedness$ by trying to remove up to $K-1$ nodes from the graph and checking whether the graphs remains connected.
+For a node $N$ \texttt{removed(N)} is true if $N$ is removed from the graph. Any node may be removed from the graph:
+
+\begin{verbatim}
+maybe removed(node N).
+\end{verbatim}   
+
+\medskip\noindent
+We are only interesting in the models where less than $K$ nodes are removed:
+
+\begin{verbatim}
+0 <= |{removed(node N)}| <= k-1.
+\end{verbatim}
+
+\medskip\noindent
+To defined the connectedness of a graph, we first define a \texttt{reachable(X,Y)} relation, which is true if and only if there exists a path from $X$ to $Y$ in the graph not containing removed nodes:
+
+\medskip\noindent
+Any node which wasn't removed is reachable from itself:
+\begin{verbatim}
+reachable(node X, X) if not removed(X).
+\end{verbatim}
+
+\medskip\noindent
+A node $Y$ is reachable from node $X$ if they are both not removed and there is an edge from $X$ to $Y$:
+\begin{verbatim}
+reachable(node X,node Y) if edge(X,Y) 
+                            and not removed(X) 
+                            and not removed(Y). 
+\end{verbatim}
+
+\medskip\noindent
+A node $Y$ is reachable from node $X$ if there exists a node $Z$ reachable from $X$ such that $Y$ is reachable from $Z$ and none of the nodes $X$,$Y$,$Z$ was removed:
+
+\begin{verbatim}
+reachable(node X,node Y) if reachable(X,some node Z)
+                            and reachable(Z,Y) 
+                            and not removed(X) 
+                            and not removed(Y) 
+                            and not removed(Z).
+\end{verbatim}
+
+
+\medskip\noindent
+The graph is k-connected if any two nodes  that were not removed are reachable from each other.
+We next define the disconnected relation: the graph is disconnected if there exists a pair of nodes which are not reachable from
+each other.
+
+\begin{verbatim}
+disconnected if    not reachable(some node X, some node Y) 
+                   and not removed(X)
+                   and not removed(Y).                
+\end{verbatim}
+If there exists at least one way to remove at most $k-1$ such that the graph is disconnected, the graph is not k-connected.
+We can check this by, first, putting a constraint requiring the graph to be disconnected:
+
+\begin{verbatim}
+1<=|{disconnected}|<=1.
+\end{verbatim}
+
+\medskip\noindent
+The graph is not $K$-connected if and only there exists at least one model of the program.
+
+\medskip\noindent
+The program has no models for $k<=4$ but has a model for $k=5$. That is, the graph on figure \ref{fig1} is $4-connected$ but not $5-connected$ (for example, the nodes \{2,3,4,5\} can be removed from the graph to make it disconnected).
+
+
+
+ 
+
+\pagebreak
+\appendix
+\section{L program for checking safety obligations}\label{A}
+
+\begin{verbatim}
+
+requiredInspection = {epa_i_652_6B_714_A, epa_i_652_6B_714_B}.
+epaSafetyHearing = {}.
+requiredFromEPA714 = {} .
+epaFine_j_652_6B_710_C = {}.
+
+
+safetyObligationsMet if
+   requirementsCertified and
+   validationProcessFollowed and
+   passed(every requiredInspection).
+
+requirementsCertified if
+   requirementsSound and
+   requirementsComplete.
+
+validationProcessFollowed if
+   satisfied(code_825_A_6_A) and
+   satisfied(code_825_A_6_B) and
+   satisfied(code_825_A_6_C) and
+   satisfied(code_825_A_6_D) and
+   satisfied(code_825_A_6_E).
+
+
+passed(epa_i_652_6B_714_A) if
+   completed(every requiredFromEPA714) and
+   not pending(every epaFine_j_652_6B_710_C).
+
+
+passed(epa_i_652_6B_714_B) if
+   paid(every epaFine_j_652_6B_710_C).
+
+\end{verbatim}
+\pagebreak
+\section{L program for checking K-connectivity of a graph}\label{B}
+\begin{verbatim}
+n = 5.
+k = 2.
+
+node = {1..n}.
+
+edge(node X, node Y) if X%n = (Y+1)%n.
+edge(node X, node Y) if X%n = (Y+2)%n.
+
+maybe removed(node N).
+
+0 <= |{removed(node N)}| <= k-1.
+
+reachable(node X, X) if not removed(X).
+reachable(node X,node Y) if edge(X,Y) 
+                            and not removed(X) 
+                            and not removed(Y). 
+reachable(node X,node Y) if reachable(X,some node Z)
+                            and reachable(Z,Y) 
+                            and not removed(X) 
+                            and not removed(Y) 
+                            and not removed(Z).
+
+disconnected if    not reachable(some node X, some node Y) 
+                   and not removed(X)
+                   and not removed(Y).                
+
+1<=|{disconnected}|<=1.
+\end{verbatim}
+%\bibliography{mylib}
+%\bibliographystyle{plain}
+
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
