@@ -1,10 +1,8 @@
-program(program Cs Ts Rs) ::= const_decls(Cs) type_decls(Ts) rules(Rs)
-program(program Ts Rs) ::= type_decls(Ts) rules(Rs)
-program(program Rs) ::= rules(Rs)
-type_decls(type_decls T) ::= type_decl(T)
-type_decls(type_decls T cut_root(Ts)) ::= type_decl(T) type_decls(Ts)
-const_decls(type_decls T) ::= const_decl(T)
-const_decls(const_decls T cut_root(Ts)) ::= const_decl(T) const_decls(Ts)
+program(S) ::= statements(S)
+statements(stmts  S cut_root(Ss)) ::= statement(S) statements(Ss)
+statement(T) ::= type_decl(T)
+statement(R) ::= rule(R)
+statement(C) ::=  const_decl(C)
 
 number(pos N) ::= numeral(N)
 number(neg N) ::= minus numeral(N)
@@ -83,15 +81,9 @@ ST2(R) ::= range(R)
 ST2(S) ::= set(S)
 ST2(I) ::= identifier(I)
 
-
-
-
-rules(rules R) ::= rule(R)
-rules(rules R cut_root(Rs)) ::= rule(R) rules(Rs)
-
-s0(atom I) ::= identifier(I)
-s0(atom I Ts) ::= identifier(I) lparen terms(Ts) rparen
-
+atom(atom I) ::= identifier(I)
+atom(atom I Ts) ::= identifier(I) lparen terms(Ts) rparen
+s0(A) ::= atom(A)
 s0(batom T1 O T2) ::= basic_term(T1) op(O) basic_term(T2)
 op(O) ::= less(O)
 op(O) ::= greater(O)
@@ -109,6 +101,9 @@ s3(T) ::= s2(T)
 s3(disj T1 T2) ::= s3(T1) or s2(T2)
 sentence(sent S) ::= s3(S)
 
+disj(disj A cut_root(D)) ::= atom(A) or disj(D)
+disj(disj A) ::= atom(A)
+
 maybe_lit(mlit I Ts) ::= maybe identifier(I) lparen basic_terms(Ts) rparen
 bound(A) ::= arithmetic_term(A)
 bound(I) ::= identifier(I)
@@ -121,7 +116,8 @@ terms(terms T cut_root(Ts)) ::= term(T) comma terms(Ts)
 
 rule(rule H) ::= head(H) dot
 rule(rule H S) ::= head(H) if sentence(S) dot
-head(H) ::= sentence(H)
+head(A) ::= atom(A)
+head(D) ::= disj(D)
 head(H) ::= maybe_lit(H)
 head(H) ::= card_constr(H)
 
