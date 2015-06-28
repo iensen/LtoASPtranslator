@@ -6,7 +6,7 @@ from genparser.src.astgen.parsing.parser import *
 from preprocessor import Preprocessor
 
 
-tests = ['brain.l', 'ch5.l', 'graphs.l', 'mix_types_rules.l', 'safety.l',
+tests = ['commas.l','brain.l', 'ch5.l', 'graphs.l', 'mix_types_rules.l', 'safety.l',
         't1.l', 't2.l', 't3.l', 't4.l']
 prefix = os.path.join(os.path.dirname(os.path.abspath(__file__))) + "/examples/"
 # enumerate of the types of program elements
