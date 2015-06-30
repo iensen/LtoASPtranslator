@@ -202,12 +202,19 @@ A \textit{\textbf{rule}} can be of the two forms:
   head. 
 \end{equation}
 
+\noindent
 or 
 \begin{equation}
 head~\mbox{\texttt{if}}~sentence.
 \end{equation}
 
-Where $head$ is either a predicate atom not containing quantified terms, or a maybe literal, or a cardinality constraint.
+\noindent
+where $head$ is one of the following:
+\begin{enumerate}
+\item  a sentence of the form $a_1 or \ldots~ or ~a_k$, where $a_1,\ldots,a_k$ are predicate atoms;
+\item  a maybe literal;
+\item  a cardinality constraint.
+\end{enumerate}
 
 \subsection{Program} \label{progdef}
 A \textbf{\textit{program}} is a collection of statements, each of which is either a constant declarations, a
@@ -302,7 +309,8 @@ $ST2$ ::= $\texttt{(}ST0\texttt{)}~|~set~|~range~|~set\_constr~|~identifier$  \\
 
 
 \subsubsection{Atoms}
-$atom$::= $identifier [\texttt{(} terms \texttt{)}]~|~built\_in $\\
+$atom$::=$predicate\_atom~|~built\_in $\\
+$predicate\_atom$ ::= $identifier [\texttt{(} terms \texttt{)}]$\\
 $built\_in$ ::= $ basic\_term~op~basic\_term$\\
 $op$ ::= $\texttt{>}~|~\texttt{<}~|~\texttt{>=}~|~\texttt{<=}~|~\texttt{=}~|~\texttt{!=}$ \\
 \subsubsection{Sentences}
