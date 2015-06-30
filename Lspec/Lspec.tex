@@ -160,6 +160,7 @@ Where $quantifier$ is an identifier in the set $\{\mbox{\texttt{every}, \texttt{
 
 We will refer to a quantified term starting with a quantifier $\mbox{\texttt{some}}$($\mbox{\texttt{every}}$) as an \textbf{\textit{existentially quantified}}(\textbf{\textit{universally quantified}}).  
 
+
 \subsection{Terms}
 A \textit{\textbf{term}} is either a basic term or a quantified term.
 \subsection{Atoms}
@@ -320,7 +321,6 @@ $card\_constr$ ::= $bound~ \texttt{<= |\{} identifier \texttt{(} basic\_terms \t
 $~~~~~~~~~~~~~~~~~~~~~~bound~ \texttt{<= |\{} identifier\texttt{\}| <=}~ bound$
 \subsubsection{Rules}
 $rule$ ::= $head \texttt{.} | head~\texttt{if}~sentence \texttt{.} $ \\
-$basic\_terms$ ::= $basic\_term~|~basic\_term, basic\_terms$ \\
 $disj ::= atom~\texttt{or}~atoms~|~atom$\\
 $head$ ::= $disj~|~maybe\_lit~|~card\_constr$
  
