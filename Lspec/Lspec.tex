@@ -311,6 +311,7 @@ $ST2$ ::= $\texttt{(}ST0\texttt{)}~|~set~|~range~|~set\_constr~|~identifier$  \\
 \subsubsection{Atoms}
 $atom$::=$predicate\_atom~|~built\_in $\\
 $predicate\_atom$ ::= $identifier [\texttt{(} terms \texttt{)}]$\\
+$basic\_predicate\_atom$ ::= $identifier [\texttt{(} basic\_terms \texttt{)}]$\\
 $built\_in$ ::= $ basic\_term~op~basic\_term$\\
 $op$ ::= $\texttt{>}~|~\texttt{<}~|~\texttt{>=}~|~\texttt{<=}~|~\texttt{=}~|~\texttt{!=}$ \\
 \subsubsection{Sentences}
@@ -322,11 +323,11 @@ $s2$ ::= $s1~|~s2~\texttt{and}~s1~|~s2~\texttt{,}~s1$
 $s1$ ::= $s0~|~\texttt{not}~s0$\\ 
 $s0$ ::= $atom~|~\texttt{(}s3\texttt{)}$ 
 \subsubsection{Maybe Literals}
-$maybe\_lit$ ::= $\texttt{maybe}~identifier \texttt{(} basic\_terms \texttt{)}$
+$maybe\_lit$ ::= $\texttt{maybe}~basic\_predicate\_atom$\\
 \subsubsection{Cardinality Constraints}
 $bound$ ::= $arithmetic\_term~|~numeric\_constant~|~identifier$\\
-$card\_constr$ ::= $bound~ \texttt{<= |\{} identifier \texttt{(} basic\_terms \texttt{)} \texttt{\}| <=} ~bound | $\\
-$~~~~~~~~~~~~~~~~~~~~~~bound~ \texttt{<= |\{} identifier\texttt{\}| <=}~ bound$
+$card\_constr$ ::= $bound~ \texttt{<= |\{}  basic\_predicate\_atom \texttt{\}| <=} ~bound$\\
+
 \subsubsection{Rules}
 $rule$ ::= $head \texttt{.} | head~\texttt{if}~sentence \texttt{.} $ \\
 $disj ::= atom~\texttt{or}~atoms~|~atom$\\
