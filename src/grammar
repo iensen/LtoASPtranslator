@@ -137,6 +137,18 @@ s3(disj T1 T2) ::= s3(T1) or s2(T2)
 sentence(sent S) ::= s3(S)
 
 
+p_s0(A) ::= predicate_atom(A)
+p_s0(S) ::= lparen p_s3(S) rparen
+p_s1(literal A) ::= p_s0(A)
+p_s1(neg_literal A) ::= not p_s0(A)
+p_s2(unit L) ::= p_s1(L)
+and_s(and) ::= and(A)
+and_s(and) ::= comma(A)
+p_s2(conj L1 L2) ::= p_s2(L1) and_s p_s1(L2)
+p_s3(T) ::= p_s2(T)
+p_s3(disj T1 T2) ::= p_s3(T1) or p_s2(T2)
+p_sentence(sent S) ::= s3(S)
+
 
 maybe_lit(mlit A) ::= maybe basic_predicate_atom(A)
 bound(A) ::= arithmetic_term(A)
@@ -151,9 +163,7 @@ terms(terms T cut_root(Ts)) ::= term(T) comma terms(Ts)
 
 rule(rule H) ::= head(H) dot
 rule(rule H S) ::= head(H) if sentence(S) dot
-head(D) ::= disj(D)
-disj(disj A cut_root(D)) ::= predicate_atom(A) or disj(D)
-disj(disj A) ::= predicate_atom(A)
+head(S) ::= p_sentence(S)
 head(H) ::= maybe_lit(H)
 head(H) ::= card_constr(H)
 
