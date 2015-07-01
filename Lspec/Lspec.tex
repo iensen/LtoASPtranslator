@@ -115,7 +115,7 @@ A term $t$ is called \textbf{\textit{ground}} iff
 \subsection{Constant Declarations}\label{cd}
 A \textit{\textbf{constant declaration}} is of the form 
 \begin{equation}\label{cdecl}
-c = v.
+\texttt{const} ~c = v.
 \end{equation}
 where  $c$ is an identifier also referred to as  
 \textbf{\textit{constant name}}  and $v$ is a ground arithmetic term, an integer numeral  or an identifier.
@@ -142,7 +142,7 @@ where $t$ is a term, $\{V_1, \ldots, V_n\}$ is a set of all variables occurring 
 \subsection{Type Declarations}
 A \textit{\textbf{type declaration}} is of the form 
 \begin{equation}\label{tdecl}
-t = set\_expr.
+\texttt{type}~t = set\_expr.
 \end{equation}
 where $t$ is an identifier and $set\_expr$ is a set expression defined in section \ref{sexpr}.
 We will say that the type $t$ is \textit{defined} by a program if it contains a declaration of the form (\ref{tdecl}). 
@@ -292,11 +292,11 @@ $ground\_terms$ ::= $ground\_term~|~ground\_term\texttt{,} ~ground\_terms$ \\
 $terms$ ::= $term~|~term\texttt{,}~ terms$ \\
 
 \subsubsection{Constant Declarations}
-$const\_decl$ ::= $identifier \texttt{=} ground\_arithmetic\_term.~|~identifier \texttt{=} identifier.~$\\
+$const\_decl$ ::= $\texttt{const} ~identifier \texttt{=} ground\_arithmetic\_term.~|~identifier \texttt{=} identifier.~$\\
 ~~~~~~~~~~$~~~~~~~~~~~~~~~~~~~~|~identifier \texttt{=} numeric\_constant.$
 \subsubsection{Type Declarations}
 
-$type\_decl$ ::= $identifier~ \texttt{=} ~set\_expr.$\\
+$type\_decl$ ::= $\texttt{type}~identifier~ \texttt{=} ~set\_expr.$\\
 $limit$ ::= $identifier~|~numeric\_constant~|~ground\_arithmetic\_term$\\
 $set$ ::= $\texttt{\{} [ground\_terms] \texttt{\}}$ \footnote{Square brackets around $basic\_terms$ mean that $basic\_terms$ are optional, that is, $\{ \}$  is a valid expression for non-terminal $set$}\\
 $range$ ::= $\texttt{\{}limit..limit\texttt{\}}$\\
@@ -367,7 +367,7 @@ The semantics of a program $P$ containing a comment coincide with the semantics 
 
 
 Let $\Pi$ be an $L$ program starting with constant declaration of the form
-$$cn = gar\_term.$$
+$$\texttt{const} ~cn = gar\_term.$$
 
 Where $cn$ is referred to as a constant name and $gar\_term$ is a ground arithmetic term.
 By condition 2 for constant declarations defined in section \ref{progdef}, $gar\_term$ cannot contain identifiers as subterms,
@@ -375,7 +375,7 @@ therefore its value $v$ can be obtained as defined in section \ref{at}.
 
 The models $\Pi$ coincide with the models of program $\Pi^\prime$ obtained from $\Pi$ by:
 \begin{enumerate}
-\item Removing the declaration $cn = gar\_term.$
+\item Removing the declaration $\texttt{const}~cn = gar\_term.$
 \item Replacing every subterm of a term $\Pi$ equal to $cn$ with numeric constant $v$. 
 \end{enumerate} 
 
@@ -422,7 +422,7 @@ $\mathcal{D}_\Pi(t~\mbox{\texttt{where}} ~V_1~in~type_1,\ldots, V_n~in~type_n)$ 
 \item For every sort expression of the form $$S_1 \diamond S_2$$ 
 $\mathcal{D}_\Pi(S_1 \diamond S_2)$ is $ \mathcal{D}_\Pi(S_1) \odot  \mathcal{D}_\Pi(S_2)$, where $\odot$ is a set operation: union, intersection, or difference when $\diamond$ is $+$, $*$ or $/$ correspondingly.
 
-\item For every type declaration of the form $$tn = set\_expr$$
+\item For every type declaration of the form $$\texttt{type}~tn = set\_expr$$
 
 $\mathcal{D}_\Pi(tn)$ is $\mathcal{D}_\Pi(set\_expr)$  
 
@@ -458,8 +458,8 @@ of free variables (together with possibly preceeding type names)  with ground te
 \medskip\noindent
 For example, consider the program 
 \begin{verbatim}
-type1 = {1,2,5}.
-type2 = {1,2}.
+type type1 = {1,2,5}.
+type type2 = {1,2}.
 
 p(type1 X, type2 Y) if X+Y = 7.
 maybe q(type1 X).
@@ -664,8 +664,8 @@ has exactly one model $\{\}$, because it  does not contain maybe literals or car
 The program $\Pi_3$:
 \begin{verbatim}
 
-t1 = {5,6,7}.
-t2 = {0,1,2}
+type t1 = {5,6,7}.
+type t2 = {0,1,2}
 p(t2 N) if q(N+5).
 maybe q(t1 N).
 1{q(t1 N)}2. 
@@ -734,7 +734,7 @@ validationProcessFollowed if
 \medskip\noindent
 The set of required inspection is represented by a type consisting of two elements:
 \begin{verbatim}
-requiredInspection = {epa_i_652_6B_714_A, epa_i_652_6B_714_B}.
+type requiredInspection = {epa_i_652_6B_714_A, epa_i_652_6B_714_B}.
 \end{verbatim} 
 
 \medskip\noindent
@@ -760,9 +760,9 @@ passed(epa_i_652_6B_714_B) if
 All the forms, hearings and infractions mentioned in the previous two definitions are defined by types:
 
 \begin{verbatim}
-epaSafetyHearing = {}.
-requiredFromEPA714 = {} .
-epaFine_j_652_6B_710_C = {}.
+type epaSafetyHearing = {}.
+type requiredFromEPA714 = {} .
+type epaFine_j_652_6B_710_C = {}.
 \end{verbatim}
 
 \medskip\noindent
@@ -789,20 +789,20 @@ We consider the undirected graph shown in Figure 1.
 \medskip\noindent
 The number of nodes in the graph is stored in a constant $n$:
 \begin{verbatim}
-n = 5.
+const n = 5.
 \end{verbatim}
 
 \medskip\noindent
 The number $K$ is also a constant:
 \begin{verbatim}
-k = 2.
+const k = 2.
 \end{verbatim} 
 
 \medskip\noindent
 The nodes of the graph are represented with a type $node$.
 
 \begin{verbatim}
-node = {1..n}.
+type node = {1..n}.
 \end{verbatim}
 
 
@@ -891,10 +891,10 @@ The program has no models for $k<=4$ but has a model for $k=5$. That is, the gra
 
 \begin{verbatim}
 
-requiredInspection = {epa_i_652_6B_714_A, epa_i_652_6B_714_B}.
-epaSafetyHearing = {}.
-requiredFromEPA714 = {} .
-epaFine_j_652_6B_710_C = {}.
+type requiredInspection = {epa_i_652_6B_714_A, epa_i_652_6B_714_B}.
+type epaSafetyHearing = {}.
+type requiredFromEPA714 = {} .
+type epaFine_j_652_6B_710_C = {}.
 
 
 safetyObligationsMet if
@@ -926,10 +926,10 @@ passed(epa_i_652_6B_714_B) if
 \pagebreak
 \section{L program for checking K-connectivity of a graph}\label{B}
 \begin{verbatim}
-n = 5.
-k = 2.
+const n = 5.
+const k = 2.
 
-node = {1..n}.
+type node = {1..n}.
 
 edge(node X, node Y) if X%n = (Y+1)%n.
 edge(node X, node Y) if X%n = (Y+2)%n.

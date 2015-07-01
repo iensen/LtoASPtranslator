@@ -1,7 +1,7 @@
-node = {1..n}.
+type node = {1..n}.
 
-n = 5.
-k = 2.
+const n = 5.
+const k = 2.
 0 <= |{removed(node N)}| <= k-1.
 edge(node X, node Y) if X%n = (Y + 1)%n.
 edge(node X, node Y) if X%n = (Y + 2)%n.

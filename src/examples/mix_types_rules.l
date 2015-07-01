@@ -1,8 +1,8 @@
 
 1<=|{disconnected}|<=1.
-n = 5.
-node = {1..n}.
-k = 2.
+const n = 5.
+type node = {1..n}.
+const k = 2.
 0 <= |{removed(node N)}| <= k-1.
 edge(node X, node Y) if X%n = (Y + 1)%n.
 edge(node X, node Y) if X%n = (Y + 2)%n.

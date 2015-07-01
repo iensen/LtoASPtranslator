@@ -2,45 +2,45 @@
 
 
 /*Section 5.12 */
-residual_risk = {level_busts, asac_usage_risks, wake_vortices, mountain_waves,
+type residual_risk = {level_busts, asac_usage_risks, wake_vortices, mountain_waves,
                   operation_errors}.
 
 
 /* Section 5.2.7 */           
-hazard527 = {ht_1_8, ht_1_10, ht_2_2, ht_3_6, ht_1_11}. /*identified in the FHA */
-risk527 = risk(H) where H in hazard527.
+type hazard527 = {ht_1_8, ht_1_10, ht_2_2, ht_3_6, ht_1_11}. /*identified in the FHA */
+type risk527 = risk(H) where H in hazard527.
 
 /*Section 5.3.7 */
-hazard527 = {ht_3_5, hm_1_8, hm_2_2, hm_1_15}. 
+type hazard527 = {ht_3_5, hm_1_8, hm_2_2, hm_1_15}. 
 
 /* Section 5.4.6: */
-hazard546 = {ht_1_9, ht_3_5, hm_2_2, hm_1_6, hm_1_8, hm_1_15}.
+type hazard546 = {ht_1_9, ht_3_5, hm_2_2, hm_1_6, hm_1_8, hm_1_15}.
 
 /* section 5.5.6 */
-hazard556 = {hm_1_3, hm_1_14}.
-risk556 = r(H) where H in hazard556.
+type hazard556 = {hm_1_3, hm_1_14}.
+type risk556 = r(H) where H in hazard556.
 
 
 /* Section 5.6.5 */
-hazard565 = {ht_1_1, ht_1_2, ht_1_5, ht_1_8, ht_1_9, ht_2_2, ht_3_5,
+type hazard565 = {ht_1_1, ht_1_2, ht_1_5, ht_1_8, ht_1_9, ht_2_2, ht_3_5,
           ht_3_6, hm_1_10, hm_1_13, hm_2_1, hm_2_4, hm_2_5, hm_1_9, hm_1_15,
           hm_2_17, hm_2_7, hm_2_9}. 
 
 /* Section 5.7.5 */
-hazard575 = {ht_1_1, ht_1_2, ht_1_5, ht_1_8, ht_1_9, ht_2_2, ht_3_5,
+type hazard575 = {ht_1_1, ht_1_2, ht_1_5, ht_1_8, ht_1_9, ht_2_2, ht_3_5,
           ht_3_6, hm_1_10, hm_1_13, hm_2_1, hm_2_4, hm_2_5, hm_1_9, hm_1_15,
           hm_2_17, hm_2_7, hm_2_9}. 
 
 /* Sections 5.8.* */
-mod_to_to_display_apprv_aircraft  = {ifps, rdps, fdps_fps, oldi, back_up_systems}. 
-modification = mod_to_to_display_apprv_aircraft + {alert_on_adj_aircraft}.
+type mod_to_to_display_apprv_aircraft  = {ifps, rdps, fdps_fps, oldi, back_up_systems}. 
+type modification = mod_to_to_display_apprv_aircraft + {alert_on_adj_aircraft}.
 
 /* Section 5.8.10 */
-hazard5810 = {hm_2_6, hm_2_5, hm_2_17, hm_1_2, hm_2_7, hm_2_8, hm_2_13, 
+type hazard5810 = {hm_2_6, hm_2_5, hm_2_17, hm_1_2, hm_2_7, hm_2_8, hm_2_13, 
           hm_2_10, hm_2_11, ht_1_9, hm_2_27}.
 
 /* Section 5.9.10 */
-hazard5910 = {hm_2_2, hm_1_1}.
+type hazard5910 = {hm_2_2, hm_1_1}.
 
 /* RULES */
 
