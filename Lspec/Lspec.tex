@@ -173,6 +173,7 @@ Atoms are divided into two categories:
 
 A \textit{\textbf{predicate atom}} is a string of the form $p(t_1,\ldots t_n)$ where 
 $p$ is an identifier also referred to as a \textbf{\textit{predicate name}} and $t_1,\ldots,t_n$ are terms.
+A predicate atom is called \textit{basic} if $t_1,\ldots,t_n$ are basic terms.
 
 A \textit{\textbf{built-in atom}} is a string of the form $t_1 \preceq t_2$ where $t_1$ and $t_2$ are terms and $\preceq \in$ \texttt{\{'<','>', '>=','<=','=','!='\}} is a string of special characters.
 
@@ -184,7 +185,7 @@ can also be written as $A, B$. Parentheses can be omitted in which case $not$ ha
 
 \subsection{Maybe Literals}
 
-A \textbf{\textit{maybe literal}} is of the form $$\mbox{\texttt{maybe}}~p(t_1,\ldots t_n).$$ where $t_1,\ldots,t_n$ are basic terms.
+A \textbf{\textit{maybe literal}} is of the form $$\mbox{\texttt{maybe}}~p(t_1,\ldots t_n).$$ where $p(t_1,\ldots,t_n)$ is a basic predicate atom.
 
 \subsection{Cardinality Constraints}
 
@@ -193,7 +194,7 @@ $$v_1 <= |\{p(t_1,\ldots t_n)\}| <= v_2.$$
 where
 \begin{enumerate}
 \item each of $v_1$ and $v_2$ is a ground arithmetic term, integer numeral or a constant name, 
-\item $t_1,\ldots,t_n$ are basic terms.
+\item $p(t_1,\ldots,t_n)$ is a basic predicate atom.
 \end{enumerate}
 \subsection{Rules} \label{rl}
 
