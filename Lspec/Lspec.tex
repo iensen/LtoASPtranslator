@@ -14,6 +14,7 @@
 \newtheorem{lemma}{Lemma}
 \usepackage{color}
 \usepackage{calrsfs}
+
 \usepackage{latexsym}
 \usepackage{listings}
 \usepackage{mathrsfs}
@@ -263,8 +264,9 @@ $basic\_term$ ::= $numeric\_constant~|~variable~|~identifier~|~identifier~variab
 $~~~~~~~~~~~~~~~~~~~~~|~arithmetic\_term~|~functional\_term$\\
 $ground\_term$ ::= $numeric\_constant~|~identifier~|~$ \\
 $~~~~~~~~~~~~~~~~~~~~~|~ground\_arithmetic\_term~|~ground\_functional\_term$\\
-$arithmetic\_term$ ::= $\texttt{-(}T0\texttt{)}~|~ \texttt{(}T0~infix_1~T1\texttt{)}~|~\texttt{(}T1~infix_2~T2\texttt{)}~|~$ \\ $~~~~~~~~~~~~~~~~~~~~~~~~~~~~|~T0~infix_1~T1~|~T1~infix_2~T2$\\
-$ground\_arithmetic\_term$ ::= $\texttt{-(}T0\_g\texttt{)}~|~ \texttt{(}T0\_g~infix_1~T1\_g\texttt{)}~|~\texttt{(}T1\_g~infix_2~T2\_g\texttt{)}~|~$ \\ $~~~~~~~~~~~~~~~~~~~~~~~~~~~~|~T0\_g~infix_1~T1\_g~|~T1\_g~infix_2~T2\_g$\\
+$arithmetic\_term$ ::= $\texttt{-(}T0\texttt{)}~|~\texttt{-} T0 ~|~\texttt{(}T0~infix_1~T1\texttt{)}~|~\texttt{(}T1~infix_2~T2\texttt{)}~|~$ \\ $~~~~~~~~~~~~~~~~~~~~~~~~~~~~|~T0~infix_1~T1~|~T1~infix_2~T2$\\
+$ground\_arithmetic\_term$ ::= $\texttt{-(}T0\_g\texttt{)}~|~\texttt{-}T0\_g~|~
+\texttt{(}T0\_g~infix_1~T1\_g\texttt{)}~|~\texttt{(}T1\_g~infix_2~T2\_g\texttt{)}~|~$ \\ $~~~~~~~~~~~~~~~~~~~~~~~~~~~~|~T0\_g~infix_1~T1\_g~|~T1\_g~infix_2~T2\_g$\\
 
 
 \noindent
