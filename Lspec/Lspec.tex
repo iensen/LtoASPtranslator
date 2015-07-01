@@ -173,15 +173,15 @@ Atoms are divided into two categories:
 
 A \textit{\textbf{predicate atom}} is a string of the form $p(t_1,\ldots t_n)$ where 
 $p$ is an identifier also referred to as a \textbf{\textit{predicate name}} and $t_1,\ldots,t_n$ are terms.
-A predicate atom is called \textit{basic} if $t_1,\ldots,t_n$ are basic terms.
+A predicate atom is called \textbf{\textit{basic}} if $t_1,\ldots,t_n$ are basic terms.
 
 A \textit{\textbf{built-in atom}} is a string of the form $t_1 \preceq t_2$ where $t_1$ and $t_2$ are terms and $\preceq \in$ \texttt{\{'<','>', '>=','<=','=','!='\}} is a string of special characters.
 
-An atom is called \textit{ground} if all the terms occurring in the atom are ground.
+An atom is called \textbf{\textit{ground}} if all the terms occurring in the atom are ground.
 \subsection{Sentences}
 
 A \textit{\textbf{sentence}} is either an atom or an expression of the form $(not~A)$, $(A~or~B)$, $(A~and~B)$, where $A$ and $B$ are atoms. A sentence of the form $A~and~B$
-can also be written as $A, B$. Parentheses can be omitted in which case $not$ has highest precedence and $or$ has the lowest precedence. 
+can also be written as $A, B$. Parentheses can be omitted in which case $not$ has highest precedence and $or$ has the lowest precedence. A sentence is called a \textbf{\textit{predicate sentence}}, if all the atoms occurring in the sentence are predicate atoms.
 
 \subsection{Maybe Literals}
 
@@ -212,7 +212,7 @@ head~\mbox{\texttt{if}}~sentence.
 \noindent
 where $head$ is one of the following:
 \begin{enumerate}
-\item  a sentence of the form $a_1 or \ldots~ or ~a_k$, where $a_1,\ldots,a_k$ are predicate atoms;
+\item  a predicate sentence;
 \item  a maybe literal;
 \item  a cardinality constraint.
 \end{enumerate}
@@ -322,7 +322,15 @@ $s3$ ::= $s2~|~s3~\texttt{or}~s2$\\
 $s2$ ::= $s1~|~s2~\texttt{and}~s1~|~s2~\texttt{,}~s1$
 \\
 $s1$ ::= $s0~|~\texttt{not}~s0$\\ 
-$s0$ ::= $atom~|~\texttt{(}s3\texttt{)}$ 
+$s0$ ::= $atom~|~\texttt{(}s3\texttt{)}$ \\
+$predicate\_sentence$ ::= $predicate\_s3$ \\
+$predicate\_s3$ ::= $predicate\_s2~|~predicate\_s3~\texttt{or}~predicate\_s2$\\
+$predicate\_s2$ ::= $predicate\_s1~|~predicate\_s2~\texttt{and}~predicate\_s1~|~predicate\_s2~\texttt{,}~pedicate\_s1$
+\\
+$predicate\_s1$ ::= $predicate\_s0~|~\texttt{not}~predicate\_s0$\\ 
+$predicate\_s0$ ::= $predicate\_atom~|~\texttt{(}predicate\_s3\texttt{)}$ 
+
+
 \subsubsection{Maybe Literals}
 $maybe\_lit$ ::= $\texttt{maybe}~basic\_predicate\_atom$\\
 \subsubsection{Cardinality Constraints}
@@ -331,8 +339,7 @@ $card\_constr$ ::= $bound~ \texttt{<= |\{}  basic\_predicate\_atom \texttt{\}| <
 
 \subsubsection{Rules}
 $rule$ ::= $head \texttt{.} | head~\texttt{if}~sentence \texttt{.} $ \\
-$disj ::= atom~\texttt{or}~atoms~|~atom$\\
-$head$ ::= $disj~|~maybe\_lit~|~card\_constr$
+$head$ ::= $predicate\_sentence~|~maybe\_lit~|~card\_constr$
  
 \subsubsection{Program}
 $program$ ::= $statements$\\
