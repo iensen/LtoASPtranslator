@@ -1,51 +1,16 @@
-t = {1..5}.
+t1 = {11..13}.
+t2 = {21..23}.
+t3 = {31..33}.
+t4 = {41..43}.
 
-/* some type */
+/* every, head */
 
-p1(1).
-p2(2) if p1(some t).
+p1(every t1 V).
 
-/* some type, part b */
+p2(every t2 V) if p2b(11). p2b(11).
 
-p2b(2) if p1b(some t).
+p3(every t3 V) if p3b(V).
 
-/* some typed variable */
+/* every, body */
 
-p3(1,2). p3(2,3).
-p3(t V1, t V3) if p3(V1, some t V2) and p3(V2,V3).
-
-/* some typed variable, part b */
-
-p3b(1,2).
-p3b(t V1, t V3) if p3b(V1, some t V2) and p3b(V2,V3).
-
-/* every type */
-
-p4(t V).
-p5(5) if p4(every t).
-
-/* every type, part b */
-
-p4b(4).
-p5b(5) if p4b(every t).
-
-/* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% RULE HEADS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
-
-/* some type */
-
-p1h(1).
-p2h(some t) if p1h(1).
-
-/* some type, part b */
-p1hb(1).
-not p2hb(some t) if p1hb(1).
-
-/* every type */
-
-p4h(4).
-p5h(every t) if p4h(4).
-
-/* every type, part b */
-
-p4hb(4).
-not p5hb(every t) if p4hb(4).
+p4h(11) if p4(every t4 V). p4(every t4 V).
