@@ -4,7 +4,7 @@ L-SPARC COMPILER SPECIFICATION
 
 The compiler translates an L program into a SPARC program. Examples of .l programs and their target .sp translations are found at https://github.com/iensen/LtoASPtranslator/tree/master/compiler_examples.
 
-For more detail, L spec is given at https://github.com/iensen/LtoASPtranslator/blob/master/L_spec.pdf, and SPARC manual is provided at https://github.com/iensen/sparc/blob/master/User_Manual/Sparc_Manual.pdf.
+For more detail, L spec is given at https://github.com/iensen/LtoASPtranslator/blob/master/Lspec/Lspec.pdf, and SPARC manual is provided at https://github.com/iensen/sparc/blob/master/User_Manual/Sparc_Manual.pdf.
 
 2. MODULES
 

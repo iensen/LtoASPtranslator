@@ -1,0 +1,58 @@
+program ::= statements
+
+statements ::= statement statements
+statements ::= statement
+
+statement ::= rule
+
+number(pos) ::= numeral
+
+term(bt) ::= basic_term
+
+basic_term(const) ::= identifier
+basic_term(var) ::= variable
+basic_term(num) ::= number
+basic_term ::= arithmetic_term
+basic_term ::= functional_term
+
+ground_term(const) ::= identifier
+ground_term(num) ::= number
+ground_term ::= ground_functional_term
+ground_term ::= ground_arithmetic_term
+
+ground_functional_term(func) ::= identifier lparen ground_terms rparen
+
+ground_terms ::= ground_term comma ground_terms
+ground_terms ::= ground_term
+
+functional_term(func) ::= identifier lparen terms rparen
+
+basic_terms ::= basic_term comma basic_terms
+basic_terms ::= basic_term
+
+atom ::= predicate_atom
+atom ::= built_in_atom
+
+predicate_atom(patom) ::= identifier
+predicate_atom(patom) ::= identifier lparen terms rparen
+
+basic_predicate_atom(patom) ::= identifier
+basic_predicate_atom(patom) ::= identifier lparen basic_terms rparen
+
+head ::= literal bar head
+head ::= literal
+
+literal(neg_atom) ::= minus atom
+literal(atom) ::= atom
+
+body ::= extended_literal comma body
+body ::= extended_literal
+
+extended_literal(not_literal) ::= not literal
+extended_literal(literal) ::= literal
+
+terms ::= term comma terms
+terms ::= term
+
+rule(rule) ::= head dot
+rule(rule) ::= head colon_hyphen body dot
