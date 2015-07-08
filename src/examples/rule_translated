@@ -11,4 +11,3 @@
 		['literal', ['atom', ['patom', ('identifier', 'b1')]]],
 		
 		['not_literal', ['atom', ['patom', ('identifier', 'b2')]]]]]]
-		

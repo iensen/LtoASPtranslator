@@ -176,17 +176,13 @@ card_constr(cconst L A R) ::= bound(L) lessoreq bar lcurparen basic_predicate_at
 terms(terms T) ::= term(T)
 terms(terms T cut_root(Ts)) ::= term(T) comma terms(Ts)
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-/*
-
 rule(rule H) ::= head(H) dot
 rule(rule H S) ::= head(H) if sentence(S) dot
 head(S) ::= p_sentence(S)
 head(H) ::= maybe_lit(H)
 head(H) ::= card_constr(H)
 
-*/
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 rule(rule H) ::= head(H) dot
 rule(rule H B) ::= head(H) colon_hyphen body(B) dot
