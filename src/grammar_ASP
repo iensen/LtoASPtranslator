@@ -129,13 +129,13 @@ op(O) ::= eq(O)
 s0(A) ::= atom(A)
 s0(S) ::= lparen s3(S) rparen
 s1(literal A) ::= s0(A)
-s1(neg_literal A) ::= not s0(A)
-s2(unit L) ::= s1(L)
+s1(not_literal A) ::= not s0(A)
+s2(L) ::= s1(L)
 and_s(and) ::= and(A)
 and_s(and) ::= comma(A)
 s2(conj L1 L2) ::= s2(L1) and_s s1(L2)
 s3(T) ::= s2(T)
-s3(disj T1 T2) ::= s3(T1) or s2(T2)
+s3(disj T1 T2) ::= s3(T1) bar s2(T2)
 sentence(sent S) ::= s3(S)
 
 
@@ -149,21 +149,6 @@ p_s3(T) ::= p_s2(T)
 p_s3(disj T1 T2) ::= p_s3(T1) or p_s2(T2)
 p_sentence(sent S) ::= s3(S)
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-head(head T1 T2) ::= literal(T1) bar head(T2)
-head(head T) ::= literal(T)
-
-literal(minus_atom T) ::= minus atom(T)
-literal(atom T) ::= atom(T)
-
-body(body T1 T2) ::= extended_literal(T1) comma body(T2)
-body(body T) ::= extended_literal(T)
-
-extended_literal(not_literal T) ::= not literal(T)
-extended_literal(literal T) ::= literal(T)
-
-%%%%%%%%%%%%%%%%%%%%%
 
 maybe_lit(mlit A) ::= maybe basic_predicate_atom(A)
 bound(A) ::= arithmetic_term(A)
@@ -177,14 +162,7 @@ terms(terms T) ::= term(T)
 terms(terms T cut_root(Ts)) ::= term(T) comma terms(Ts)
 
 rule(rule H) ::= head(H) dot
-rule(rule H S) ::= head(H) if sentence(S) dot
+rule(rule H S) ::= head(H) colon_hyphen sentence(S) dot
 head(S) ::= p_sentence(S)
 head(H) ::= maybe_lit(H)
 head(H) ::= card_constr(H)
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-rule(rule H) ::= head(H) dot
-rule(rule H B) ::= head(H) colon_hyphen body(B) dot
-
-%%%%%%%%%%%%%%%%%%%%%

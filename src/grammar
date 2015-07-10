@@ -130,7 +130,7 @@ s0(A) ::= atom(A)
 s0(S) ::= lparen s3(S) rparen
 s1(literal A) ::= s0(A)
 s1(neg_literal A) ::= not s0(A)
-s2(unit L) ::= s1(L)
+s2(L) ::= s1(L)
 and_s(and) ::= and(A)
 and_s(and) ::= comma(A)
 s2(conj L1 L2) ::= s2(L1) and_s s1(L2)
@@ -166,10 +166,3 @@ rule(rule H S) ::= head(H) if sentence(S) dot
 head(S) ::= p_sentence(S)
 head(H) ::= maybe_lit(H)
 head(H) ::= card_constr(H)
-
-
-
-
- 
-
-
