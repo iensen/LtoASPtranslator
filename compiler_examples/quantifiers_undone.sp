@@ -35,7 +35,7 @@ rules
 % some type
 
 p1(1).
-p2(2) :- p1(V).
+p2(2) :- p1(V), #t(V).
 
 % some type, part b
 
