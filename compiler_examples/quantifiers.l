@@ -13,4 +13,6 @@ p3(every t3 V) if p3b(V).
 
 /* every, body */
 
-p4h(11) if p4(every t4 V). p4(every t4 V).
+p4h(11) if p4(every t4 V).
+
+p4(every t4 V).
