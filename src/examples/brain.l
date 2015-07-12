@@ -25,7 +25,7 @@
 #const n = 8.
 */
 
-n = 8.
+const n = 8.
 
 /*
 %------------------------------------------------------------------------
@@ -42,11 +42,11 @@ sorts
 % Predicates to be used and the sorts of their arguements
 */
 /* L types:*/
-node = {0..n-1}.
-direction = {left,right}.
-data = {good} + (bad(X) where X in node).
-hopc = {0..n+2}.
-case_num = {1..3}.
+type node = {0..n-1}.
+type direction = {left,right}.
+type data = {good} + (bad(X) where X in node).
+type hopc = {0..n+2}.
+type case_num = {1..3}.
 /*
 predicates
 
@@ -283,7 +283,7 @@ partner(N1,N2,N3) :-
 partner(node N1, node N2, node N3) if
        sending(N1) and 
        sending(N3) and 
-       N1 <> N3 and 
+       N1 != N3 and 
        not bad_node(N1) and 
        link(N1,N2, some direction). 
 
@@ -404,7 +404,7 @@ case(1, node N1, direction Dir) if
 		skip_link(N2,N1,Dir) and 
 		direct_link(N3,N1,Dir) and
 		hop_count(N2,N1,some hopc H) and 
-		H <> 1 and 
+		H != 1 and 
 		id(N2,N1,some node N4) and 
 		not discordant(N4,N1,Dir,H+2).
 
@@ -426,7 +426,7 @@ case(3,node N1, direction Dir) if
 		direct_link(some node N3,N1,Dir) and
 		not frame_sent(N3,N1) and 
 		hop_count(N2,N1,some hopc H) and 
-		H <> 1 and 
+		H != 1 and 
 		id(N2,N1,some node N4) and 
 		not discordant(N4,N1,Dir,H+2).						
 
@@ -435,7 +435,7 @@ sent_to(node N2, node N3 , data Data) if
        sent_to(some node N1,N2,Data) and 
        not bad_node(N2) and 
        case(C,N2,some direction Dir) and 
-       C <> 2 and 
+       C != 2 and 
        skip_link(N1,N2,Dir) and 
        link(N2,N3,Dir).
 
@@ -475,7 +475,7 @@ id(node N2, node N3, node ID) if
        id(some node N1,N2,ID) and
        not bad_node(N2) and 
        case(C,N2,some direction Dir) and
-       C <>  2 and 
+       C !=  2 and 
        skip_link(N1,N2,Dir) and
        link(N2,N3,Dir).       
 
@@ -519,7 +519,7 @@ partner(node N2,node N3, node ID) if
        partner(some node N1,N2,ID) and
        not bad_node(N2) and
        case(C,N2, some direction Dir) and
-       C <> 2 and
+       C != 2 and
        skip_link(N1,N2,Dir) and
        link(N2,N3,Dir).
 
@@ -562,7 +562,7 @@ hop_count(node N2, node N3, hopc Count) if
        hop_count(N1,some node N2,Count-2) and
        not bad_node(N2) and
        case(some casenum C,N2,some direction Dir) and
-       C <> 2 and 
+       C != 2 and 
        skip_link(N1,N2,Dir) and
        link(N2,N3,Dir).
 
@@ -692,7 +692,7 @@ pair_cong(node N3, node N4) if
 		case(1,N3,Dir) and 
 		hop_count(N1,N3, some hopc Num1) and 
 		hop_count(N2,N3, some hopc Num2) and 
-		Num1 <> 0 and
+		Num1 != 0 and
 		pair_cong(N1,N3) and 
 		link(N3,N4,Dir).		
 
@@ -700,10 +700,10 @@ pair_cong(node N3, node N4) if
 pair_cong(node N2, node N3)  if 
         not bad_node(N2) and 
 		case(some case_num C,N2, some direction Dir) and
-		C <> 1 and
+		C != 1 and
 		link(some node N1,N2,Dir) and 
 		hop_count(N1,N2, some hopc H) and 
-		H <> 0 and 
+		H != 0 and 
 		pair_cong(N1,N2) and 
 		link(N2,N3,Dir).
 
@@ -986,7 +986,7 @@ recon_qualify_hop(node N1, node N2, direction Dir) if
 		skip_link(N1,N2,Dir) and 
 		id(N1,N2, some node N3) and 
 		hop_count(N1,N2,some hopc H) and 
-		H <> 1 and 
+		H != 1 and 
 		not_discordant(N3,N2,Dir,H+2). 
 
 
@@ -995,10 +995,10 @@ recon_accept(node N1,data Data) if
 		not inline_passed(N1) and  
 		sent_to(some node N2,N1,Data) and 
 		sent_to(some node N3,N1,Data) and 
-		N2 <> N3 and 
+		N2 != N3 and 
 		recon_qualify_hop(N2,N1, some direction Dir1) and 
 		recon_qualify_hop(N3,N1, some direction Dir2) and 
-		Dir1 <> Dir2 and 
+		Dir1 != Dir2 and 
 		recon_case_met(N1,N2,N3).			
 
 
@@ -1060,7 +1060,7 @@ bad_accepted :-
 bad_accepted if 
 		not sending(some node N) and
 		accepted(N,some data Data) and
-		Data <> good.
+		Data != good.
 
 /* ASP RULE:
 % good_not_accepted is true iff a node does not have good data accepted

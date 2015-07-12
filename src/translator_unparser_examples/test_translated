@@ -1,0 +1,18 @@
+[
+['rule', 
+	['sent', 
+			['literal', ['patom', ('identifier', 'h')]]]], 
+
+['rule', 
+	['sent', 
+		['disj', 
+			['literal', ['patom', ('identifier', 'h1')]], 
+			['literal', ['patom', ('identifier', 'h2')]]]], 
+	['sent', 
+		['conj', 
+			['literal', ['patom', ('identifier', 'b1')]], 
+			['not_literal', ['patom', ('identifier', 'b2')]]]]]]
+
+# same program in one line
+
+[['rule', ['sent', ['literal', ['patom', ('identifier', 'h')]]]], ['rule', ['sent', ['disj', ['literal', ['patom', ('identifier', 'h1')]], ['literal', ['patom', ('identifier', 'h2')]]]], ['sent', ['conj', ['literal', ['patom', ('identifier', 'b1')]], ['not_literal', ['patom', ('identifier', 'b2')]]]]]]

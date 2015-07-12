@@ -1,13 +1,12 @@
 
-requiredInspection = {epa_i_652_6B_714_A, epa_i_652_6B_714_B}.
-epaSafetyHearing = {}.
-requiredFromEPA714 = {} .
-epaFine_j_652_6B_710_C = {}.
+type requiredInspection = {epa_i_652_6B_714_A, epa_i_652_6B_714_B}.
+type epaSafetyHearing = {}.
+type requiredFromEPA714 = {} .
+type epaFine_j_652_6B_710_C = {}.
 
 
 safetyObligationsMet if
-   requirementsCertified and
-   validationProcessFollowed and
+
    passed(every requiredInspection).
 
 requirementsCertified if
