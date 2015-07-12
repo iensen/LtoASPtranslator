@@ -75,14 +75,7 @@ def parse_program(chunks, lexer, parser):
     return trees
 
 
-def main():
-
-    # read arguments
-    args = parse_arguments()
-
-    program_file = args[0]
-
-    
+def parse_file(program_file):
     # create preprocessor instance
     preprocessor_instance = Preprocessor(program_file)
 
@@ -92,9 +85,17 @@ def main():
 
     lexer = Lexer(lexicon_file, False)
     parser = Parser(grammar_file, lexer.lexicon_dict.keys())
+    return parse_program(chunks, lexer, parser)
 
-    print(parse_program(chunks, lexer, parser))
 
+def main():
+
+    # read the program file arguments
+    args = parse_arguments()
+    program_file = args[0]
+    print(parse_file(program_file))
+
+    
 
 
 if __name__ == '__main__':
