@@ -1,7 +1,7 @@
 '''
 program: list -> list
 
-The function 'program' translates a parsed L program into a parsed ASP program.
+The function 'program' transforms a parsed L program into a parsed ASP program.
 
 For examples, let P =
 [['rule', ['sent', ['literal', ['patom', ('identifier', 'h')]]]], ['rule', ['sent', ['disj', ['literal', ['patom', ('identifier', 'h1')]], ['literal', ['patom', ('identifier', 'h2')]]]], ['sent', ['conj', ['literal', ['patom', ('identifier', 'b1')]], ['neg_literal', ['patom', ('identifier', 'b2')]]]]]].

@@ -380,7 +380,11 @@ safety_constraints_satisfied if
 safety_proven_for_2001_levels. 
 safety_justified_for_2000plus_levels. 
      
-/* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMPLEX %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
+/* **********************************************************************
+ *
+ * COMPLEX RULES
+ *
+ * ********************************************************************** */
 
 risks_controlled if 
                   controlled(risk(every hazard527)).

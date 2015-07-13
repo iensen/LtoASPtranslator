@@ -27,7 +27,7 @@ p3(V) :- #t3(V), p3b(V).
 
 p4h(11) :- p4_every_t4.
 
--p4_every_t4 :- not p4(V), #t4(V).
+-p4_every_t4 :- #t4(V), not p4(V).
 p4_every_t4 :- not -p4_every_t4.
 
 p4(V) :- #t4(V).
