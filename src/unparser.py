@@ -1,12 +1,16 @@
+######################################################################
+# INCOMPLETE
+######################################################################
+
 '''
 program: list -> str
 
-The function 'program' unparses a parsed ASP program.
+The function 'program' unparses a list of ASP parse trees into an ASP program.
 
 For example, let P =
-[['rule', ['sent', ['literal', ['patom', ('identifier', 'h')]]]], ['rule', ['sent', ['disj', ['literal', ['patom', ('identifier', 'h1')]], ['literal', ['patom', ('identifier', 'h2')]]]], ['sent', ['conj', ['literal', ['patom', ('identifier', 'b1')]], ['not_literal', ['patom', ('identifier', 'b2')]]]]]].
+[['rule', ['sent', ['literal', ['patom', ('identifier', 'h')]]]], ['rule', ['sent', ['disj', ['literal', ['patom', ('identifier', 'h1')]], ['literal', ['patom', ('identifier', 'h2')]]]], ['sent', ['conj', ['literal', ['patom', ('identifier', 'b1')]], ['not_literal', ['patom', ('identifier', 'b2')]]]]]]
 Then, program(P) =
-'h. h1 | h2 :- b1, not b2.'.
+'h. h1 | h2 :- b1, not b2.'
 '''
 
 def program(P):

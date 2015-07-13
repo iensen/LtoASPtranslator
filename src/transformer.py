@@ -1,12 +1,16 @@
+######################################################################
+# INCOMPLETE
+######################################################################
+
 '''
 program: list -> list
 
 The function 'program' transforms a parsed L program into a parsed ASP program.
 
 For examples, let P =
-[['rule', ['sent', ['literal', ['patom', ('identifier', 'h')]]]], ['rule', ['sent', ['disj', ['literal', ['patom', ('identifier', 'h1')]], ['literal', ['patom', ('identifier', 'h2')]]]], ['sent', ['conj', ['literal', ['patom', ('identifier', 'b1')]], ['neg_literal', ['patom', ('identifier', 'b2')]]]]]].
+[['rule', ['sent', ['literal', ['patom', ('identifier', 'h')]]]], ['rule', ['sent', ['disj', ['literal', ['patom', ('identifier', 'h1')]], ['literal', ['patom', ('identifier', 'h2')]]]], ['sent', ['conj', ['literal', ['patom', ('identifier', 'b1')]], ['neg_literal', ['patom', ('identifier', 'b2')]]]]]]
 Then, program(P) =
-[['rule', ['sent', ['literal', ['patom', ('identifier', 'h')]]]], ['rule', ['sent', ['disj', ['literal', ['patom', ('identifier', 'h1')]], ['literal', ['patom', ('identifier', 'h2')]]]], ['sent', ['conj', ['literal', ['patom', ('identifier', 'b1')]], ['not_literal', ['patom', ('identifier', 'b2')]]]]]].
+[['rule', ['sent', ['literal', ['patom', ('identifier', 'h')]]]], ['rule', ['sent', ['disj', ['literal', ['patom', ('identifier', 'h1')]], ['literal', ['patom', ('identifier', 'h2')]]]], ['sent', ['conj', ['literal', ['patom', ('identifier', 'b1')]], ['not_literal', ['patom', ('identifier', 'b2')]]]]]]
 '''
 
 def program(P):

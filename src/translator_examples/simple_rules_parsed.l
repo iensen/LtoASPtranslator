@@ -14,6 +14,5 @@
 			['neg_literal', ['patom', ('identifier', 'b2')]]]]]
 ]
 
-# the same parsed L program in one line
-
+# the same parsed L program in one line:
 [['rule', ['sent', ['literal', ['patom', ('identifier', 'h')]]]], ['rule', ['sent', ['disj', ['literal', ['patom', ('identifier', 'h1')]], ['literal', ['patom', ('identifier', 'h2')]]]], ['sent', ['conj', ['literal', ['patom', ('identifier', 'b1')]], ['neg_literal', ['patom', ('identifier', 'b2')]]]]]]
