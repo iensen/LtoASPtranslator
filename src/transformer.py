@@ -14,7 +14,7 @@ Then, program(P) =
 '''
 
 def program(P):
-    P_t = [] # _t stands for 'translated'
+    P_t = [] # _t stands for 'transformed'
     for S in P:
         P_t = P_t + [statement(S)]
     return P_t

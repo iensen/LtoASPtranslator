@@ -12,7 +12,7 @@ In these folders, an L file has extension .l, whereas an ASP file has extension 
 
 L spec is given at:
 https://github.com/iensen/LtoASPtranslator/blob/master/Lspec/Lspec.pdf
-The sorted ASP manual is provided at:
+Sorted ASP manual is provided at:
 https://github.com/iensen/sparc/blob/master/User_Manual/Sparc_Manual.pdf
 
 2. MODULES
