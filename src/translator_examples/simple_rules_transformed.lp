@@ -1,18 +1,22 @@
 [
 ['rule', 
 	['sent', 
-			['literal', ['patom', ('identifier', 'h')]]]], 
+				['unit', 
+					['literal', ['patom', ('identifier', 'h')]]]]], 
 
 ['rule', 
 	['sent', 
 		['disj', 
-			['literal', ['patom', ('identifier', 'h1')]], 
-			['literal', ['patom', ('identifier', 'h2')]]]], 
+				['unit', 
+					['literal', ['patom', ('identifier', 'h1')]]], 
+				['unit', 
+					['literal', ['patom', ('identifier', 'h2')]]]]], 
 	['sent', 
-		['conj', 
-			['literal', ['patom', ('identifier', 'b1')]], 
-			['not_literal', ['patom', ('identifier', 'b2')]]]]]
+			['conj', 
+				['unit', 
+					['literal', ['patom', ('identifier', 'b1')]]], 
+				['not_literal', ['patom', ('identifier', 'b2')]]]]]
 ]
 
 # the same parsed ASP program in one line:
-[['rule', ['sent', ['literal', ['patom', ('identifier', 'h')]]]], ['rule', ['sent', ['disj', ['literal', ['patom', ('identifier', 'h1')]], ['literal', ['patom', ('identifier', 'h2')]]]], ['sent', ['conj', ['literal', ['patom', ('identifier', 'b1')]], ['not_literal', ['patom', ('identifier', 'b2')]]]]]]
+[['rule', ['sent', ['unit', ['literal', ['patom', ('identifier', 'h')]]]]], ['rule', ['sent', ['disj', ['unit', ['literal', ['patom', ('identifier', 'h1')]]], ['unit', ['literal', ['patom', ('identifier', 'h2')]]]]], ['sent', ['conj', ['unit', ['literal', ['patom', ('identifier', 'b1')]]], ['not_literal', ['patom', ('identifier', 'b2')]]]]]]
