@@ -8,7 +8,7 @@ Manual demos of such translations can be found at:
 https://github.com/iensen/LtoASPtranslator/tree/master/translator_docs/demos
 Automated examples are located at:
 https://github.com/iensen/LtoASPtranslator/tree/master/src/translator_examples
-In these folders, an L file has extension .l, whereas an ASP file has extension .lp (unsorted) or .sp (sorted).
+In these two folders, an L file has extension .l, whereas an ASP file has extension .lp (unsorted) or .sp (sorted).
 
 L spec is given at:
 https://github.com/iensen/LtoASPtranslator/blob/master/Lspec/Lspec.pdf

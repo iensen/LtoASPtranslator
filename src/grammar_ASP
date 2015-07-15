@@ -1,7 +1,3 @@
-######################################################################
-# INCOMPLETE
-######################################################################
-
 program(S) ::= statements(S)
 statements(stmts  S cut_root(Ss)) ::= statement(S) statements(Ss)
 statement(T) ::= type_decl(T)
