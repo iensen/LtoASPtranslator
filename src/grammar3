@@ -1,0 +1,37 @@
+program(S) ::= statements(S)
+statements(stmts  S cut_root(Ss)) ::= statement(S) statements(Ss)
+statement(R) ::= rule(R)
+rule(rule H) ::= head(H) dot
+rule(rule H B) ::= head(H) colon_hyphen body(B) dot
+
+body(body B) ::= s2(B)
+s2(T) ::= s2a(T)
+s2(T) ::= s2b(T)
+s2a(unit L) ::= s1(L)
+and_s(and) ::= comma(A)
+s2b(conj L1 L2) ::= s2(L1) and_s s1(L2)
+s1(E) ::= s1a(E)
+s1(E) ::= s1b(E)
+s1a(literal A) ::= s0(A)
+s1b(not_literal A) ::= not s0(A)
+
+head(head H) ::= s3(H)
+s3(T) ::= s2a(T)
+s3(disj T1 T2) ::= s3(T1) bar s2a(T2)
+
+s0(A) ::= atom(A)
+atom(P) ::= predicate_atom(P)
+predicate_atom(patom I) ::= identifier(I)
+predicate_atom(patom I Ts) ::= identifier(I) lparen terms(Ts) rparen
+
+terms(terms T) ::= term(T)
+terms(terms T cut_root(Ts)) ::= term(T) comma terms(Ts)
+term(bt T) ::= basic_term(T)
+basic_term(const C) ::= identifier(C)
+basic_term(var V) ::= variable(V)
+basic_term(num N) ::= number(N)
+number(pos N) ::= numeral(N)
+
+
+
+
