@@ -89,8 +89,8 @@ def main():
     preprocessor_instance = Preprocessor(program_file)
 
     chunks = preprocessor_instance.get_chunks()
-    lexicon_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "lexicon3")
-    grammar_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "grammar3")
+    lexicon_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "lexicon0")
+    grammar_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "grammar0")
 
     lexer = Lexer(lexicon_file, False)
     parser = Parser(grammar_file, lexer.lexicon_dict.keys())
