@@ -1,7 +1,0 @@
-predicates_key = predicates
-rules_key = rules
-
-identifier = [_a-z][_a-zA-Z0-9]*
-dot = \.
-lparen = \(
-rparen = \)
