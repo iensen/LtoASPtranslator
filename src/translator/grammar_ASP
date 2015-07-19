@@ -1,9 +1,18 @@
-program(S) ::= statements(S)
+program(progr P R) ::= predicates_keyw pred_decls(P) rules_keyw rules(R)
+pred_decls(pdecls P) ::= statements(P)
+rules(rules R) ::= statements(R)
 statements(stmts S) ::= statement(S)
-statements(stmts  S cut_root(Ss)) ::= statement(S) statements(Ss)
+statements(stmts S cut_root(Ss)) ::= statement(S) statements(Ss)
+
+statement(P) ::= pred_decl(P)
+pred_decl(pdecl I) ::= identifier(I) lparen rparen dot
+
 statement(T) ::= type_decl(T)
+
 statement(R) ::= rule(R)
+
 statement(C) ::=  const_decl(C)
+
 
 number(pos N) ::= numeral(N)
 number(neg N) ::= minus numeral(N)
@@ -127,17 +136,29 @@ op(O) ::= noteq(O)
 op(O) ::= eq(O)
 
 
-s0(A) ::= atom(A)
-s0(S) ::= lparen s3(S) rparen
-s1(literal A) ::= s0(A)
-s1(not_literal A) ::= not s0(A)
-s2(unit L) ::= s1(L)
-and_s(and) ::= and(A)
+s0(T) ::= s0a(T)
+s0(T) ::= s0b(T)
+s0a(A) ::= atom(A)
+s0b(S) ::= lparen s3(S) rparen
+
+s1(T) ::= s1a(T)
+s1(T) ::= s1b(T)
+s1a(literal A) ::= s0(A)
+s1b(not_literal A) ::= not s0(A)
+
+s2(T) ::= s2a(T)
+s2(T) ::= s2b(T)
+s2a(unit L) ::= s1(L)
 and_s(and) ::= comma(A)
-s2(conj L1 L2) ::= s2(L1) and_s s1(L2)
-s3(T) ::= s2(T)
-s3(disj T1 T2) ::= s3(T1) bar s2(T2)
-sentence(sent S) ::= s3(S)
+s2b(conj L1 L2) ::= s2(L1) and_s s1(L2)
+
+s3(T) ::= s3a(T)
+s3(T) ::= s3b(T)
+s3a(T) ::= s2(T)
+s3b(disj T1 T2) ::= s3(T1) bar s2(T2)
+
+
+body(body B) ::= s3(B)
 
 
 p_s0(A) ::= predicate_atom(A)
@@ -148,7 +169,7 @@ p_s2(unit L) ::= p_s1(L)
 p_s2(conj L1 L2) ::= p_s2(L1) and_s p_s1(L2)
 p_s3(T) ::= p_s2(T)
 p_s3(disj T1 T2) ::= p_s3(T1) or p_s2(T2)
-p_sentence(sent S) ::= s3(S)
+head(head H) ::= s3(H)
 
 
 maybe_lit(mlit A) ::= maybe basic_predicate_atom(A)
@@ -162,8 +183,8 @@ card_constr(cconst L A R) ::= bound(L) lessoreq bar lcurparen basic_predicate_at
 terms(terms T) ::= term(T)
 terms(terms T cut_root(Ts)) ::= term(T) comma terms(Ts)
 
-rule(rule H) ::= head(H) dot
-rule(rule H S) ::= head(H) colon_hyphen sentence(S) dot
-head(S) ::= p_sentence(S)
+rule(constraint B) ::= colon_hyphen body(B) dot
+rule(fact H) ::= head(H) dot
+rule(long_rule H B) ::= head(H) colon_hyphen body(B) dot
 head(H) ::= maybe_lit(H)
 head(H) ::= card_constr(H)

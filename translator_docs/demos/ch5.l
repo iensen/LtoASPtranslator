@@ -1,39 +1,39 @@
-residual_risk = {level_busts, asac_usage_risks, wake_vortices, mountain_waves,
+type residual_risk = {level_busts, asac_usage_risks, wake_vortices, mountain_waves,
                   operation_errors}.
          
-hazard527 = {ht_1_8, ht_1_10, ht_2_2, ht_3_6, ht_1_11}. 
+type hazard527 = {ht_1_8, ht_1_10, ht_2_2, ht_3_6, ht_1_11}. 
 
-risk527 = risk(H) where H in hazard527.
+type risk527 = risk(H) where H in hazard527.
 
-hazard537 = {ht_3_5, hm_1_8, hm_2_2, hm_1_15}. 
+type hazard537 = {ht_3_5, hm_1_8, hm_2_2, hm_1_15}. 
  
-hazard546 = {ht_1_9, ht_3_5, hm_2_2, hm_1_6, hm_1_8, hm_1_15}.
+type hazard546 = {ht_1_9, ht_3_5, hm_2_2, hm_1_6, hm_1_8, hm_1_15}.
 
 
-hazard556 = {hm_1_3, hm_1_14}.
+type hazard556 = {hm_1_3, hm_1_14}.
 
-risk556 = risk(H) where H in hazard556. /* I guess you intended to change the function r into the function risk but missed some occurrences. I am replacing all leftover occurrences of r with risk. */
+type risk556 = risk(H) where H in hazard556. /* I guess you intended to change the function r into the function risk but missed some occurrences. I am replacing all leftover occurrences of r with risk. */
 
 
 
-hazard565 = {ht_1_1, ht_1_2, ht_1_5, ht_1_8, ht_1_9, ht_2_2, ht_3_5,
+type hazard565 = {ht_1_1, ht_1_2, ht_1_5, ht_1_8, ht_1_9, ht_2_2, ht_3_5,
           ht_3_6, hm_1_10, hm_1_13, hm_2_1, hm_2_4, hm_2_5, hm_1_9, hm_1_15,
           hm_2_17, hm_2_7, hm_2_9}. 
 
-hazard575 = {ht_1_1, ht_1_2, ht_1_5, ht_1_8, ht_1_9, ht_2_2, ht_3_5,
+type hazard575 = {ht_1_1, ht_1_2, ht_1_5, ht_1_8, ht_1_9, ht_2_2, ht_3_5,
           ht_3_6, hm_1_10, hm_1_13, hm_2_1, hm_2_4, hm_2_5, hm_1_9, hm_1_15,
           hm_2_17, hm_2_7, hm_2_9}. 
 
 
-mod_to_to_display_apprv_aircraft  = {ifps, rdps, fdps_fps, oldi, back_up_systems}. 
-modification = mod_to_to_display_apprv_aircraft + {alert_on_adj_aircraft}.
+type mod_to_to_display_apprv_aircraft  = {ifps, rdps, fdps_fps, oldi, back_up_systems}. 
+type modification = mod_to_to_display_apprv_aircraft + {alert_on_adj_aircraft}.
 
 
-hazard5810 = {hm_2_6, hm_2_5, hm_2_17, hm_1_2, hm_2_7, hm_2_8, hm_2_13, 
+type hazard5810 = {hm_2_6, hm_2_5, hm_2_17, hm_1_2, hm_2_7, hm_2_8, hm_2_13, 
           hm_2_10, hm_2_11, ht_1_9, hm_2_27}.
 
 
-hazard5910 = {hm_2_2, hm_1_1}.
+type hazard5910 = {hm_2_2, hm_1_1}.
 
 safety_reqts_fully_realised if                              
                      airspace_design_complies_with_SRs and

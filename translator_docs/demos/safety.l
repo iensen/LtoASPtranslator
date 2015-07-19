@@ -1,4 +1,4 @@
-requiredInspection = {epa_i_652_6B_714_A, epa_i_652_6B_714_B}.
+type requiredInspection = {epa_i_652_6B_714_A, epa_i_652_6B_714_B}.
 
 safetyObligationsMet if
    requirementsCertified and

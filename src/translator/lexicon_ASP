@@ -1,23 +1,18 @@
+predicates_keyw = predicates
+rules_keyw = rules
 colon_hyphen = :-
 
 dot = \.
-type = type
 const = const
 in = in
-or = or
-and = and
 not = not
-every = every
-some = some
 where = where
-maybe = maybe
 comma = ,
 lcurparen = \{
 rcurparen = \}
 bar = \|
 lparen = \(
 rparen = \)
-if = if
 minus = -
 plus = \+
 mult = \*
