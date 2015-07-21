@@ -20,11 +20,23 @@ def t_program(P):
 
 def pred_decls(P):
     stmts = ['stmts']
-    for pred in predicates(P):
+    for pred in preds_program(P):
         stmts = stmts + [['pdecl', ('identifier', pred)]]
     return ['pdecls', stmts]
 
-def predicates(T):
+def preds_program(P):
+    preds = set()
+    for stmt in P:
+        preds = preds | preds_tree(stmt)
+    return preds
+
+######################################################################
+######################################################################
+# if root in shared.lexemes
+######################################################################
+######################################################################
+
+def preds_tree(T):
     root = T[0]
     child1 = T[1]
     children = T[1:]
@@ -35,7 +47,7 @@ def predicates(T):
         if root != 'patom':
             preds = set()
             for child in children:
-                preds = preds | predicates(child)
+                preds = preds | preds_tree(child)
             return preds
 
     if type(T) == tuple:

@@ -3,6 +3,6 @@ P = [['rule', ['sent', ['unit', ['literal', ['patom', ('identifier', 'p1')]]]]],
 
 lexemes = {'variable', 'identifier', 'numeral'}
 
-same_labels = {'unit', 'literal', 'patom', 'disj', 'conj'}
+same_labels = {'unit', 'literal', 'patom', 'disj', 'conj', 'terms', 'gterms', 'num', 'pos'}
 
 unwritten_labels = {'body', 'head', 'unit', 'literal', 'patom'}

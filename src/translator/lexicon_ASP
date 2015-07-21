@@ -1,5 +1,7 @@
+sorts_keyw = sorts
 predicates_keyw = predicates
 rules_keyw = rules
+pound = #
 colon_hyphen = :-
 
 dot = \.

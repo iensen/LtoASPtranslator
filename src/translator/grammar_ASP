@@ -1,13 +1,15 @@
-program(progr P R) ::= predicates_keyw pred_decls(P) rules_keyw rules(R)
+program(progr S P R) ::= sorts_keyw sort_defs(S) predicates_keyw pred_decls(P) rules_keyw rules(R)
+sort_defs(sdefs S) ::= statements(S)
 pred_decls(pdecls P) ::= statements(P)
 rules(rules R) ::= statements(R)
 statements(stmts S) ::= statement(S)
 statements(stmts S cut_root(Ss)) ::= statement(S) statements(Ss)
 
+statement(S) ::= sort_def(S)
+
 statement(P) ::= pred_decl(P)
 pred_decl(pdecl I) ::= identifier(I) lparen rparen dot
-
-statement(T) ::= type_decl(T)
+pred_decl(pdecl I1 I2) ::= identifier(I1) lparen pound identifier(I2) rparen dot
 
 statement(R) ::= rule(R)
 
@@ -93,7 +95,7 @@ const_decl(cdecl C T) ::= const identifier(C) eq ground_arithmetic_term(T) dot
 const_decl(cdecl C C1) ::= const identifier(C) eq identifier(C1) dot
 const_decl(cdecl C N) ::= const identifier(C) eq number(N) dot
 
-type_decl(tdecl I E) ::= type identifier(I) eq set_expr(E) dot
+sort_def(sdef I E) ::= pound identifier(I) eq set_expr(E) dot
 set(terms Ts) ::= lcurparen ground_terms(Ts) rcurparen
 set(empty) ::= lcurparen  rcurparen
 
