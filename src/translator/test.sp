@@ -1,13 +1,7 @@
-sorts
-
-#domain = {1, 2, a}.
-
 predicates
 
-p(#domain).
-q().
+p().
 
 rules
 
-p(a).
--q.
+p.

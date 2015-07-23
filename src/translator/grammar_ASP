@@ -1,3 +1,4 @@
+program(progr P R) ::= predicates_keyw pred_decls(P) rules_keyw rules(R)
 program(progr S P R) ::= sorts_keyw sort_defs(S) predicates_keyw pred_decls(P) rules_keyw rules(R)
 sort_defs(sdefs S) ::= statements(S)
 pred_decls(pdecls P) ::= statements(P)
@@ -81,7 +82,6 @@ T2_g(N) ::= number(N)
 T2_g(I) ::= identifier(I)
 
 
-
 quantifier(E) ::= every(E)
 quantifier(A) ::= some(A)
 functional_term(func I Args) ::= identifier(I) lparen terms(Args) rparen
@@ -138,10 +138,7 @@ op(O) ::= noteq(O)
 op(O) ::= eq(O)
 
 
-s0(T) ::= s0a(T)
-s0(T) ::= s0b(T)
-s0a(A) ::= atom(A)
-s0b(S) ::= lparen s3(S) rparen
+s0(A) ::= atom(A)
 
 s1(T) ::= s1a(T)
 s1(T) ::= s1b(T)
@@ -151,8 +148,7 @@ s1b(not_literal A) ::= not s0(A)
 s2(T) ::= s2a(T)
 s2(T) ::= s2b(T)
 s2a(unit L) ::= s1(L)
-and_s(and) ::= comma(A)
-s2b(conj L1 L2) ::= s2(L1) and_s s1(L2)
+s2b(conj L1 L2) ::= s2(L1) comma s1(L2)
 
 s3(T) ::= s3a(T)
 s3(T) ::= s3b(T)
@@ -168,7 +164,7 @@ p_s0(S) ::= lparen p_s3(S) rparen
 p_s1(literal A) ::= p_s0(A)
 p_s1(neg_literal A) ::= not p_s0(A)
 p_s2(unit L) ::= p_s1(L)
-p_s2(conj L1 L2) ::= p_s2(L1) and_s p_s1(L2)
+p_s2(conj L1 L2) ::= p_s2(L1) comma p_s1(L2)
 p_s3(T) ::= p_s2(T)
 p_s3(disj T1 T2) ::= p_s3(T1) or p_s2(T2)
 head(head H) ::= s3(H)
