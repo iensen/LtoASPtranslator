@@ -64,4 +64,4 @@ __pycache__/
 *.py[cod]
 
 src/test.l
-src/translator/test.sp
+#src/translator/test.sp

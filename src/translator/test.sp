@@ -1,7 +1,0 @@
-predicates
-
-p().
-
-rules
-
-p.
