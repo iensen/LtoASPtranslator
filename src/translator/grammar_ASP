@@ -97,7 +97,6 @@ const_decl(cdecl C N) ::= const identifier(C) eq number(N) dot
 
 sort_def(sdef I E) ::= pound identifier(I) eq set_expr(E) dot
 set(terms Ts) ::= lcurparen ground_terms(Ts) rcurparen
-set(empty) ::= lcurparen  rcurparen
 
 
 limit(I) ::= identifier(I)

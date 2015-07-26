@@ -63,5 +63,6 @@ com_crashlytics_export_strings.xml
 __pycache__/
 *.py[cod]
 
+# Temporary test files:
 src/test.l
-#src/translator/test.sp
+src/translator/test.sp

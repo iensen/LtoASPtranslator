@@ -1,3 +1,4 @@
+# program: list -> list
 def program(P):
     progr = ['progr']
     
@@ -19,6 +20,7 @@ def program(P):
 
 ######################################################################
 
+# Const_decls: list -> list
 def Const_decls(P):
     Cdecls = []
     for p in P:
@@ -26,6 +28,7 @@ def Const_decls(P):
             Cdecls = Cdecls + [p]
     return Cdecls
 
+# Type_decls: list -> list
 def Type_decls(P):
     Tdecls = []
     for p in P:
@@ -33,6 +36,7 @@ def Type_decls(P):
             Tdecls = Tdecls + [p]
     return Tdecls
 
+# Rules: list -> list
 def Rules(P):
     Ruls = []
     for p in P:
