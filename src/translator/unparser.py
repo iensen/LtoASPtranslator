@@ -7,8 +7,10 @@ def program(P):
     for p in P[1:]:
         if p[0] == 'sdefs':
             progr = progr + 'sorts ' + sort_defs(p)
+        elif p[0] == 'pdecls':
+            progr = progr + 'predicates ' + pred_decls(p)
         elif p[0] == 'rules':
-            progr = progr + 'predicates ' + pred_decls(p) + 'rules ' + rules(p)
+            progr = progr + 'rules ' + rules(p)
 
     return progr
 
@@ -37,12 +39,17 @@ def sort_defs(T):
 ######################################################################
 
 # pred_decls: set -> str
-def pred_decls(P):
-    Preds = transformer.Predicates(P)
-    pdecls = ''
-    for pred in Preds:
-        pdecls = pdecls + pred + '(). '
-    return pdecls
+def pred_decls(T):
+    pred_decl = ''
+    stmts = T[1]
+    for pdecl in stmts[1:]:
+        pred_decl = pred_decl + pdecl[1][1] + '('
+        if len(pdecl) >= 3:
+            pred_decl = pred_decl + '#' + pdecl[2][1][1][1]
+            for sname in pdecl[2][2:]:
+                pred_decl = pred_decl + ', #' + sname[1][1]
+        pred_decl = pred_decl + '). '
+    return pred_decl
 
 ######################################################################
 
@@ -50,6 +57,17 @@ def pred_decls(P):
 def rules(T):
     if T[0] in sets.terminals:
         return T[1]
+    elif T[0] in sets.cut_root_comma:
+        children = rules(T[1])
+        if len(T) >= 3:
+            for child in T[2:]:
+                children = children + ', ' + rules(child)
+        return children
+    elif T[0] == 'patom':
+        atom = T[1][1]
+        if len(T) >= 3:
+            atom = atom + '(' + rules(T[2]) + ')'
+        return atom
     elif T[0] == 'not_literal':
         return 'not ' + rules(T[1])
     elif T[0] == 'conj':

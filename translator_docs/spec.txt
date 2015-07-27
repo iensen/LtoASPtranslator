@@ -1,5 +1,8 @@
 L-ASP TRANSLATOR SPECIFICATION
 
+The translator is uploaded at:
+https://github.com/iensen/LtoASPtranslator/blob/master/src/translator/translator.py
+
 1. FUNCTIONALITY
 
 The translator converts an L program into a (sorted) ASP program.

@@ -10,7 +10,10 @@ statement(S) ::= sort_def(S)
 
 statement(P) ::= pred_decl(P)
 pred_decl(pdecl I) ::= identifier(I) lparen rparen dot
-pred_decl(pdecl I1 I2) ::= identifier(I1) lparen pound identifier(I2) rparen dot
+pred_decl(pdecl I S) ::= identifier(I) lparen sort_names(S) rparen dot
+sort_names(snames S) ::= sort_name(S)
+sort_names(snames S cut_root(Ss)) ::= sort_name(S) comma sort_names(Ss)
+sort_name(sname I) ::= pound identifier(I)
 
 statement(R) ::= rule(R)
 

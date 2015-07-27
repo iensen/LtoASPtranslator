@@ -1,5 +1,5 @@
 terminals = {'variable', 'identifier', 'numeral'}
 
-cut_root_comma = {'gterms'}
+cut_root_comma = {'gterms', 'terms', 'snames'}
 
 ######################################################################
