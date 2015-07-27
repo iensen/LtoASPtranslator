@@ -1,8 +1,24 @@
-program(S) ::= statements(S)
-statements(stmts  S cut_root(Ss)) ::= statement(S) statements(Ss)
-statement(T) ::= type_decl(T)
+program(progr P R) ::= predicates_keyw pred_decls(P) rules_keyw rules(R)
+program(progr S P R) ::= sorts_keyw sort_defs(S) predicates_keyw pred_decls(P) rules_keyw rules(R)
+sort_defs(sdefs S) ::= statements(S)
+pred_decls(pdecls P) ::= statements(P)
+rules(rules R) ::= statements(R)
+statements(stmts S) ::= statement(S)
+statements(stmts S cut_root(Ss)) ::= statement(S) statements(Ss)
+
+statement(S) ::= sort_def(S)
+
+statement(P) ::= pred_decl(P)
+pred_decl(pdecl I) ::= identifier(I) lparen rparen dot
+pred_decl(pdecl I S) ::= identifier(I) lparen sort_names(S) rparen dot
+sort_names(snames S) ::= sort_name(S)
+sort_names(snames S cut_root(Ss)) ::= sort_name(S) comma sort_names(Ss)
+sort_name(sname I) ::= pound identifier(I)
+
 statement(R) ::= rule(R)
+
 statement(C) ::=  const_decl(C)
+
 
 number(pos N) ::= numeral(N)
 number(neg N) ::= minus numeral(N)
@@ -69,7 +85,6 @@ T2_g(N) ::= number(N)
 T2_g(I) ::= identifier(I)
 
 
-
 quantifier(E) ::= every(E)
 quantifier(A) ::= some(A)
 functional_term(func I Args) ::= identifier(I) lparen terms(Args) rparen
@@ -83,9 +98,8 @@ const_decl(cdecl C T) ::= const identifier(C) eq ground_arithmetic_term(T) dot
 const_decl(cdecl C C1) ::= const identifier(C) eq identifier(C1) dot
 const_decl(cdecl C N) ::= const identifier(C) eq number(N) dot
 
-type_decl(tdecl I E) ::= type identifier(I) eq set_expr(E) dot
+sort_def(sdef I E) ::= pound identifier(I) eq set_expr(E) dot
 set(terms Ts) ::= lcurparen ground_terms(Ts) rcurparen
-set(empty) ::= lcurparen  rcurparen
 
 
 limit(I) ::= identifier(I)
@@ -127,16 +141,24 @@ op(O) ::= eq(O)
 
 
 s0(A) ::= atom(A)
-s0(S) ::= lparen s3(S) rparen
-s1(literal A) ::= s0(A)
-s1(not_literal A) ::= not s0(A)
-s2(L) ::= s1(L)
-and_s(and) ::= and(A)
-and_s(and) ::= comma(A)
-s2(conj L1 L2) ::= s2(L1) and_s s1(L2)
-s3(T) ::= s2(T)
-s3(disj T1 T2) ::= s3(T1) bar s2(T2)
-sentence(sent S) ::= s3(S)
+
+s1(T) ::= s1a(T)
+s1(T) ::= s1b(T)
+s1a(literal A) ::= s0(A)
+s1b(not_literal A) ::= not s0(A)
+
+s2(T) ::= s2a(T)
+s2(T) ::= s2b(T)
+s2a(unit L) ::= s1(L)
+s2b(conj L1 L2) ::= s2(L1) comma s1(L2)
+
+s3(T) ::= s3a(T)
+s3(T) ::= s3b(T)
+s3a(T) ::= s2(T)
+s3b(disj T1 T2) ::= s3(T1) bar s2(T2)
+
+
+body(body B) ::= s3(B)
 
 
 p_s0(A) ::= predicate_atom(A)
@@ -144,10 +166,10 @@ p_s0(S) ::= lparen p_s3(S) rparen
 p_s1(literal A) ::= p_s0(A)
 p_s1(neg_literal A) ::= not p_s0(A)
 p_s2(unit L) ::= p_s1(L)
-p_s2(conj L1 L2) ::= p_s2(L1) and_s p_s1(L2)
+p_s2(conj L1 L2) ::= p_s2(L1) comma p_s1(L2)
 p_s3(T) ::= p_s2(T)
 p_s3(disj T1 T2) ::= p_s3(T1) or p_s2(T2)
-p_sentence(sent S) ::= s3(S)
+head(head H) ::= s3(H)
 
 
 maybe_lit(mlit A) ::= maybe basic_predicate_atom(A)
@@ -161,8 +183,8 @@ card_constr(cconst L A R) ::= bound(L) lessoreq bar lcurparen basic_predicate_at
 terms(terms T) ::= term(T)
 terms(terms T cut_root(Ts)) ::= term(T) comma terms(Ts)
 
-rule(rule H) ::= head(H) dot
-rule(rule H S) ::= head(H) colon_hyphen sentence(S) dot
-head(S) ::= p_sentence(S)
+rule(constraint B) ::= colon_hyphen body(B) dot
+rule(fact H) ::= head(H) dot
+rule(long_rule H B) ::= head(H) colon_hyphen body(B) dot
 head(H) ::= maybe_lit(H)
 head(H) ::= card_constr(H)

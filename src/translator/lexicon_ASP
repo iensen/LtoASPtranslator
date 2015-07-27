@@ -1,3 +1,9 @@
+sorts_keyw = sorts
+predicates_keyw = predicates
+rules_keyw = rules
+pound = #
+colon_hyphen = :-
+
 dot = \.
 type = type
 const = const
@@ -32,5 +38,3 @@ variable = [A-Z][_a-zA-Z0-9]*
 identifier = [_a-z][_a-zA-Z0-9]*
 numeral = [0-9]+
 spaces = \s+
-
-colon_hyphen = :-

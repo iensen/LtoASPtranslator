@@ -474,7 +474,11 @@ safety_constraints_satisfied:-
 safety_proven_for_2001_levels. 
 safety_justified_for_2000plus_levels.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMPLEX %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% COMPLEX RULES
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 -controlled_every_risk527 :- #risk527(R), not controlled(R).
 controlled_every_risk527 :- not -controlled_every_risk527.

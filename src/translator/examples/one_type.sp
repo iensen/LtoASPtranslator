@@ -1,0 +1,1 @@
+sorts #t = {a, b, c, 1, 2, 3}. predicates p2(#t, #t). q1(#t). r0(). p0(). p3(#t, #t, #t). q3(#t, #t, #t). s0(). p1(#t). q0(). q2(#t, #t). rules p0. p1(1) | p2(1, 2) | p3(1, 2, 3). q0 :- p0. r0 :- q1(a), q2(a, b), q3(a, b, c). s0 :- not r0. 
