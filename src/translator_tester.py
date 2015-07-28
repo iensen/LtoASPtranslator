@@ -1,6 +1,7 @@
 import translator
 import unparser
 import subprocess
+import sys
 from main import *
 import os
 
@@ -11,11 +12,12 @@ test_outputs = [{frozenset(['h'])}]
 
 def run_asp_program(program):
     """take clingo program and return the set of its answer sets"""
-    process = subprocess.Popen([cur_dir + "solvers/clingo.exe"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin = subprocess.PIPE)
+
+    my_env = os.environ.copy()
+    my_env["PATH"] = cur_dir + "solvers:" + my_env["PATH"]
+    process = subprocess.Popen(["java", "-jar", cur_dir + "solvers/sparc.jar","-solver", "clingo","-A"],
+                               stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin = subprocess.PIPE,env = my_env)
     stdout, stderr = process.communicate(input = program.encode('ascii'))
-    print("LOL123123123")
-    print(program)
-    print(stdout)
     return stdout
 
 def parse_clingo_output(output):
@@ -67,14 +69,9 @@ def main():
         test_file = test_files[test_num]
         print("testing file " + test_file) 
         l_parse_tree = parse_file(test_file)
-      #  print(l_parse_tree)
-        l_parse_tree = [['rule', ['sent', ['unit', ['literal', ['patom', ('identifier', 'h')]]]]], ['rule', ['sent', ['disj', ['unit', ['literal', ['patom', ('identifier', 'h1')]]], ['unit', ['literal', ['patom', ('identifier', 'h2')]]]]], ['sent', ['conj', ['unit', ['literal', ['patom', ('identifier', 'b1')]]], ['neg_literal', ['patom', ('identifier', 'b2')]]]]]]
         asp_translated_tree = translator.t(translator.p(l_parse_tree))
         asp_unparsed_program = unparser.program(asp_translated_tree)
-        print("?????????????????")
-        print(asp_unparsed_program)
         answers_out = parse_clingo_output(run_asp_program(asp_unparsed_program))
-        print(answers_out)
         compare_answers(answers_out, test_outputs[test_num])
         check_tree(asp_translated_tree, asp_unparsed_program)
         
