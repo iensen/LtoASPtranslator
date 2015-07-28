@@ -5,6 +5,7 @@ from main import *
 import os
 
 cur_dir = os.path.join(os.path.dirname(os.path.abspath(__file__))) + "/"
+
 test_files = ['examples/vu_test.l']
 test_outputs = [{frozenset(['h'])}]
 
@@ -68,7 +69,7 @@ def main():
         l_parse_tree = parse_file(test_file)
       #  print(l_parse_tree)
         l_parse_tree = [['rule', ['sent', ['unit', ['literal', ['patom', ('identifier', 'h')]]]]], ['rule', ['sent', ['disj', ['unit', ['literal', ['patom', ('identifier', 'h1')]]], ['unit', ['literal', ['patom', ('identifier', 'h2')]]]]], ['sent', ['conj', ['unit', ['literal', ['patom', ('identifier', 'b1')]]], ['neg_literal', ['patom', ('identifier', 'b2')]]]]]]
-        asp_translated_tree = translator.p(l_parse_tree)
+        asp_translated_tree = translator.t(translator.p(l_parse_tree))
         asp_unparsed_program = unparser.program(asp_translated_tree)
         print("?????????????????")
         print(asp_unparsed_program)
