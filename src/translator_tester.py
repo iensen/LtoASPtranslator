@@ -38,7 +38,6 @@ def parse_clingo_output(output):
     return result;
 
 def compare_answers(answers_out, answers_given):
-       print(answers_out)
        if answers_out != answers_given:
            print("Compare Answers: FAILED")
        else:
@@ -49,7 +48,6 @@ def check_tree(asp_tree, asp_program):
     """  the function checks if the tree produced by the parser from the given program (asp_tree)
           is the same as the tree produced by the parser from program asp_program
     """
-    asp_program = "h."
     lexicon_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "translator/lexicon_ASP")
     grammar_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "translator/grammar_ASP")
     lexer = Lexer(lexicon_file, False)
@@ -57,7 +55,7 @@ def check_tree(asp_tree, asp_program):
     tokens = lexer.get_lexing_sequence(asp_program)
     starting_symbol = "program"
     asp_tree_parsed = parser.get_ast(tokens, True, starting_symbol)
-    if asp_tree_parsed == asp_program:
+    if asp_tree_parsed.repr() == asp_tree:
         print("Check ASP tree: OK")
     else:
         print("Check ASP tree: FAILED")
