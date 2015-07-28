@@ -60,4 +60,6 @@ def show_short():
         steps_short(ex)
 
 #show()
-show_short()
+
+if __name__ == '__main__':
+  show_short()
