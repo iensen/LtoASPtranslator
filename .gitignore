@@ -67,3 +67,5 @@ __pycache__/
 src/translator/test.sp
 src/translator/test.l
 src/translator/test.py
+src/translator_new/test.l
+src/translator_new/test.sp
