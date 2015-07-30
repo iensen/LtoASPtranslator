@@ -6,10 +6,10 @@ Given an L program, the translator produces a semantically equivalent ASP progra
 
 The translator contains six modules: parser, adjuster, transformer, extractor, linker, and unparser. The control flow is:
 
-							   | -> transformer -> |
-input -> parser -> adjuster -> |				   | -> linker -> unparser -> output
-							   | -> extractor	-> |
-								
+                               | -> transformer -> |
+input -> parser -> adjuster -> |                   | -> linker -> unparser -> output
+                               | -> extractor   -> |
+                                
 2. MODULES
 
 2.1. PARSER
