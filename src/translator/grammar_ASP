@@ -1,23 +1,19 @@
 program(progr P R) ::= predicates_keyw pred_decls(P) rules_keyw rules(R)
 program(progr S P R) ::= sorts_keyw sort_defs(S) predicates_keyw pred_decls(P) rules_keyw rules(R)
-sort_defs(sdefs S) ::= statements(S)
-pred_decls(pdecls P) ::= statements(P)
-rules(rules R) ::= statements(R)
-statements(stmts S) ::= statement(S)
-statements(stmts S cut_root(Ss)) ::= statement(S) statements(Ss)
 
-statement(S) ::= sort_def(S)
+sort_defs(sdefs S) ::= sort_def(S)
+sort_defs(sdefs S cut_root(Ss)) ::= sort_def(S) sort_defs(Ss)
 
-statement(P) ::= pred_decl(P)
+pred_decls(pdecls P) ::= pred_decl(P)
+pred_decls(pdecls P cut_root(Ps)) ::= pred_decl(P) pred_decls(Ps)
 pred_decl(pdecl I) ::= identifier(I) lparen rparen dot
 pred_decl(pdecl I S) ::= identifier(I) lparen sort_names(S) rparen dot
 sort_names(snames S) ::= sort_name(S)
 sort_names(snames S cut_root(Ss)) ::= sort_name(S) comma sort_names(Ss)
 sort_name(sname I) ::= pound identifier(I)
 
-statement(R) ::= rule(R)
-
-statement(C) ::=  const_decl(C)
+rules(rules R) ::= rule(R)
+rules(rules R cut_root(Rs)) ::= rule(R) rules(Rs)
 
 
 number(pos N) ::= numeral(N)
