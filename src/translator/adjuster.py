@@ -1,7 +1,14 @@
-# Put parsed L statements in 3 groups: constant/type declarations and rules
-# Input: a parsed L program: [['tdecl',...], ['rule',...],...]
-# Output: an adjusted L program: ['progr', ['tdecls',...], ['cdecls',...], ['rules', ['rule',...], ['rule',...],...]]
-# program: list -> list
+'''
+Put parsed L statements in 3 groups: constant/type declarations and rules
+
+Input: a parsed L program: 
+[['tdecl',...], ['rule',...],...]
+
+Output: an adjusted L program: 
+['progr', ['tdecls',...], ['cdecls',...], ['rules', ['rule',...], ['rule',...],...]]
+
+program: list -> list
+'''
 def program(T):
     progr = []
     
@@ -17,10 +24,17 @@ def program(T):
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 
-# Collect parsed L rules and put them in a group. Ignore constant/type declarations
-# Input: a parsed L program: [['tdecl',...], ['cdecl',...], ['rule',...],...]
-# Output: a group of parsed L rules: [['rule',...], ['rule',...],...]
-# rules: list -> list
+'''
+Collect parsed L rules and put them in a group. Ignore constant/type declarations
+
+Input: a parsed L program: 
+[['tdecl',...], ['cdecl',...], ['rule',...],...]
+
+Output: a group of parsed L rules: 
+[['rule',...], ['rule',...],...]
+
+rules: list -> list
+'''
 def rules(T):
     ruls = []
     for t in T:

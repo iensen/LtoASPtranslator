@@ -1,10 +1,17 @@
 import labels
 import linker
 
-# Unparse complete ASP program
-# Input: complete parsed ASP program: ['progr', ['sdefs',...], ['pdecls',...], ['rules',...]]
-# Output: ASP program: 'sorts ... predicates ... rules ...'
-# program: list -> str
+'''
+Unparse complete ASP program
+
+Input: complete parsed ASP program: 
+['progr', ['sdefs',...], ['pdecls',...], ['rules',...]]
+
+Output: ASP program: 
+'sorts ... predicates ... rules ...'
+
+program: list -> str
+'''
 def program(T):
     progr = ''
     for t in T[1:]:
@@ -27,10 +34,17 @@ def program(T):
                 
 ########## ########## ########## ########## ########## ########## ########## ##########
 
-# Unparse complete ASP sort definitions
-# Input: complete parsed ASP sort definitions: ['sdefs', ['sdef', ('identifier', 'ground_terms'), ['terms',...]],...]
-# Output: ASP sort definitions: 'sorts #ground_terms = {...}. ...'
-# sort_defs: list -> str
+'''
+Unparse complete ASP sort definitions
+
+Input: complete parsed ASP sort definitions: 
+['sdefs', ['sdef', ('identifier', 'ground_terms'), ['terms',...]],...]
+
+Output: ASP sort definitions: 
+'sorts #ground_terms = {...}. ...'
+
+sort_defs: list -> str
+'''
 def sort_defs(T):
     if T[0] in labels.lexemes:
         return T[1]
@@ -50,10 +64,17 @@ def sort_defs(T):
         
 ########## ########## ########## ########## ########## ########## ########## ##########
 
-# Unparse ASP predicate declarations
-# Input: parsed ASP predicate declarations: ['pdecls', ['pdecl', ('identifier', 'p')],...]
-# Output: ASP predicate declarations: 'predicates p(). ...'
-# predicates: list -> str
+'''
+Unparse ASP predicate declarations
+
+Input: parsed ASP predicate declarations: 
+['pdecls', ['pdecl', ('identifier', 'p')],...]
+
+Output: ASP predicate declarations: 
+'predicates p(). ...'
+
+predicates: list -> str
+'''
 def predicates(T):
     if T[0] in labels.lexemes:
         return T[1]
@@ -78,10 +99,17 @@ def predicates(T):
         
 ########## ########## ########## ########## ########## ########## ########## ##########
 
-# Unparse ASP rules
-# Input: parsed ASP rules: ['rules', ['fact',...['patom', ('identifier', 'p')]],...]
-# Output: ASP rules: 'rules p. ...'
-# rules: list -> str
+'''
+Unparse ASP rules
+
+Input: parsed ASP rules: 
+['rules', ['fact',...['patom', ('identifier', 'p')]],...]
+
+Output: ASP rules: 
+'rules p. ...'
+
+rules: list -> str
+'''
 def rules(T):
     if T[0] in labels.lexemes:
         return T[1]

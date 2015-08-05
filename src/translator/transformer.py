@@ -1,9 +1,16 @@
 import labels
 
-# Transform adjusted L program into incomplete parsed ASP program
-# Input: adjusted L program: ['progr', ['rules', ['rule', ['sent',...]]],...]
-# Output: incomplete parsed ASP program: ['progr', ['rules', ['rule', ['fact',...]]],...]
-# program: list -> list
+'''
+Transform adjusted L program into incomplete parsed ASP program
+
+Input: adjusted L program: 
+['progr', ['rules', ['rule', ['sent',...]]],...]
+
+Output: incomplete parsed ASP program: 
+['progr', ['rules', ['rule', ['fact',...]]],...]
+
+program: list -> list
+'''
 def program(T):
     progr = []
 
@@ -20,10 +27,17 @@ def program(T):
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 
-# Transform adjusted L rules into parsed ASP rules
-# Input: adjusted L rules: ['rules', ['rule', ['sent', ['unit',...]]],...]
-# Output: parsed ASP rules: ['rules', ['rule', ['fact', ['head',...]]],...]
-# rules: list -> list
+'''
+Transform adjusted L rules into parsed ASP rules
+
+Input: adjusted L rules: 
+['rules', ['rule', ['sent', ['unit',...]]],...]
+
+Output: parsed ASP rules: 
+['rules', ['rule', ['fact', ['head',...]]],...]
+
+rules: list -> list
+'''
 def rules(T):
     if T[0] in labels.lexemes:
         return T

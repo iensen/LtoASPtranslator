@@ -64,8 +64,6 @@ __pycache__/
 *.py[cod]
 
 # Temporary test files:
-src/translator/test.sp
+src/translator/test.txt
 src/translator/test.l
-src/translator/test.py
-src/translator_new/test.l
-src/translator_new/test.sp
+src/translator/test.sp

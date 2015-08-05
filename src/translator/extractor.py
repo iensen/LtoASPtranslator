@@ -3,10 +3,18 @@ import labels
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
 
-# Collect (list) ground terms from adjusted L rules
-# Input: adjusted L rules: ['rules', ['rule',...['patom',..., ['terms',...('identifier', 'a'),...]]],...]
-# Output: (list) ground terms: [['const', ('identifier', 'a')],...]
-# ground_terms_list: list -> list
+'''
+Collect (list) ground terms from adjusted L rules
+
+Input: adjusted L rules: 
+['rules', ['rule',...['patom',..., ['terms',...('identifier', 'a'),...]]],...]
+
+Output: (list) ground terms: 
+[['const', ('identifier', 'a')],...]
+
+ground_terms_list: list -> list
+'''
+
 def ground_terms_list(T):
     Tuple = list_to_tuple(T)
     Set = ground_terms(Tuple)
@@ -17,10 +25,17 @@ def ground_terms_list(T):
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 
-# Convert a list-AST to a tuple-AST, to make it a (hashable) member of a set
-# Input: list-AST like: ['patom', ('identifier', 'p')]
-# Output: tuple-AST like: ('patom', ('identifier', 'p'))
-# list_to_tuple: list -> tuple
+'''
+Convert a list-AST to a tuple-AST, to make it a (hashable) member of a set
+
+Input: list-AST like: 
+['patom', ('identifier', 'p')]
+
+Output: tuple-AST like: 
+('patom', ('identifier', 'p'))
+
+list_to_tuple: list -> tuple
+'''
 def list_to_tuple(T):
     if T[0] in labels.lexemes:
         return T
@@ -30,10 +45,17 @@ def list_to_tuple(T):
             Tuple += (list_to_tuple(t),)
         return Tuple
         
-# Collect (tuple) ground terms from L tuple-rules
-# Input: L tuple-rules: ('rules', ('rule',...('patom',..., ('terms',...('identifier', 'a'),...))),...)
-# Output: (tuple) ground terms: {('const', ('identifier', 'a')),...}
-# ground_terms: tuple -> set
+'''
+Collect (tuple) ground terms from L tuple-rules
+
+Input: L tuple-rules: 
+('rules', ('rule',...('patom',..., ('terms',...('identifier', 'a'),...))),...)
+
+Output: (tuple) ground terms: 
+{('const', ('identifier', 'a')),...}
+
+ground_terms: tuple -> set
+'''
 def ground_terms(T):
     if T[0] in labels.lexemes:
         return set()
@@ -57,10 +79,17 @@ def ground_terms_label_patom(T):
             gterms |= ground_terms_label_patom(t)
         return gterms
         
-# Convert a tuple-AST back to a list-AST
-# Input: tuple-AST like: ('patom', ('identifier', 'p'))
-# Output: list-AST like: ['patom', ('identifier', 'p')]
-# tuple_to_list: tuple -> list
+'''
+Convert a tuple-AST back to a list-AST
+
+Input: tuple-AST like: 
+('patom', ('identifier', 'p'))
+
+Output: list-AST like: 
+['patom', ('identifier', 'p')]
+
+tuple_to_list: tuple -> list
+'''
 def tuple_to_list(T):
     if T[0] in labels.lexemes:
         return T
@@ -73,10 +102,17 @@ def tuple_to_list(T):
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
 
-# Collect predicates with arities from adjusted L rules
-# Input: adjusted L rules: ['rules', ['rule',...['patom', ('identifier', 'p')]],...]
-# Output: predicates with arities: {('p', 0),...}
-# predicates: list -> set
+'''
+Collect predicates with arities from adjusted L rules
+
+Input: adjusted L rules: 
+['rules', ['rule',...['patom', ('identifier', 'p')]],...]
+
+Output: predicates with arities: 
+{('p', 0),...}
+
+predicates: list -> set
+'''
 def predicates(T):
     if T[0] in labels.lexemes:
         return set()
