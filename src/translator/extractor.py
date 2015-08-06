@@ -1,5 +1,26 @@
 import labels
 
+'''
+From an adjusted L program: look in the rules; extract ground terms and predicates with arities
+
+Input: adjusted L program:
+['progr',..., ['rules',...]]
+
+Output: ground terms and predicates with arities:
+{'gterms': {('const', ('identifier', 'a')),...}, 'preds': {('p', 0),...}}
+
+extract: list -> dict
+'''
+def extract(T):
+    progr = {'gterms': set(), 'preds': set()}
+    for t in T[1:]:
+        if t[0] == 'rules':
+            gterms = ground_terms_tuple(list_to_tuple(t))
+            progr['gterms'] |= gterms
+            preds = predicates(t)
+            progr['preds'] |= preds
+    return progr
+
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
 
@@ -14,15 +35,50 @@ Output: (list) ground terms:
 
 ground_terms_list: list -> list
 '''
-
 def ground_terms_list(T):
     Tuple = list_to_tuple(T)
-    Set = ground_terms(Tuple)
+    Set = ground_terms_tuple(Tuple)
     List = []
     for t in Set:
         List += [tuple_to_list(t)]
     return List
 
+########## ########## ########## ########## ########## ########## ########## ##########
+
+'''
+Collect (tuple) ground terms from L tuple-rules
+
+Input: L tuple-rules: 
+('rules', ('rule',...('patom',..., ('terms',...('identifier', 'a'),...))),...)
+
+Output: (tuple) ground terms: 
+{('const', ('identifier', 'a')),...}
+
+ground_terms_tuple: tuple -> set
+'''
+def ground_terms_tuple(T):
+    if T[0] in labels.lexemes:
+        return set()
+    elif T[0] == 'patom':
+        return ground_terms_tuple_label_patom(T)
+    else:
+        gterms = set()
+        for t in T[1:]:
+            gterms |= ground_terms_tuple(t)
+        return gterms
+
+# When function 'ground_terms_tuple' sees a label 'patom', flow control to this similar, assisting function 'ground_terms_tuple_label_patom'
+def ground_terms_tuple_label_patom(T):
+    if T[0] in {'const', 'num', 'func'}:
+        return {T}
+    elif T[0] in labels.basic_terms:
+        return set()
+    else:
+        gterms = set()
+        for t in T[1:]:
+            gterms |= ground_terms_tuple_label_patom(t)
+        return gterms
+        
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
@@ -44,41 +100,7 @@ def list_to_tuple(T):
         for t in T[1:]:
             Tuple += (list_to_tuple(t),)
         return Tuple
-        
-'''
-Collect (tuple) ground terms from L tuple-rules
 
-Input: L tuple-rules: 
-('rules', ('rule',...('patom',..., ('terms',...('identifier', 'a'),...))),...)
-
-Output: (tuple) ground terms: 
-{('const', ('identifier', 'a')),...}
-
-ground_terms: tuple -> set
-'''
-def ground_terms(T):
-    if T[0] in labels.lexemes:
-        return set()
-    elif T[0] == 'patom':
-        return ground_terms_label_patom(T)
-    else:
-        gterms = set()
-        for t in T[1:]:
-            gterms |= ground_terms(t)
-        return gterms
-
-# Assist function 'ground_terms'
-def ground_terms_label_patom(T):
-    if T[0] in {'const', 'num'}:
-        return {T}
-    elif T[0] in labels.basic_terms:
-        return set()
-    else:
-        gterms = set()
-        for t in T[1:]:
-            gterms |= ground_terms_label_patom(t)
-        return gterms
-        
 '''
 Convert a tuple-AST back to a list-AST
 
@@ -98,7 +120,7 @@ def tuple_to_list(T):
         for t in T[1:]:
             List += [tuple_to_list(t)]
         return List
-        
+
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
 
@@ -124,7 +146,7 @@ def predicates(T):
             preds |= predicates(t)
         return preds
 
-# Assist function 'predicates'
+# When function 'predicates' sees a label 'patom', flow control to this similar, assisting function 'predicates_label_patom'
 def predicates_label_patom(T):
     pname = T[1][1]
     if len(T) == 2:

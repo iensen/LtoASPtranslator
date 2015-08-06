@@ -10,9 +10,9 @@ Input: complete parsed ASP program:
 Output: ASP program: 
 'sorts ... predicates ... rules ...'
 
-program: list -> str
+unparse: list -> str
 '''
-def program(T):
+def unparse(T):
     progr = ''
     for t in T[1:]:
         if t[0] == 'sdefs':
@@ -53,6 +53,9 @@ def sort_defs(T):
         for t in T[2:]:
             terms += ', ' + sort_defs(t)
         return terms
+    elif T[0] == 'func':
+        func = sort_defs(T[1]) + '(' + sort_defs(T[2]) + ')'
+        return func
     elif T[0] == 'sdef':
         sdef = '#' + sort_defs(T[1]) + ' = {' + sort_defs(T[2]) + '}. '
         return sdef
@@ -118,6 +121,9 @@ def rules(T):
         for t in T[2:]:
             ruls += ', ' + rules(t)
         return ruls
+    elif T[0] == 'func':
+        func = rules(T[1]) + '(' + rules(T[2]) + ')'
+        return func
     elif T[0] == 'patom':
         ruls = rules(T[1])
         if len(T) != 2:

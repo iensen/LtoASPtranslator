@@ -14,11 +14,7 @@ Output: ASP program:
 translate: list -> str
 '''
 def translate(T):
-    adjusted = adjuster.program(T)
-    linked = linker.program(adjusted)
-    unparsed = unparser.program(linked)
+    adjusted = adjuster.adjust(T)
+    linked = linker.link(adjusted)
+    unparsed = unparser.unparse(linked)
     return unparsed
-
-# Submodules of 'linker':
-import transformer
-import extractor

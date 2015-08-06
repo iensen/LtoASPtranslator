@@ -9,9 +9,9 @@ Input: adjusted L program:
 Output: incomplete parsed ASP program: 
 ['progr', ['rules', ['rule', ['fact',...]]],...]
 
-program: list -> list
+transform: list -> list
 '''
-def program(T):
+def transform(T):
     progr = []
 
     for t in T[1:]:

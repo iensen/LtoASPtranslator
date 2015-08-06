@@ -7,9 +7,9 @@ Input: a parsed L program:
 Output: an adjusted L program: 
 ['progr', ['tdecls',...], ['cdecls',...], ['rules', ['rule',...], ['rule',...],...]]
 
-program: list -> list
+adjust: list -> list
 '''
-def program(T):
+def adjust(T):
     progr = []
     
     ruls = rules(T)

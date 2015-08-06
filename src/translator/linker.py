@@ -10,10 +10,9 @@ Input: adjusted L program:
 Output: complete parsed ASP program: 
 ['progr', ['sdefs',...], ['pdecls',...], ['rules',...]]
 
-program: list -> list
+link: list -> list
 '''
-
-def program(T):
+def link(T):
     progr = []
     for t in T[1:]:
         if t[0] == 'rules':

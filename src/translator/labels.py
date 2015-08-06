@@ -1,7 +1,7 @@
 # Frequently referred labels from L/ASP lexicon/grammar
 
-lexemes = {'variable', 'identifier', 'numeral'}
+lexemes = {'identifier', 'numeral', 'variable'}
 
-basic_terms = {'const', 'var', 'num', 'tvar', 'func', 'ar_term'}
+basic_terms = {'const', 'num', 'func', 'ar_term', 'var', 'tvar'}
 
-cut_root_comma = {'gterms', 'terms', 'bterms', 'tvars', 'snames'}
+cut_root_comma = {'snames', 'terms', 'gterms', 'bterms', 'tvars'}
