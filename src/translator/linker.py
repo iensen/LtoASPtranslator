@@ -14,29 +14,59 @@ link: list -> list
 '''
 def link(T):
     progr = []
+    sdefs = sort_defs(T)
+    if sdefs != []:
+        progr += [sdefs]
     for t in T[1:]:
         if t[0] == 'rules':
-        
-            sdefs = []
-            gterms = ground_terms(t)
-            if gterms != []:
-                sdefs += [gterms]
-            if sdefs != []:
-                sdefs = ['sdefs'] + sdefs
-                progr += [sdefs]
-                
             preds = predicates(t)
             if preds != []:
                 progr += [preds]
-                
             ruls = transformer.rules(t)
             if ruls != []:
                 progr += [ruls]
-                
     if progr != []:
         progr = ['progr'] + progr
     return progr
     
+########## ########## ########## ########## ########## ########## ########## ##########
+########## ########## ########## ########## ########## ########## ########## ##########
+
+def sort_defs(T):
+    sdefs = []
+    for t in T[1:]:
+        if t[0] == 'tdecls':
+            tdecls = transformer.type_decls(t)
+            if tdecls != []:
+                tdecls = tdecls[1:]
+                sdefs += tdecls
+            tunion = type_union(t)
+            if tunion != []:
+                sdefs += [tunion]
+        if t[0] == 'rules':
+            gterms = ground_terms(t)
+            if gterms != []:
+                sdefs += [gterms]
+    usort = universal_sort(T)
+    if usort != []:
+        sdefs += [usort]
+    if sdefs != []:
+        sdefs = ['sdefs'] + sdefs
+    return sdefs
+    
+########## ########## ########## ########## ########## ########## ########## ##########
+
+def type_union(T):
+    tunion = []
+    tdecls = transformer.type_decls(T)
+    for t in tdecls[1:]:
+        tunion += t[1:2]
+    while len(tunion) > 1:
+        tunion = [['union', tunion[0], tunion[1]]] + tunion[2:]
+    if tunion != []:
+        tunion = ['sdef', ['sname', ('identifier', 'type_union')]] + tunion
+    return tunion
+
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
@@ -56,9 +86,31 @@ def ground_terms(T):
     if List != []:
         List = ['gterms'] + List
         List = ['terms', List]
-        gterms += ['sdef', ('identifier', 'ground_terms'), List]
+        gterms += ['sdef', ['sname', ('identifier', 'ground_terms')], List]
     return gterms
     
+########## ########## ########## ########## ########## ########## ########## ##########
+
+def universal_sort(T):
+    usort = []
+    for t in T[1:]:
+        if t[0] == 'tdecls':
+            tunion = type_union(t)
+            if tunion != []:
+                usort += tunion[1:2]
+        if t[0] == 'rules':
+            gterms = ground_terms(t)
+            if gterms != []:
+                usort += gterms[1:2]
+    if usort != []:
+        if len(usort) == 1:
+            usort = usort[0]
+        else:
+            usort = ['union'] + usort
+        usort = ['sdef', ['sname', ('identifier', 'universal_sort')], usort]
+    return usort
+    
+########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
@@ -82,7 +134,7 @@ def predicates(T):
         if arity != 0:
             snames = []
             for i in range(0, arity):
-                snames += [['sname', ('identifier', 'ground_terms')]]
+                snames += [['sname', ('identifier', 'universal_sort')]]
             snames = ['snames'] + snames
             pred += [snames]
         preds += [pred]

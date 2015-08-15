@@ -15,15 +15,44 @@ def transform(T):
     progr = []
 
     for t in T[1:]:
+        if t[0] == 'tdecls':
+            tdecls = type_decls(t)
+            if tdecls != []:
+                progr += [tdecls]
         if t[0] == 'rules':
             ruls = rules(t)
             if ruls != []:
-                progr += [rules(t)]
+                progr += [ruls]
 
     if progr != []:
         progr = ['progr'] + progr
 
     return progr
+
+########## ########## ########## ########## ########## ########## ########## ##########
+
+def type_decls(T):
+    if T[0] in labels.lexemes:
+        return T
+    elif T[0] in labels.set_operations:
+        tdecls = T[:1]
+        for t in T[1:]:
+            tdecls += \
+            [['sname', type_decls(t)]] if t[0] == 'identifier' else \
+            [type_decls(t)]
+        return tdecls
+    elif T[0] == 'tdecl':
+        return ['sdef', ['sname', type_decls(T[1])], type_decls(T[2])]
+    elif T[0] == 'tdecls':
+        tdecls = ['sdefs']
+        for t in T[1:]:
+            tdecls += [type_decls(t)]
+        return tdecls
+    else:
+        tdecls = T[:1]
+        for t in T[1:]:
+            tdecls += [type_decls(t)]
+        return tdecls
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 

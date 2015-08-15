@@ -49,16 +49,28 @@ def sort_defs(T):
     if T[0] in labels.lexemes:
         return T[1]
     elif T[0] in labels.cut_root_comma:
-        terms = sort_defs(T[1])
+        sdefs = ''
+        if T[0] == 'terms':
+            sdefs += '{'
+        sdefs += sort_defs(T[1])
         for t in T[2:]:
-            terms += ', ' + sort_defs(t)
-        return terms
+            sdefs += ', ' + sort_defs(t)
+        if T[0] == 'terms':
+            sdefs += '}'
+        return sdefs
     elif T[0] == 'func':
         func = sort_defs(T[1]) + '(' + sort_defs(T[2]) + ')'
         return func
+    elif T[0] == 'sname':
+        return '#' + sort_defs(T[1])
+    elif T[0] == 'diff':
+        return sort_defs(T[1]) + ' - ' + sort_defs(T[2])
+    elif T[0] == 'inters':
+        return sort_defs(T[1]) + ' * ' + sort_defs(T[2])
+    elif T[0] == 'union':
+        return sort_defs(T[1]) + ' + ' + sort_defs(T[2])
     elif T[0] == 'sdef':
-        sdef = '#' + sort_defs(T[1]) + ' = {' + sort_defs(T[2]) + '}. '
-        return sdef
+        return sort_defs(T[1]) + ' = ' + sort_defs(T[2]) + '. '
     else:
         sdefs = ''
         for t in T[1:]:
@@ -90,7 +102,7 @@ def predicates(T):
         return snames
     elif T[0] == 'pdecl':
         pdecl = predicates(T[1]) + '('
-        if len(T) != 2:
+        if len(T) > 2:
             pdecl += predicates(T[2])
         pdecl += '). '
         return pdecl
