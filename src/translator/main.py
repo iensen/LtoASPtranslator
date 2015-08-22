@@ -1,20 +1,16 @@
-import adjuster
-import linker
+import transformer
 import unparser
 
 '''
-Translate parsed L program into ASP
+translate: translate a parsed L program into an ASP program
 
-Input: parsed L program: 
+Input: a parsed L program:
 [['tdecl',...], ['rule',...],...]
 
-Output: ASP program: 
-'sorts ... predicates ... rules ...'
+Output: an ASP program:
+'sorts... predicates... rules...'
 
 translate: list -> str
 '''
 def translate(T):
-    adjusted = adjuster.adjust(T)
-    linked = linker.link(adjusted)
-    unparsed = unparser.unparse(linked)
-    return unparsed
+    return unparser.unparse(transformer.transform(T))

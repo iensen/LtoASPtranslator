@@ -1,84 +1,63 @@
-import labels
+import rewriter
+import reassembler
 
 '''
-Transform adjusted L program into incomplete parsed ASP program
+transform: transform a parsed L program into a parsed ASP program
 
-Input: adjusted L program: 
-['progr', ['rules', ['rule', ['sent',...]]],...]
+Input: a parsed L program:
+[['tdecl',...], ['rule',...],...]
 
-Output: incomplete parsed ASP program: 
-['progr', ['rules', ['rule', ['fact',...]]],...]
+Output: a parsed ASP program:
+['prog', ['sdefs',...], ['pdecls',...], ['rules',...]]
 
 transform: list -> list
 '''
 def transform(T):
-    progr = []
-
-    for t in T[1:]:
-        if t[0] == 'tdecls':
-            tdecls = type_decls(t)
-            if tdecls != []:
-                progr += [tdecls]
-        if t[0] == 'rules':
-            ruls = rules(t)
-            if ruls != []:
-                progr += [ruls]
-
-    if progr != []:
-        progr = ['progr'] + progr
-
-    return progr
-
-########## ########## ########## ########## ########## ########## ########## ##########
-
-def type_decls(T):
-    if T[0] in labels.lexemes:
-        return T
-    elif T[0] in labels.set_operations:
-        tdecls = T[:1]
-        for t in T[1:]:
-            tdecls += \
-            [['sname', type_decls(t)]] if t[0] == 'identifier' else \
-            [type_decls(t)]
-        return tdecls
-    elif T[0] == 'tdecl':
-        return ['sdef', ['sname', type_decls(T[1])], type_decls(T[2])]
-    elif T[0] == 'tdecls':
-        tdecls = ['sdefs']
-        for t in T[1:]:
-            tdecls += [type_decls(t)]
-        return tdecls
-    else:
-        tdecls = T[:1]
-        for t in T[1:]:
-            tdecls += [type_decls(t)]
-        return tdecls
-
+    return dict_to_list(reassembler.reassemble(rewriter.rewrite(list_to_dict(T))))
+    
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
-Transform adjusted L rules into parsed ASP rules
+list_to_dict: change the data type of a program from list to dictionary
+(for convenient handling)
 
-Input: adjusted L rules: 
-['rules', ['rule', ['sent', ['unit',...]]],...]
+Input: a parsed L program:
+[['tdecl',...], ['rule',...],...]
 
-Output: parsed ASP rules: 
-['rules', ['rule', ['fact', ['head',...]]],...]
+Output: a dictionary parsed L program:
+{'tdecls': ['tdecls', ['tdecl',...],...], 'rules': ['rules', ['rule',...],...]}
 
-rules: list -> list
+list_to_dict: list -> dict
 '''
-def rules(T):
-    if T[0] in labels.lexemes:
-        return T
-    elif T[0] == 'neg_literal':
-        return ['not_literal', rules(T[1])]
-    elif T[0] == 'rule':
-        if len(T) == 2:
-            return ['fact', ['head', rules(T[1][1])]]
-        else:
-            return ['long_rule', ['head', rules(T[1][1])], ['body', rules(T[2][1])]]
-    else:
-        ruls = T[:1]
-        for t in T[1:]:
-            ruls += [rules(t)]
-        return ruls
+def list_to_dict(T):
+    prog = {'tdecls': ['tdecls'], 'rules': ['rules']}
+    for t in T:
+        prog[t[0]+'s'] += [t]
+    return prog
+    
+'''
+dict_to_list: change the data type of a program from dictionary to list
+(for consistency with the spec of the generic parser)
+
+Input: a dictionary parsed ASP program:
+{
+    'sdefs': ['sdefs', ['sdef',...],...],
+    'pdecls': ['pdecls', ['pdecl',...],...],
+    'rules': ['rules', ['rule',...],...]}
+
+Output: a parsed ASP program:
+['prog',
+    ['sdefs', ['sdef',...],...],
+    ['pdecls', ['pdecl',...],...],
+    ['rules', ['rule',...],...]]
+    
+dict_to_list: dict -> list
+'''
+def dict_to_list(T):
+    prog = []
+    for keyw in ('sdefs', 'pdecls', 'rules'):
+        if len(T[keyw]) > 1:
+            prog += [T[keyw]]
+    if prog != []:
+        prog = ['prog'] + prog
+    return prog

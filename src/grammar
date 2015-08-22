@@ -3,7 +3,7 @@ statements(stmts S) ::= statement(S)
 statements(stmts S cut_root(Ss)) ::= statement(S) statements(Ss)
 statement(T) ::= type_decl(T)
 statement(R) ::= rule(R)
-statement(C) ::=  const_decl(C)
+statement(C) ::= const_decl(C)
 
 number(pos N) ::= numeral(N)
 number(neg N) ::= minus numeral(N)
@@ -85,8 +85,8 @@ const_decl(cdecl C C1) ::= const identifier(C) eq identifier(C1) dot
 const_decl(cdecl C N) ::= const identifier(C) eq number(N) dot
 
 type_decl(tdecl I E) ::= type identifier(I) eq set_expr(E) dot
-set(terms Ts) ::= lcurparen ground_terms(Ts) rcurparen
-set(empty) ::= lcurparen  rcurparen
+set(set Ts) ::= lcurparen ground_terms(Ts) rcurparen
+set(empty) ::= lcurparen rcurparen
 
 
 limit(I) ::= identifier(I)
@@ -102,7 +102,7 @@ tvar(tvar V T) ::= variable(V) in identifier(T)
 ST0(S) ::= ST1(S)
 ST0(union S1 S2) ::= ST0(S1) plus ST1(S2)
 ST1(S) ::= ST2(S)
-ST1(inters S1 S2) ::= ST1(S1)  mult ST2(S2)
+ST1(inters S1 S2) ::= ST1(S1) mult ST2(S2)
 ST1(diff S1 S2) ::= ST1(S1) backslash ST2(S2)
 ST2(S) ::= lparen ST0(S) rparen
 ST2(C) ::= set_constr(C)

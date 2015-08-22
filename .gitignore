@@ -63,10 +63,18 @@ com_crashlytics_export_strings.xml
 __pycache__/
 *.py[cod]
 
+# A different Clingo version for each OS:
+src/solvers/clingo.exe
+
 # Temporary test files:
-src/translator/temp.l
-src/translator/temp.sp
-src/translator/temp.txt
-src/translator/temp2.l
-src/translator/temp2.sp
-src/translator/temp2.txt
+src/translator/z
+src/translator/z.l
+src/translator/z.sp
+src/translator/z.txt
+src/translator/z2
+src/translator/z2.l
+src/translator/z2.sp
+src/translator/z2.txt
+
+# Temporary translated file:
+src/translator/file_translated

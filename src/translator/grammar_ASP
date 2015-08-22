@@ -1,5 +1,6 @@
-program(progr P R) ::= predicates_keyw pred_decls(P) rules_keyw rules(R)
-program(progr S P R) ::= sorts_keyw sort_defs(S) predicates_keyw pred_decls(P) rules_keyw rules(R)
+program(prog S) ::= sorts_keyw sort_defs(S)
+program(prog P R) ::= predicates_keyw pred_decls(P) rules_keyw rules(R)
+program(prog S P R) ::= sorts_keyw sort_defs(S) predicates_keyw pred_decls(P) rules_keyw rules(R)
 
 sort_defs(sdefs S) ::= sort_def(S)
 sort_defs(sdefs S cut_root(Ss)) ::= sort_def(S) sort_defs(Ss)
@@ -95,7 +96,7 @@ const_decl(cdecl C C1) ::= const identifier(C) eq identifier(C1) dot
 const_decl(cdecl C N) ::= const identifier(C) eq number(N) dot
 
 sort_def(sdef S E) ::= sort_name(S) eq set_expr(E) dot
-set(terms Ts) ::= lcurparen ground_terms(Ts) rcurparen
+set(set Ts) ::= lcurparen ground_terms(Ts) rcurparen
 
 
 limit(I) ::= identifier(I)
@@ -109,9 +110,9 @@ tvars(tvars V cut_root(Vs)) ::= tvar(V) comma tvars(Vs)
 tvar(tvar V T) ::= variable(V) in identifier(T)
 
 ST0(S) ::= ST1(S)
-ST0(union S1 S2) ::=  ST0(S1) plus ST1(S2)
+ST0(union S1 S2) ::= ST0(S1) plus ST1(S2)
 ST1(S) ::= ST2(S)
-ST1(inters S1 S2) ::= ST1(S1)  mult ST2(S2)
+ST1(inters S1 S2) ::= ST1(S1) mult ST2(S2)
 ST1(diff S1 S2) ::= ST1(S1) minus ST2(S2)
 ST2(S) ::= lparen ST0(S) rparen
 ST2(C) ::= set_constr(C)
@@ -179,8 +180,8 @@ card_constr(cconst L A R) ::= bound(L) lessoreq bar lcurparen basic_predicate_at
 terms(terms T) ::= term(T)
 terms(terms T cut_root(Ts)) ::= term(T) comma terms(Ts)
 
-rule(constraint B) ::= colon_hyphen body(B) dot
+rule(constr B) ::= colon_hyphen body(B) dot
 rule(fact H) ::= head(H) dot
-rule(long_rule H B) ::= head(H) colon_hyphen body(B) dot
+rule(rule H B) ::= head(H) colon_hyphen body(B) dot
 head(H) ::= maybe_lit(H)
 head(H) ::= card_constr(H)

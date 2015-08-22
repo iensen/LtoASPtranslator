@@ -1,160 +1,152 @@
 import labels
-import linker
 
 '''
-Unparse complete ASP program
+unparse: write an ASP program
 
-Input: complete parsed ASP program: 
-['progr', ['sdefs',...], ['pdecls',...], ['rules',...]]
+Input: a parsed ASP program:
+['prog', ['sdefs',...], ['pdecls',...], ['rules',...]]
 
-Output: ASP program: 
-'sorts ... predicates ... rules ...'
+Output: an ASP program:
+'sorts... predicates... rules...'
 
 unparse: list -> str
 '''
 def unparse(T):
-    progr = ''
+    prog = ''
     for t in T[1:]:
         if t[0] == 'sdefs':
-            sdefs = sort_defs(t)
+            sdefs = unparse_sdefs(t)
             if sdefs != '':
-                sdefs = 'sorts ' + sdefs
-            progr += sdefs
+                prog += 'sorts\n\n' + sdefs
         if t[0] == 'pdecls':
-            preds = predicates(t)
-            if preds != '':
-                preds = 'predicates ' + preds
-            progr += preds
+            pdecls = unparse_pdecls(t)
+            if pdecls != '':
+                prog += '\npredicates\n\n' + pdecls
         if t[0] == 'rules':
-            ruls = rules(t)
-            if ruls != '':
-                ruls = 'rules ' + ruls
-            progr += ruls
-    return progr
-                
+            rules = unparse_rules(t)
+            if rules != '':
+                prog += '\nrules\n\n' + rules
+    return prog
+
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
-Unparse complete ASP sort definitions
+unpare_sdefs: write ASP sort definitions
 
-Input: complete parsed ASP sort definitions: 
-['sdefs', ['sdef', ('identifier', 'ground_terms'), ['terms',...]],...]
+Input: parsed ASP sort definitions:
+['sdefs', 
+    ['sdef', ['sname', ('identifier', 't1')], 
+        ['set', ['gterms', ['const', ('identifier', 'a')]]]],...]
+    
+Output: ASP sort definitions:
+'sorts 
+    #t1 = {a}. ...'
 
-Output: ASP sort definitions: 
-'sorts #ground_terms = {...}. ...'
-
-sort_defs: list -> str
+unparse_sdefs: list -> str
 '''
-def sort_defs(T):
+def unparse_sdefs(T):
     if T[0] in labels.lexemes:
         return T[1]
     elif T[0] in labels.cut_root_comma:
-        sdefs = ''
-        if T[0] == 'terms':
-            sdefs += '{'
-        sdefs += sort_defs(T[1])
+        st = unparse_sdefs(T[1])
         for t in T[2:]:
-            sdefs += ', ' + sort_defs(t)
-        if T[0] == 'terms':
-            sdefs += '}'
-        return sdefs
+            st += ', ' + unparse_sdefs(t)
+        return st
     elif T[0] == 'func':
-        func = sort_defs(T[1]) + '(' + sort_defs(T[2]) + ')'
-        return func
+        return unparse_sdefs(T[1]) + '(' + unparse_sdefs(T[2]) + ')'
+    elif T[0] == 'set':
+        return '{' + unparse_sdefs(T[1]) + '}'
     elif T[0] == 'sname':
-        return '#' + sort_defs(T[1])
-    elif T[0] == 'diff':
-        return sort_defs(T[1]) + ' - ' + sort_defs(T[2])
-    elif T[0] == 'inters':
-        return sort_defs(T[1]) + ' * ' + sort_defs(T[2])
-    elif T[0] == 'union':
-        return sort_defs(T[1]) + ' + ' + sort_defs(T[2])
+        return '#' + unparse_sdefs(T[1])
+    elif T[0] in labels.set_ops:
+        return unparse_sdefs(T[1]) + labels.set_ops[T[0]] + unparse_sdefs(T[2])
     elif T[0] == 'sdef':
-        return sort_defs(T[1]) + ' = ' + sort_defs(T[2]) + '. '
+        return unparse_sdefs(T[1]) + ' = ' + unparse_sdefs(T[2]) + '.\n'
     else:
-        sdefs = ''
+        st = ''
         for t in T[1:]:
-            sdefs += sort_defs(t)
-        return sdefs
-        
-########## ########## ########## ########## ########## ########## ########## ##########
+            st += unparse_sdefs(t)
+        return st
 
 '''
-Unparse ASP predicate declarations
+unparse_pdecls: write ASP predicate declarations
 
-Input: parsed ASP predicate declarations: 
-['pdecls', ['pdecl', ('identifier', 'p')],...]
+Input: parsed ASP predicate declarations:
+['pdecls', 
+    ['pdecl', ('identifier', 'p')],...]
+    
+Output: predicate declarations:
+'predicates 
+    p(). ...'
 
-Output: ASP predicate declarations: 
-'predicates p(). ...'
-
-predicates: list -> str
+unparse_pdecls: list -> str
 '''
-def predicates(T):
+def unparse_pdecls(T):
     if T[0] in labels.lexemes:
         return T[1]
     elif T[0] == 'sname':
-        return '#' + predicates(T[1])
+        return '#' + unparse_pdecls(T[1])
     elif T[0] in labels.cut_root_comma:
-        snames = predicates(T[1])
+        st = unparse_pdecls(T[1])
         for t in T[2:]:
-            snames += ', ' + predicates(t)
-        return snames
+            st += ', ' + unparse_pdecls(t)
+        return st
     elif T[0] == 'pdecl':
-        pdecl = predicates(T[1]) + '('
+        st = unparse_pdecls(T[1]) + '('
         if len(T) > 2:
-            pdecl += predicates(T[2])
-        pdecl += '). '
-        return pdecl
+            st += unparse_pdecls(T[2])
+        st += ').\n'
+        return st
     else:
-        preds = ''
+        st = ''
         for t in T[1:]:
-            preds += predicates(t)
-        return preds
-        
-########## ########## ########## ########## ########## ########## ########## ##########
+            st += unparse_pdecls(t)
+        return st
 
 '''
-Unparse ASP rules
+unparse_rules: write ASP rules
 
-Input: parsed ASP rules: 
-['rules', ['fact',...['patom', ('identifier', 'p')]],...]
-
-Output: ASP rules: 
-'rules p. ...'
-
-rules: list -> str
+Input: parsed ASP rules:
+['rules', 
+    ['rule', 
+        ['head', ['unit', ['literal', ['patom', ('identifier', 'p1')]]]], 
+        ['body', ['unit', ['literal', ['patom', ('identifier', 'p2')]]]]],...]
+    
+Output: ASP rules:
+'rules 
+    p1 :- p2. ...'
+    
+unparse_rules: list -> str
 '''
-def rules(T):
+def unparse_rules(T):
     if T[0] in labels.lexemes:
         return T[1]
     elif T[0] in labels.cut_root_comma:
-        ruls = rules(T[1])
+        st = unparse_rules(T[1])
         for t in T[2:]:
-            ruls += ', ' + rules(t)
-        return ruls
+            st += ', ' + unparse_rules(t)
+        return st
     elif T[0] == 'func':
-        func = rules(T[1]) + '(' + rules(T[2]) + ')'
-        return func
+        return unparse_rules(T[1]) + '(' + unparse_rules(T[2]) + ')'
     elif T[0] == 'patom':
-        ruls = rules(T[1])
-        if len(T) != 2:
-            ruls += '(' + rules(T[2]) + ')'
-        return ruls
+        st = unparse_rules(T[1])
+        if len(T) > 2:
+            st += '(' + unparse_rules(T[2]) + ')'
+        return st
     elif T[0] == 'not_literal':
-        return 'not ' + rules(T[1])
+        return 'not ' + unparse_rules(T[1])
     elif T[0] == 'conj':
-        return rules(T[1]) + ', ' + rules(T[2])
+        return unparse_rules(T[1]) + ', ' + unparse_rules(T[2])
     elif T[0] == 'disj':
-        return rules(T[1]) + ' | ' + rules(T[2])
-    elif T[0] == 'constraint':
-        return ':- ' + rules(T[1]) + '. '
+        return unparse_rules(T[1]) + ' | ' + unparse_rules(T[2])
+    elif T[0] == 'constr':
+        return ':- ' + unparse_rules(T[1]) + '.\n'
     elif T[0] == 'fact':
-        return rules(T[1]) + '. '
-    elif T[0] == 'long_rule':
-        return rules(T[1]) + ' :- ' + rules(T[2]) + '. '
+        return unparse_rules(T[1]) + '.\n'
+    elif T[0] == 'rule':
+        return unparse_rules(T[1]) + ' :- ' + unparse_rules(T[2]) + '.\n'
     else:
-        ruls = ''
+        st = ''
         for t in T[1:]:
-            ruls += rules(t)
-        return ruls
+            st += unparse_rules(t)
+        return st
