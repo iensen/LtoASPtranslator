@@ -1,7 +1,15 @@
 L-ASP TRANSLATOR: 08/22 BRIEF REPORT
 
-(Please use a text viewer which supports optional word wrap.)
+Notes:
 
+    Please use a text viewer which supports optional word wrap
+    
+    This GitHub repository can be downloaded:
+        https://github.com/iensen/LtoASPtranslator/archive/master.zip
+    It can also be cloned in desktop:
+        https://github.com/iensen/LtoASPtranslator
+    
+    
 Currently, we can only translate into ASP an L program in which:
 
     (1)
@@ -28,6 +36,7 @@ Currently, we can only translate into ASP an L program in which:
         Rules are already in ASP-form, such as:
             p1 or p2(2) if p3(a, b) and not p4(c, d, f(0)).
             
+            
 Also, these L features are not supported yet:
 
     (1)
@@ -35,6 +44,9 @@ Also, these L features are not supported yet:
         
     (2)
         Arithmetic terms (+, -, *, /, %)
+        
+        
+The translator spec is translator_docs/spec.txt
         
 An example is in src/examples/: the two ground_functional_terms files
 
