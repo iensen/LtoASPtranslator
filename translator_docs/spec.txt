@@ -1,7 +1,8 @@
 L-ASP TRANSLATOR SPECIFICATION
 
-The translator (main.py), its (sub)modules, an auxiliary module (labels.py), and a testing module (test.py) are placed here:
+The translator (main), its (sub)modules (transfomer+rewriter/reassembler, unparser), an auxiliary file (labels), and a testing file (test) are placed here:
 https://github.com/iensen/LtoASPtranslator/tree/master/src/translator
+(these are all .py files)
 
 1. DESCRIPTION
 

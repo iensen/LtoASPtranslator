@@ -8,21 +8,21 @@ sorts
 #t6 = {f3(a, b, c), a} - #t2.
 #t7 = #t3.
 #types = #t1 + #t2 + #t3 + #t4 + #t5 + #t6 + #t7.
-#rule_gterms = {b, 1, f1(2), f3(a, b, d), f1(1), a, f2(a, 3)}.
+#rule_gterms = {f1(1), f3(a, b, d), f2(a, 3), b, f1(2), a, 1}.
 #universal = #types + #rule_gterms.
 
 predicates
 
-p4().
-p1(#universal).
-p6(#universal, #universal).
 p9().
-p2(#universal, #universal).
-p5(#universal, #universal).
+p1(#universal).
 p8(#universal).
-p0().
+p4().
 p7(#universal).
+p5(#universal, #universal).
 p3(#universal, #universal, #universal).
+p2(#universal, #universal).
+p0().
+p6(#universal, #universal).
 
 rules
 
