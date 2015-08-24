@@ -57,10 +57,6 @@ def parse_program(chunks, lexer, parser):
     # result
     trees = []
 
-    # the name of an element of a program which is expected to be in the current chunk
-    expected_element = Element.const_decl
-
-
     for chunk in chunks:
         tokens = lexer.get_lexing_sequence(chunk.text)
         starting_symbol = "statement"
