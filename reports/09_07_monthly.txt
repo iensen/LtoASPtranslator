@@ -1,0 +1,52 @@
+L-ASP TRANSLATOR: 09/07 MONTHLY REPORT
+
+Notes:
+    Please use a text viewer which supports optional word wrap
+    This GitHub repository can be downloaded:
+        https://github.com/iensen/LtoASPtranslator/archive/master.zip
+    It can also be cloned in desktop:
+        https://github.com/iensen/LtoASPtranslator
+
+In addition to what could be translated from L to ASP in the 08/23 brief report, we add:
+    Basic (unquantified):
+        Variables
+        Typed variables
+    
+To sum up what has been done so far:
+
+    We can only translate an L program in which:
+        (1) Integers are nonnegative.
+        (2) Terms are either:
+                (a) Constants
+                or
+                (b) Ground functional terms 
+                or
+                (c) Basic variables
+                or
+                (d) Basic typed variables
+        (3) A set expression is either:
+                (a) A nonempty set, such as: {a, 2, f(0)}
+                or
+                (b) A type name, such as: type1
+                or
+                (c) A union/intersection/difference of set expressions
+        (4) Rules are already in ASP-form, such as:
+                p0 or p1(type1 X) if p2(X, f(2)) and not p3(a, 2, X).
+
+    Also, these L features are not supported yet:
+        (1) A functional term which has a functional proper subterm
+        (2) Arithmetic terms (+, -, *, /, %)
+
+The translator spec is translator_docs/spec.txt
+        
+An example is in src/examples/: the two student_evaluation files
+
+The testing file is src/translator/test.py
+        
+To use the modules (src/translator/):
+    (1)  Assign a parsed L program to T. For instance:
+            T = # the list in line 11 of test.py
+    (2) To produce a parsed ASP program:
+            transformer.transform(T)
+    (3) To write an ASP program:
+            main.translate(T)

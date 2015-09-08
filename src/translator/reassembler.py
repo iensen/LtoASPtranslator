@@ -23,6 +23,7 @@ def reassemble(T):
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
+########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
 combine_sdefs: combine the definitions of: (1) defined sorts rewritten from declared types; with (2) the added sorts #types, #rule_gterms, and #universal
@@ -196,13 +197,6 @@ Output: a set of a tuple parsed ASP rule ground functional term:
 
 extract_rule_func: tuple -> set
 '''
-def extract_rule_func(T):
-    Tuple = ('gterms',)
-    for t in T[2][1:]:
-        Tuple += (t[1],)
-    Tuple = T[:2] + (Tuple,)
-    return {Tuple}
-    
 def extract_rule_func(T):
     Tuple = ()
     for t in T[2][1:]:
