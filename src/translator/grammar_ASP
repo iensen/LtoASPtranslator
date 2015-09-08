@@ -25,7 +25,6 @@ term(qt T) ::= quantified_term(T)
 basic_term(const C) ::= identifier(C)
 basic_term(var V) ::= variable(V)
 basic_term(num N) ::= number(N)
-basic_term(tvar T V) ::= identifier(T) variable(V)
 basic_term(T) ::= arithmetic_term(T)
 basic_term(F) ::= functional_term(F)
 
@@ -120,8 +119,12 @@ ST2(R) ::= range(R)
 ST2(S) ::= set(S)
 ST2(S) ::= sort_name(S)
 
+atom(S) ::= sort_atom(S)
 atom(P) ::= predicate_atom(P)
 atom(B) ::= build_in_atom(B)
+
+sort_atom(satom S V) ::= sort_name(S) lparen variable(V) rparen
+
 predicate_atom(patom I) ::= identifier(I)
 predicate_atom(patom I Ts) ::= identifier(I) lparen terms(Ts) rparen
 

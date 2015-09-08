@@ -121,12 +121,16 @@ unparse_rules: list -> str
 def unparse_rules(T):
     if T[0] in labels.lexemes:
         return T[1]
+    elif T[0] == 'sname':
+        return '#' + unparse_rules(T[1])
     elif T[0] in labels.cut_root_comma:
         st = unparse_rules(T[1])
         for t in T[2:]:
             st += ', ' + unparse_rules(t)
         return st
     elif T[0] == 'func':
+        return unparse_rules(T[1]) + '(' + unparse_rules(T[2]) + ')'
+    elif T[0] == 'satom':
         return unparse_rules(T[1]) + '(' + unparse_rules(T[2]) + ')'
     elif T[0] == 'patom':
         st = unparse_rules(T[1])

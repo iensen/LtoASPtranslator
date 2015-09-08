@@ -203,6 +203,18 @@ def extract_rule_func(T):
     Tuple = T[:2] + (Tuple,)
     return {Tuple}
     
+def extract_rule_func(T):
+    Tuple = ()
+    for t in T[2][1:]:
+        if t[1] in {'const', 'num'}:
+            Tuple += (t[1],)
+    if Tuple == ():  
+        return set()
+    else:
+        Tuple = ('gterms') + Tuple
+        Tuple = T[:2] + (Tuple,)
+        return {Tuple}
+    
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
 
