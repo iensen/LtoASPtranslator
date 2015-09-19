@@ -44,7 +44,7 @@ An example is in src/examples/: the two student_evaluation files
 The testing file is src/translator/test.py
         
 To use the modules (src/translator/):
-    (1)  Assign a parsed L program to T. For instance:
+    (1) Assign a parsed L program to T. For instance:
             T = # the list in line 11 of test.py
     (2) To produce a parsed ASP program:
             transformer.transform(T)

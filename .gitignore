@@ -65,16 +65,3 @@ __pycache__/
 
 # A different Clingo version for each OS:
 src/solvers/clingo.exe
-
-# Temporary test files:
-src/translator/z
-src/translator/z.l
-src/translator/z.sp
-src/translator/z.txt
-src/translator/z2
-src/translator/z2.l
-src/translator/z2.sp
-src/translator/z2.txt
-
-# Temporary translated file:
-src/translator/file_translated
