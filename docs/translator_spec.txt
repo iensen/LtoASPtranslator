@@ -1,0 +1,123 @@
+L-ASP TRANSLATOR SPECIFICATION
+
+The translator is found at:
+https://github.com/iensen/LtoASPtranslator/blob/master/src/translator.py
+The command-line syntax is:
+python translator.py <path to L program>
+
+1. DESCRIPTION
+
+Given an L program, the translator produces a semantically equivalent ASP program.
+
+Manual demos of such translations can be found at:
+https://github.com/iensen/LtoASPtranslator/tree/master/docs/demos
+
+Automated examples are located at:
+https://github.com/iensen/LtoASPtranslator/tree/master/src/examples
+(look for pairs of .l and .sp files)
+
+L spec is provided at:
+https://github.com/iensen/LtoASPtranslator/blob/master/Lspec/Lspec.pdf
+ASP manual is given here:
+https://github.com/iensen/sparc/blob/master/User_Manual/Sparc_Manual.pdf
+
+2. MODULES
+
+The translator has three modules: parser, transformer, and unparser. The control flow is:
+    L program
+        |
+        |   parser
+        |
+        V
+    parsed L program
+        |
+        |   transformer
+        |
+        V
+    parsed ASP program
+        |
+        |   unparser
+        |
+        V
+    ASP program
+    
+2.1. PARSER
+
+This module parses an L program. The output is a list of parsed L statements, each of which represents either an L constant declaration, type declaration, or rule.
+
+This L parser is introduced at:
+https://github.com/iensen/LtoASPtranslator/blob/master/README.txt
+
+The form of a parsed L program is described in the spec of a generic parser:
+https://github.com/iensen/genparser/blob/master/docs/main/astgen.pdf
+The L lexicon and grammar in use are located at:
+https://github.com/iensen/LtoASPtranslator/tree/master/src
+
+2.2. TRANSFORMER
+
+From a parsed L program produced by the parser, the transformer outputs a parsed ASP program.
+
+The form of a parsed ASP program is detailed at:
+https://github.com/iensen/genparser/blob/master/docs/main/astgen.pdf
+The ASP lexicon and grammar are here:
+https://github.com/iensen/LtoASPtranslator/tree/master/src
+
+The transformer has two submodules: rewriter and reassembler. The control flow is:
+    parsed L program
+        |
+        |   (preprocessing: list_to_dict)
+        |
+        |   rewriter
+        |
+        V
+    incomplete dictionary parsed ASP program
+        |
+        |   reassembler
+        |
+        |   (postprocessing: dict_to_list)
+        |
+        V
+    parsed ASP program
+    
+Note: The pre- and post- processing functions alter the data type (list/dictionary) of a program to meet the specific need (consistency/convenience).
+
+2.2.1. REWRITER
+
+An input of the rewriter is a dictionary parsed L program. This module rewrites an L [constant declaration / type declaration / rule] into an ASP [constant definition / sort definition / rule]. The output is an incomplete dictionary parsed ASP program.
+
+This "ASP program" is incomplete because:
+
+    (1)
+        In L, ground terms in rules are unrequired to be members of declared types.
+        But in ASP, such terms must be members of defined sorts.
+
+    (2)
+        L has no syntax for declaring predicates.
+        Yet ASP requires such declarations.
+
+This lack will be remedied by the following submodule: reassembler.
+
+2.2.2. REASSEMBLER
+
+The reassembler intakes an incomplete dictionary parsed ASP program from the previous submodule. Then it outputs a dictionary parsed ASP program.
+
+The reassembler remedies its incomplete "ASP program" input by:
+
+    (1)
+        Defining the sort #rule_gterms, whose members are ground terms extracted from rules.
+        
+    (2)
+        Declaring predicates found in rules. In detail:
+            
+            (a)
+                Define the sort #types, which is the union of defined sorts rewritten from declared types.
+                
+            (b)
+                Define the sort #universal, which is the union of the sorts #types and #rule_gterms.
+                
+            (c)
+                For instance, if a rule has a predicate p with arity 2, then declare it as: p(#universal, #universal).
+
+2.3. UNPARSER
+
+Given a parsed ASP program from the transformer, this module writes the corresponding ASP program.
