@@ -2,8 +2,15 @@ L-ASP TRANSLATOR SPECIFICATION
 
 The translator is found at:
 https://github.com/iensen/LtoASPtranslator/blob/master/src/translator.py
-The command-line syntax is:
-python translator.py <path to L program>
+Using a command-line interface:
+    1.  Change the directory to: src
+    2.  Provide an input L program and request an output ASP program:
+            python translator.py <path_to_input_file> [> path_to_output_file]
+For example:
+    cd/d E:/LtoASPtranslator/src
+    python translator.py file_L                     (print on screen)
+    python translator.py file_L     >   file_ASP    (overwrite output file)
+    python translator.py file_L     >>  file_ASP    (append to output file)
 
 1. DESCRIPTION
 
