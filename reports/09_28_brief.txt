@@ -1,0 +1,51 @@
+L-ASP TRANSLATOR: 09/28 BRIEF REPORT
+
+Notes:
+    Please use a text viewer which supports optional word wrap
+    This GitHub repository can be downloaded:
+        https://github.com/iensen/LtoASPtranslator/archive/master.zip
+    It can also be cloned in desktop:
+        https://github.com/iensen/LtoASPtranslator
+  
+In addition to what could be translated from L to ASP as of the 09/07 monthly report, we add:
+    Arithmetic operators: +, -, *, /, %
+    Comparison operators: =, !=, <, <=, >, >=
+    Set expressions:
+        Ranges: {m..n}
+        Constructors:
+            With the form: 
+                func(Var_1,...,Var_n) where Var_1 in type_1,...,Var_n in type_n
+            For example:
+                f(V2, V1, V2) where V1 in t1, V2 in t2
+    
+To sum up what has been done so far:
+    We can only translate an L program in which:
+        (1) Integers are nonnegative
+        (2) Terms are either:
+                Constants
+                    or
+                Ground functional terms 
+                    or
+                Basic variables
+                    or
+                Basic typed variables
+        (3) A set expression is either:
+                A nonempty set, such as: {a, 2, f(0)}
+                    or
+                A range
+                    or
+                A constructor of the form: f(V1,...,Vn) where V1 in t1,...,Vn in tn
+                    or
+                A type name, such as: type1
+                    or
+                A union/intersection/difference of set expressions
+        (4) Rules are already in ASP-form, such as:
+                p0 or p1(type1 X) if p2(X, f(2)) and not p3(a, 2, X).
+    Also, this L feature is not supported yet:
+        A functional term which has a functional proper subterm 
+
+On how to run the translator, please consult: docs/translator_spec.txt
+        
+Examples are .sp files in: src/examples/. Especially:
+    ch5_simple
+    student_evaluation
