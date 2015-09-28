@@ -58,6 +58,8 @@ def unparse_sdefs(T):
         return unparse_sdefs(T[1]) + '(' + unparse_sdefs(T[2]) + ')'
     elif T[0] == 'set':
         return '{' + unparse_sdefs(T[1]) + '}'
+    elif T[0] == 'range':
+        return T[1][1][1] + '..' + T[2][1][1]
     elif T[0] == 'sname':
         return '#' + unparse_sdefs(T[1])
     elif T[0] in labels.set_ops:
@@ -123,6 +125,8 @@ unparse_rules: list -> str
 def unparse_rules(T):
     if T[0] in labels.lexemes:
         return T[1]
+    if T[0] in labels.ar_ops and type(T) == tuple:
+        return ' ' + T[1] + ' '
     elif T[0] == 'sname':
         return '#' + unparse_rules(T[1])
     elif T[0] in labels.cut_root_comma:
@@ -132,6 +136,8 @@ def unparse_rules(T):
         return st
     elif T[0] == 'func':
         return unparse_rules(T[1]) + '(' + unparse_rules(T[2]) + ')'
+    elif T[0] in labels.comp_ops:
+        return ' ' + T[1] + ' '
     elif T[0] == 'satom':
         return unparse_rules(T[1]) + '(' + unparse_rules(T[2]) + ')'
     elif T[0] == 'patom':

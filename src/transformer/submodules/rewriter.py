@@ -36,6 +36,19 @@ rewrite_tdecls: list -> list
 def rewrite_tdecls(T):
     if T[0] in labels.lexemes:
         return T
+    elif T[0] == 'sconstr':
+        Dict = {}
+        for tvar in T[2][1:]:
+            vname = tvar[1]
+            tname = tvar[2]
+            Dict[vname] = tname
+        terms = ['terms']
+        for bt in T[1][2][1:]:
+            vname = bt[1][1]
+            tname = Dict[vname]
+            terms += [['bt', ['sname', tname]]]
+        fname = T[1][1]
+        return ['sconstr', ['func', fname, terms]]
     elif T[0] in labels.set_ops:
         tr = T[:1]
         for t in T[1:]:
@@ -134,10 +147,12 @@ Output: a parsed ASP rule without corresponding sort atoms:
 reshape: list -> list
 '''
 def reshape(T):
-    if T[0] in labels.lexemes:
+    if T[0] in labels.lexemes | labels.ar_ops:
         return T
     elif T[0] == 'tvar':
         return ['var', T[2]]
+    elif T[0] in labels.comp_ops:
+        return T
     elif T[0] == 'neg_literal':
         return ['not_literal', reshape(T[1])]
     elif T[0] == 'rule':

@@ -1,6 +1,5 @@
-program(prog S) ::= sorts_keyw sort_defs(S)
-program(prog P R) ::= predicates_keyw pred_decls(P) rules_keyw rules(R)
 program(prog S P R) ::= sorts_keyw sort_defs(S) predicates_keyw pred_decls(P) rules_keyw rules(R)
+
 
 sort_defs(sdefs S) ::= sort_def(S)
 sort_defs(sdefs S cut_root(Ss)) ::= sort_def(S) sort_defs(Ss)
@@ -22,11 +21,13 @@ number(neg N) ::= minus numeral(N)
 
 term(bt T) ::= basic_term(T)
 term(qt T) ::= quantified_term(T)
+
 basic_term(const C) ::= identifier(C)
 basic_term(var V) ::= variable(V)
 basic_term(num N) ::= number(N)
 basic_term(T) ::= arithmetic_term(T)
 basic_term(F) ::= functional_term(F)
+basic_term(S) ::= sort_name(S)
 
 ground_term(const C) ::= identifier(C)
 ground_term(num N) ::= number(N)
@@ -101,12 +102,9 @@ set(set Ts) ::= lcurparen ground_terms(Ts) rcurparen
 limit(I) ::= identifier(I)
 limit(N) ::= number(N)
 limit(A) ::= ground_arithmetic_term(A)
-range(range L R) ::= lcurparen limit(L) dot dot limit(R) rcurparen
+range(range L R) ::= limit(L) dot dot limit(R)
 set_expr(S) ::= ST0(S)
-set_constr(sconstr T Vs) ::= basic_term(T) where tvars(Vs)
-tvars(tvars V) ::= tvar(V)
-tvars(tvars V cut_root(Vs)) ::= tvar(V) comma tvars(Vs)
-tvar(tvar V T) ::= variable(V) in identifier(T)
+set_constr(sconstr T) ::= basic_term(T)
 
 ST0(S) ::= ST1(S)
 ST0(union S1 S2) ::= ST0(S1) plus ST1(S2)
