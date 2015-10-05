@@ -1,0 +1,40 @@
+L-ASP TRANSLATOR: 10/04 MONTHLY REPORT
+
+In addition to what could be translated from L to ASP as of the 09/28 brief report, we add:
+    Non-quantified rules with mixed negation/conjunction/disjunction, such as:
+        not (p0(t1 X1, t2 X2, t3 X3) or p1(X3, X2, X1)) if 
+            p2(X1) or p3(a, X2, X3) and p4.
+
+To sum up what has been done so far:
+    We can only translate an L program in which:
+        (1) Integers are nonnegative
+        (2) Terms are either:
+                Constants
+                    or
+                Ground functional terms 
+                    or
+                Basic variables
+                    or
+                Basic typed variables
+        (3) A set expression is either:
+                A nonempty set
+                    or
+                A range
+                    or
+                A constructor of the form: f(V1,...,Vn) where V1 in t1,...,Vn in tn
+                    or
+                A type name
+                    or
+                A union/intersection/difference of set expressions
+    Also, this L feature is not supported yet:
+        A functional term which has a functional proper subterm 
+
+The module which converts a propositional formula to conjunctive/disjunctive normal form is:
+    src/normalizer.py
+        
+On how to run the translator, please consult: docs/translator_spec.txt
+        
+Examples are .sp files in: src/examples/. Especially:
+    formula_rules
+    ch5_simple
+    student_evaluation

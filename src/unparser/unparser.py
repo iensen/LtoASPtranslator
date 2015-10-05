@@ -59,7 +59,7 @@ def unparse_sdefs(T):
     elif T[0] == 'set':
         return '{' + unparse_sdefs(T[1]) + '}'
     elif T[0] == 'range':
-        return T[1][1][1] + '..' + T[2][1][1]
+        return T[1][1] + '..' + T[2][1]
     elif T[0] == 'sname':
         return '#' + unparse_sdefs(T[1])
     elif T[0] in labels.set_ops:
