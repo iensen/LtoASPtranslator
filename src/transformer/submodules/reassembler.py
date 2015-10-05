@@ -219,8 +219,8 @@ find_predicates: find predicate names and arities from rules
 
 Input: parsed ASP rules:
 ['rules', ['fact', ['head', ['disj', 
-    ['unit',..., ['patom', ('identifier', 'p0')]], 
-    ['unit',..., ['patom', ('identifier', 'p1'), 
+    [...['patom', ('identifier', 'p0')]], 
+    [...['patom', ('identifier', 'p1'), 
         ['terms,...]]]]]],...]
         
 Output: a set of pairs of predicate names and arities:

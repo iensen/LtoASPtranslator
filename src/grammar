@@ -5,8 +5,8 @@ statement(T) ::= type_decl(T)
 statement(R) ::= rule(R)
 statement(C) ::= const_decl(C)
 
-number(pos N) ::= numeral(N)
-number(neg N) ::= minus numeral(N)
+number(N) ::= numeral(N)
+number(neg_num N) ::= minus numeral(N)
 
 term(bt T) ::= basic_term(T)
 term(qt T) ::= quantified_term(T)
@@ -51,9 +51,9 @@ infix(I) ::= infix_2(I)
 
 
 T0(T) ::= T1(T)
-T0(add T1 I T2) ::= T0(T1) infix_1(I) T1(T2)
+T0(sum T1 I T2) ::= T0(T1) infix_1(I) T1(T2)
 T1(T) ::= T2(T)
-T1(mult T1 I T2) ::= T1 infix_2(I) T2
+T1(product T1 I T2) ::= T1 infix_2(I) T2
 T2(T) ::= lparen T0(T) rparen
 T2(V) ::= variable(V)
 T2(tvar I V) ::= identifier(I) variable(V)
@@ -62,9 +62,9 @@ T2(I) ::= identifier(I)
 
 
 T0_g(T) ::= T1(T)
-T0_g(add T1 I T2) ::= T0_g(T1) infix_1(I) T1_g(T2)
+T0_g(sum T1 I T2) ::= T0_g(T1) infix_1(I) T1_g(T2)
 T1_g(T) ::= T2_g(T)
-T1_g(mult T1 I T2) ::= T1_g(T1) infix_2(I) T2_g(T2)
+T1_g(product T1 I T2) ::= T1_g(T1) infix_2(I) T2_g(T2)
 T2_g(T) ::= lparen T0_g(T) rparen
 T2_g(N) ::= number(N)
 T2_g(I) ::= identifier(I)
@@ -129,9 +129,9 @@ op(O) ::= eq(O)
 
 s0(A) ::= atom(A)
 s0(S) ::= lparen s3(S) rparen
-s1(literal A) ::= s0(A)
-s1(neg_literal A) ::= not s0(A)
-s2(unit L) ::= s1(L)
+s1(A) ::= s0(A)
+s1(neg_class A) ::= not s0(A)
+s2(L) ::= s1(L)
 and_s(and) ::= and(A)
 and_s(and) ::= comma(A)
 s2(conj L1 L2) ::= s2(L1) and_s s1(L2)
@@ -142,9 +142,9 @@ sentence(sent S) ::= s3(S)
 
 p_s0(A) ::= predicate_atom(A)
 p_s0(S) ::= lparen p_s3(S) rparen
-p_s1(literal A) ::= p_s0(A)
-p_s1(neg_literal A) ::= not p_s0(A)
-p_s2(unit L) ::= p_s1(L)
+p_s1(A) ::= p_s0(A)
+p_s1(neg_class A) ::= not p_s0(A)
+p_s2(L) ::= p_s1(L)
 p_s2(conj L1 L2) ::= p_s2(L1) and_s p_s1(L2)
 p_s3(T) ::= p_s2(T)
 p_s3(disj T1 T2) ::= p_s3(T1) or p_s2(T2)

@@ -381,6 +381,9 @@ safety_justified_for_2000plus_levels.
 
 tls_met if required_height_keeping_accuracy_met.
 
+controlled(residual_risk R) if mitigated(R) or tolerable(R).
+
+
 /* **********************************************************************
  *
  * COMPLEX RULES
@@ -388,9 +391,6 @@ tls_met if required_height_keeping_accuracy_met.
  * ********************************************************************** */
 
 /*
-
-controlled(residual_risk R) if mitigated(R) or tolerable(R).
-
 risks_controlled if 
                   controlled(risk(every hazard527)).
 

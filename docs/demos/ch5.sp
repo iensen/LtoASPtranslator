@@ -158,8 +158,6 @@ safety_reqts_fully_realised :-
 
 srs_are_fully_traceable_to_concept.
 
-controlled(R) :- #residual_risk(R), mitigated(R).
-controlled(R) :- #residual_risk(R), tolerable(R).
 mitigated(level_busts). 
 mitigated(asac_usage_risks). 
 tolerable(wake_vortices).
@@ -473,6 +471,9 @@ safety_constraints_satisfied:-
 
 safety_proven_for_2001_levels. 
 safety_justified_for_2000plus_levels.
+
+controlled(R) :- #residual_risk(R), mitigated(R).
+controlled(R) :- #residual_risk(R), tolerable(R).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %

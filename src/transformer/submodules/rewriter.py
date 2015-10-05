@@ -1,6 +1,7 @@
 import sys
 sys.path.insert(0, '../..')
 import labels
+import normalizer
 
 '''
 rewrite: rewrite a dictionary parsed L program into an incomplete dictionary parsed ASP program
@@ -93,11 +94,13 @@ def rewrite_rules(T):
     rewritten = ['rules']
     for t in T[1:]:
         List = tvars_to_satoms(t)
+        
         t = reshape(t)
+        
         if List != []:
             if t[0] == 'fact':
                 t[0] = 'rule'
-                body = ['unit', List[0]]
+                body = List[0]
                 for l in List[1:]:
                     body = ['conj', body, l]
                 body = ['body', body]
@@ -105,7 +108,18 @@ def rewrite_rules(T):
             else:
                 for l in List:
                     t[2][1] = ['conj', t[2][1], l]
-        rewritten += [t]
+        
+        if t[0] == 'fact':
+            disjs = normalizer.flatten(normalizer.normalize(t[1][1], 'CNF'), 'CNF')
+            for disj in disjs:
+                rewritten += [['fact', ['head', disj]]]
+        else:
+            disjs = normalizer.flatten(normalizer.normalize(t[1][1], 'CNF'), 'CNF')
+            conjs = normalizer.flatten(normalizer.normalize(t[2][1], 'DNF'), 'DNF')
+            for disj in disjs:
+                for conj in conjs:
+                    rewritten += [['rule', ['head', disj], ['body', conj]]]
+
     return rewritten
 
 ########## ########## ########## ########## ########## ########## ########## ##########
@@ -153,8 +167,8 @@ def reshape(T):
         return ['var', T[2]]
     elif T[0] in labels.comp_ops:
         return T
-    elif T[0] == 'neg_literal':
-        return ['not_literal', reshape(T[1])]
+    elif T[0] == 'neg_class':
+        return ['neg_class', reshape(T[1])]
     elif T[0] == 'rule':
         if len(T) == 2:
             return ['fact', ['head', reshape(T[1][1])]]

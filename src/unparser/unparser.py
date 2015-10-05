@@ -19,15 +19,15 @@ def unparse(T):
         if t[0] == 'sdefs':
             sdefs = unparse_sdefs(t)
             if sdefs != '':
-                prog += 'sorts\n\n' + sdefs
+                prog += comment_line + '\nsorts\n' + comment_line + '\n\n' + sdefs
         if t[0] == 'pdecls':
             pdecls = unparse_pdecls(t)
             if pdecls != '':
-                prog += '\npredicates\n\n' + pdecls
+                prog += comment_line + '\npredicates\n' + comment_line + '\n\n' + pdecls
         if t[0] == 'rules':
             rules = unparse_rules(t)
             if rules != '':
-                prog += '\nrules\n\n' + rules
+                prog += '\n' + comment_line + '\nrules\n' + comment_line + '\n\n' + rules
     return prog
 
 ########## ########## ########## ########## ########## ########## ########## ##########
@@ -63,9 +63,9 @@ def unparse_sdefs(T):
     elif T[0] == 'sname':
         return '#' + unparse_sdefs(T[1])
     elif T[0] in labels.set_ops:
-        return unparse_sdefs(T[1]) + labels.set_ops[T[0]] + unparse_sdefs(T[2])
+        return unparse_sdefs(T[1]) + labels.set_ops[T[0]] + '\n\t' + unparse_sdefs(T[2])
     elif T[0] == 'sdef':
-        return unparse_sdefs(T[1]) + ' = ' + unparse_sdefs(T[2]) + '.\n'
+        return unparse_sdefs(T[1]) + ' = \n\t' + unparse_sdefs(T[2]) + '.\n\n'
     else:
         st = ''
         for t in T[1:]:
@@ -113,8 +113,8 @@ unparse_rules: write ASP rules
 Input: parsed ASP rules:
 ['rules', 
     ['rule', 
-        ['head', ['unit', ['literal', ['patom', ('identifier', 'p1')]]]], 
-        ['body', ['unit', ['literal', ['patom', ('identifier', 'p2')]]]]],...]
+        ['head', ['literal', ['patom', ('identifier', 'p1')]]], 
+        ['body', ['literal', ['patom', ('identifier', 'p2')]]]],...]
     
 Output: ASP rules:
 'rules 
@@ -125,7 +125,7 @@ unparse_rules: list -> str
 def unparse_rules(T):
     if T[0] in labels.lexemes:
         return T[1]
-    if T[0] in labels.ar_ops and type(T) == tuple:
+    elif T[0] in labels.ar_ops:
         return ' ' + T[1] + ' '
     elif T[0] == 'sname':
         return '#' + unparse_rules(T[1])
@@ -145,20 +145,26 @@ def unparse_rules(T):
         if len(T) > 2:
             st += '(' + unparse_rules(T[2]) + ')'
         return st
-    elif T[0] == 'not_literal':
+    elif T[0] == 'neg_def':
         return 'not ' + unparse_rules(T[1])
+    elif T[0] == 'neg_class':
+        return '-' + unparse_rules(T[1])
     elif T[0] == 'conj':
-        return unparse_rules(T[1]) + ', ' + unparse_rules(T[2])
+        return unparse_rules(T[1]) + ',\n\t' + unparse_rules(T[2])
     elif T[0] == 'disj':
-        return unparse_rules(T[1]) + ' | ' + unparse_rules(T[2])
+        return unparse_rules(T[1]) + ' |\n' + unparse_rules(T[2])
     elif T[0] == 'constr':
-        return ':- ' + unparse_rules(T[1]) + '.\n'
+        return ':- ' + unparse_rules(T[1]) + '.\n\n'
     elif T[0] == 'fact':
-        return unparse_rules(T[1]) + '.\n'
+        return unparse_rules(T[1]) + '.\n\n'
     elif T[0] == 'rule':
-        return unparse_rules(T[1]) + ' :- ' + unparse_rules(T[2]) + '.\n'
+        return unparse_rules(T[1]) + ' :-\n\t' + unparse_rules(T[2]) + '.\n\n'
     else:
         st = ''
         for t in T[1:]:
             st += unparse_rules(t)
         return st
+
+########## ########## ########## ########## ########## ########## ########## ##########
+
+comment_line = '%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%'

@@ -66,6 +66,6 @@ __pycache__/
 # A different Clingo version for each OS:
 src/solvers/clingo.exe
 
-# Temporary stuff:
-src/test.py
+# Vu's temporary stuff:
 src/tmp/
+src/checker.py
