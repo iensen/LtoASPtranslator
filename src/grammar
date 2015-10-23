@@ -9,7 +9,7 @@ number(N) ::= numeral(N)
 number(neg_num N) ::= minus numeral(N)
 
 term(bt T) ::= basic_term(T)
-term(qt T) ::= quantified_term(T)
+term(T) ::= quantified_term(T)
 basic_term(const C) ::= identifier(C)
 basic_term(var V) ::= variable(V)
 basic_term(num N) ::= number(N)
@@ -77,8 +77,8 @@ functional_term(func I Args) ::= identifier(I) lparen terms(Args) rparen
 basic_terms(bterms T) ::= basic_term(T)
 basic_terms(bterms T cut_root(Ts)) ::= basic_term(T) comma basic_terms(Ts)
 
-quantified_term(qterm Q I V) ::= quantifier(Q) identifier(I) variable(V)
-quantified_term(qterm Q I) ::= quantifier(Q) identifier(I)
+quantified_term(qt Q I V) ::= quantifier(Q) identifier(I) variable(V)
+quantified_term(qt Q I) ::= quantifier(Q) identifier(I)
 
 const_decl(cdecl C T) ::= const identifier(C) eq ground_arithmetic_term(T) dot
 const_decl(cdecl C C1) ::= const identifier(C) eq identifier(C1) dot

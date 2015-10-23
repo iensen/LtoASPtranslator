@@ -1,6 +1,7 @@
 import sys
 sys.path.insert(0, '../..')
 import labels
+import grounder
 import normalizer
 
 '''
@@ -16,7 +17,11 @@ Output: an incomplete dictionary parsed ASP program:
 rewrite: dict -> dict
 '''
 def rewrite(T):
-    return {'sdefs': rewrite_tdecls(T['tdecls']), 'rules': rewrite_rules(T['rules'])}
+    grounded_tdecls = grounder.ground_tdecls(T['tdecls'])
+    grounded_rules = grounder.ground_rules(T['rules'], grounded_tdecls)
+    
+    return {    'sdefs': rewrite_tdecls(T['tdecls']), 
+                'rules': rewrite_rules(grounded_rules)}
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
@@ -94,9 +99,7 @@ def rewrite_rules(T):
     rewritten = ['rules']
     for t in T[1:]:
         List = tvars_to_satoms(t)
-        
         t = reshape(t)
-        
         if List != []:
             if t[0] == 'fact':
                 t[0] = 'rule'
@@ -108,18 +111,20 @@ def rewrite_rules(T):
             else:
                 for l in List:
                     t[2][1] = ['conj', t[2][1], l]
-        
+                    
+        # normalizer start
         if t[0] == 'fact':
             disjs = normalizer.flatten(normalizer.normalize(t[1][1], 'CNF'), 'CNF')
             for disj in disjs:
                 rewritten += [['fact', ['head', disj]]]
-        else:
+        else: # 'rule'
             disjs = normalizer.flatten(normalizer.normalize(t[1][1], 'CNF'), 'CNF')
             conjs = normalizer.flatten(normalizer.normalize(t[2][1], 'DNF'), 'DNF')
             for disj in disjs:
                 for conj in conjs:
                     rewritten += [['rule', ['head', disj], ['body', conj]]]
-
+        # normalizer end
+        
     return rewritten
 
 ########## ########## ########## ########## ########## ########## ########## ##########
@@ -150,7 +155,7 @@ def tvars_to_satoms(T):
     
 '''
 reshape: reshape a parsed L rule with typed variables into a parsed ASP rule without corresponding sort atoms
-(such atoms are generated saparately by the function: tvars_to_satoms)
+(such atoms are generated separately by the function: tvars_to_satoms)
 
 Input: a parsed L rule with typed variables:
 ['rule',...['patom',...['tvar', ('identifier', 't1'), ('variable', 'X1')],...]]
@@ -161,7 +166,7 @@ Output: a parsed ASP rule without corresponding sort atoms:
 reshape: list -> list
 '''
 def reshape(T):
-    if T[0] in labels.lexemes | labels.ar_ops:
+    if type(T) == tuple:
         return T
     elif T[0] == 'tvar':
         return ['var', T[2]]
@@ -172,12 +177,14 @@ def reshape(T):
     elif T[0] == 'rule':
         if len(T) == 2:
             return ['fact', ['head', reshape(T[1][1])]]
-        else:
+        else: # >= 3
             return ['rule', \
                     ['head', reshape(T[1][1])], \
                     ['body', reshape(T[2][1])]]
+    
     else:
         tr = T[:1]
         for t in T[1:]:
+            # print(t)
             tr += [reshape(t)]
         return tr

@@ -11,4 +11,5 @@ file_input = sys.argv[1]
 parsed = main.parse_file(file_input)
 
 if __name__ == '__main__':
-    print(unparse(transform(parsed)))
+    translated = unparse(transform(parsed))
+    print(translated)

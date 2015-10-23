@@ -29,6 +29,9 @@ TRUE = 'true'
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 
+'''
+flatten: list * str -> list
+'''
 def flatten(T, mode):
     Dict = {'CNF': AND, 'DNF': OR}
     List = []
@@ -41,6 +44,9 @@ def flatten(T, mode):
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 
+'''
+normalize: list * str -> list
+'''
 def normalize(T, mode):
     T = NOTing(T)
     
@@ -62,7 +68,10 @@ def normalize(T, mode):
     return T
 
 ########## ########## ########## ########## ########## ########## ########## ##########
-        
+
+'''
+NOTing: list -> list
+'''
 def NOTing(T):
     if T[0] == NOT:
         if T[1][0] == NOT:
@@ -80,6 +89,9 @@ def NOTing(T):
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 
+'''
+ANDing: list -> list
+'''
 def ANDing(T):
     if T[0] == NOT:
         return [NOT, ANDing(T[1])]
@@ -97,6 +109,9 @@ def ANDing(T):
     else:
         return T
         
+'''
+ORing: list -> list
+'''
 def ORing(T):
     if T[0] == NOT:
         return [NOT, ORing(T[1])]
@@ -116,6 +131,9 @@ def ORing(T):
         
 ########## ########## ########## ########## ########## ########## ########## ##########
 
+'''
+elim: list -> list
+'''
 def elim(T):
     global floated
     if T[0] == NOT:
@@ -144,10 +162,10 @@ def elim(T):
         if T[1][0] == TRUE:
             floated = True
             return [TRUE]
-        if T[1] == [NOT, T[2]]:
-            floated = True
-            return [TRUE]
-        elif T[2][0] in {FALSE, TRUE} or T[2] == [NOT, T[1]]:
+        # if T[1] == [NOT, T[2]]:
+            # floated = True
+            # return [TRUE]
+        elif T[2][0] in {FALSE, TRUE}: # or T[2] == [NOT, T[1]]
             return elim([OR, T[2], T[1]])
         elif T[1] == T[2]:
             floated = True
@@ -180,6 +198,9 @@ def list_to_str(T):
     else:
         return unparser.unparse_rules(T)
 
+'''
+parentheses: str * str -> str
+'''
 def parentheses(st, cond):
     if cond:
         st = '(' + st + ')'
