@@ -23,9 +23,9 @@ srs_are_fully_traceable_to_concept. /* Section 5.11.*/
 
 /*Section 5.12 */
 type residual_risk = {level_busts, asac_usage_risks, wake_vortices, mountain_waves,
-                  operation_errors}.
+                  operational_errors}.
 
-residual_risks_are_controlled if
+residual_risks_controlled if
           controlled(every residual_risk).
 
 
@@ -306,7 +306,7 @@ atc_procedure_design_complies_with_SRs if
 
 
 /* The union of G2.5.1.1  and G2.5.2.1 */
-fc_transition_procedures    if atc_transition_procedures_produced,
+atc_transition_procedures    if atc_transition_procedures_produced,
                                atc_transition_procedures_validated.
 
 atc_transition_procedures_produced. /* Section 5.6.3i */
@@ -430,11 +430,11 @@ atc_equipment_design_complies_with_SRs if
 /* Sections 5.8.* */
 
 type mod_to_identify_and_display_apprv_aircraft  = {ifps, rdps, fdps_fps, oldi, back_up_systems}. 
-type mod_to_alert_on_adj_aircraft = {alert_on_adj_aircraft}.
+
 
 /* Node G2.7.1.2 */
 modifications_made_to_identify_and_display_apprv_aircraft if 
-                   modification_made(every  mod_to_display_apprv_aircraft).
+                   modification_made(every   mod_to_identify_and_display_apprv_aircraft).
                    
 type modification =mod_to_identify_and_display_apprv_aircraft  + {alert_on_adj_aircraft}.
 
@@ -445,7 +445,7 @@ modification_made(modification X) if  modification_specified(X),
 
 
 
-modification_specified(alert_on_adj_aircraft) /* Section 5.8.3 */
+modification_specified(alert_on_adj_aircraft). /* Section 5.8.3 */
 modification_specified(ifps). /* Section 5.8.4 */
 modification_specified(rdps). /* Section 5.8.5 */
 modification_specified(fdps_fps). /* Section 5.8.6. */
@@ -457,11 +457,17 @@ modification_specified(back_up_systems). /* Section 5.8.8. */
 complies_with_recommended_practice(every modification). /* Section 5.8.9i */
 validated(every modification). /* Section 5.8.9ii */
 
+
+
 /*
 % Question:
 % no evidence is provided for fps_oldi_messages_display!!!!!!!!!!!!!!!!!!!!!!!!!
 % diagram is also wrong
 */
+
+/*ASSUMPTION*/
+ fps_oldi_messaged_display_rfl.
+/* END OF ASSUMPTION */
 
 /* Section 5.8.10 */
 type hazard5810 = {hm_2_6, hm_2_5, hm_2_17, hm_1_2, hm_2_7, hm_2_8, hm_2_13, 
