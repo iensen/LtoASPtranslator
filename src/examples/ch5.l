@@ -421,14 +421,22 @@ mitigated(hm_2_9).
 /* This corresponds to strategy St 2.7.1 */
 atc_equipment_design_complies_with_SRs if
                            modification_made(alert_on_adj_aircraft),
-                           modification_made(to_display_apprv_aircraft),
+                           modifications_made_to_identify_and_display_apprv_aircraft,
                            fps_oldi_messaged_display_rfl,
                            hazards_mitigated.
 
+ 
 
 /* Sections 5.8.* */
-type mod_to_display_apprv_aircraft  = {ifps, rdps, fdps_fps, oldi, back_up_systems}. 
-type modification = mod_to_display_apprv_aircraft + {alert_on_adj_aircraft}.
+
+type mod_to_identify_and_display_apprv_aircraft  = {ifps, rdps, fdps_fps, oldi, back_up_systems}. 
+type mod_to_alert_on_adj_aircraft = {alert_on_adj_aircraft}.
+
+/* Node G2.7.1.2 */
+modifications_made_to_identify_and_display_apprv_aircraft if 
+                   modification_made(every  mod_to_display_apprv_aircraft).
+                   
+type modification =mod_to_identify_and_display_apprv_aircraft  + {alert_on_adj_aircraft}.
 
 /* this is to merge nodes G 2.7.1.X/2.7.1.X.Y with G2.7.2.X */
 modification_made(modification X) if  modification_specified(X), 
@@ -437,7 +445,7 @@ modification_made(modification X) if  modification_specified(X),
 
 
 
-
+modification_specified(alert_on_adj_aircraft) /* Section 5.8.3 */
 modification_specified(ifps). /* Section 5.8.4 */
 modification_specified(rdps). /* Section 5.8.5 */
 modification_specified(fdps_fps). /* Section 5.8.6. */
