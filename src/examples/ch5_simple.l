@@ -384,7 +384,7 @@ tls_met if required_height_keeping_accuracy_met.
 controlled(residual_risk R) if mitigated(R) or tolerable(R).
 
 /* **********************************************************************
- * NEWLY TRANSLATED
+ * NON-FUNCTIONAL QUANTIFIED TERMS
  * ********************************************************************** */
 
 hazards_mitigated if mitigated(every hazard527).
@@ -409,14 +409,10 @@ hazards_mitigated if mitigated(every hazard5810).
 mitigated(every hazard5810). 
 
 /* **********************************************************************
- *
- * COMPLEX RULES
- *
+ * FUNCTIONAL QUANTIFIED TERMS
  * ********************************************************************** */
 
-/*
 risks_controlled if 
                   controlled(risk(every hazard527)).
 risks_controlled if 
                   controlled(risk(every hazard556)).
-*/

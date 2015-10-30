@@ -11,7 +11,7 @@ type hazard527 = {ht_1_8, ht_1_10, ht_2_2, ht_3_6, ht_1_11}. /*identified in the
 type risk527 = risk(H) where H in hazard527.
 
 /*Section 5.3.7 */
-type hazard527 = {ht_3_5, hm_1_8, hm_2_2, hm_1_15}. 
+type hazard537 = {ht_3_5, hm_1_8, hm_2_2, hm_1_15}. 
 
 /* Section 5.4.6: */
 type hazard546 = {ht_1_9, ht_3_5, hm_2_2, hm_1_6, hm_1_8, hm_1_15}.

@@ -1,8 +1,9 @@
-import sys
-sys.path.insert(0, '../..')
-import labels
 import grounder
 import normalizer
+
+import housekeeper
+
+########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
 rewrite: rewrite a dictionary parsed L program into an incomplete dictionary parsed ASP program
@@ -17,11 +18,11 @@ Output: an incomplete dictionary parsed ASP program:
 rewrite: dict -> dict
 '''
 def rewrite(T):
-    grounded_tdecls = grounder.ground_tdecls(T['tdecls'])
-    grounded_rules = grounder.ground_rules(T['rules'], grounded_tdecls)
-    
-    return {    'sdefs': rewrite_tdecls(T['tdecls']), 
-                'rules': rewrite_rules(grounded_rules)}
+    global g_tdecls
+    g_tdecls = grounder.ground_tdecls(housekeeper.list_to_tuple(T['tdecls']))
+    g_rules = housekeeper.tuple_to_list(grounder.ground_rules(
+                housekeeper.list_to_tuple(T['rules']), g_tdecls))
+    return {'sdefs': rewrite_tdecls(T['tdecls']), 'rules': rewrite_rules(g_rules)}
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
@@ -40,22 +41,12 @@ Output: incomplete parsed ASP sort definitions:
 rewrite_tdecls: list -> list
 '''
 def rewrite_tdecls(T):
-    if T[0] in labels.lexemes:
+    if T[0] in housekeeper.lexemes:
         return T
     elif T[0] == 'sconstr':
-        Dict = {}
-        for tvar in T[2][1:]:
-            vname = tvar[1]
-            tname = tvar[2]
-            Dict[vname] = tname
-        terms = ['terms']
-        for bt in T[1][2][1:]:
-            vname = bt[1][1]
-            tname = Dict[vname]
-            terms += [['bt', ['sname', tname]]]
-        fname = T[1][1]
-        return ['sconstr', ['func', fname, terms]]
-    elif T[0] in labels.set_ops:
+        Tuple = grounder.sconstr_to_set(housekeeper.list_to_tuple(T), g_tdecls)
+        return housekeeper.tuple_to_list(Tuple)
+    elif T[0] in housekeeper.set_ops:
         tr = T[:1]
         for t in T[1:]:
             tr += \
@@ -141,7 +132,7 @@ Output: corresponding ASP sort atoms:
 tvars_to_satoms: list -> list
 '''
 def tvars_to_satoms(T):
-    if T[0] in labels.lexemes:
+    if T[0] in housekeeper.lexemes:
         return []
     elif T[0] == 'tvar':
         sname = ['sname', T[1]]
@@ -170,7 +161,7 @@ def reshape(T):
         return T
     elif T[0] == 'tvar':
         return ['var', T[2]]
-    elif T[0] in labels.comp_ops:
+    elif T[0] in housekeeper.comp_ops:
         return T
     elif T[0] == 'neg_class':
         return ['neg_class', reshape(T[1])]
@@ -185,6 +176,5 @@ def reshape(T):
     else:
         tr = T[:1]
         for t in T[1:]:
-            # print(t)
             tr += [reshape(t)]
         return tr

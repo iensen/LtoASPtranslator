@@ -1,6 +1,6 @@
-import sys
-sys.path.insert(0, '..')
-import labels
+import housekeeper
+
+########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
 unparse: write an ASP program
@@ -47,9 +47,9 @@ Output: ASP sort definitions:
 unparse_sdefs: list -> str
 '''
 def unparse_sdefs(T):
-    if T[0] in labels.lexemes:
+    if T[0] in housekeeper.lexemes:
         return T[1]
-    elif T[0] in labels.cut_root_comma:
+    elif T[0] in housekeeper.cut_root_comma:
         st = unparse_sdefs(T[1])
         for t in T[2:]:
             st += ', ' + unparse_sdefs(t)
@@ -62,8 +62,8 @@ def unparse_sdefs(T):
         return T[1][1] + '..' + T[2][1]
     elif T[0] == 'sname':
         return '#' + unparse_sdefs(T[1])
-    elif T[0] in labels.set_ops:
-        return unparse_sdefs(T[1]) + labels.set_ops[T[0]] + '\n\t' + unparse_sdefs(T[2])
+    elif T[0] in housekeeper.set_ops:
+        return unparse_sdefs(T[1]) + housekeeper.set_ops[T[0]] + '\n\t' + unparse_sdefs(T[2])
     elif T[0] == 'sdef':
         return unparse_sdefs(T[1]) + ' = \n\t' + unparse_sdefs(T[2]) + '.\n\n'
     else:
@@ -86,11 +86,11 @@ Output: predicate declarations:
 unparse_pdecls: list -> str
 '''
 def unparse_pdecls(T):
-    if T[0] in labels.lexemes:
+    if T[0] in housekeeper.lexemes:
         return T[1]
     elif T[0] == 'sname':
         return '#' + unparse_pdecls(T[1])
-    elif T[0] in labels.cut_root_comma:
+    elif T[0] in housekeeper.cut_root_comma:
         st = unparse_pdecls(T[1])
         for t in T[2:]:
             st += ', ' + unparse_pdecls(t)
@@ -123,21 +123,21 @@ Output: ASP rules:
 unparse_rules: list -> str
 '''
 def unparse_rules(T):
-    if T[0] in labels.lexemes:
+    if T[0] in housekeeper.lexemes:
         return T[1]
-    elif T[0] in labels.ar_ops:
+    elif T[0] in housekeeper.ar_ops:
         return ' ' + T[1] + ' '
     elif T[0] == 'sname':
         return '#' + unparse_rules(T[1])
-    elif T[0] in labels.cut_root_comma:
+    elif T[0] in housekeeper.cut_root_comma:
         st = unparse_rules(T[1])
         for t in T[2:]:
             st += ', ' + unparse_rules(t)
         return st
     elif T[0] == 'func':
         return unparse_rules(T[1]) + '(' + unparse_rules(T[2]) + ')'
-    elif T[0] in labels.comp_ops:
-        return ' ' + T[1] + ' '
+    elif T[0] in housekeeper.comp_ops:
+        return ' ' + T[1][0] + ' '
     elif T[0] == 'satom':
         return unparse_rules(T[1]) + '(' + unparse_rules(T[2]) + ')'
     elif T[0] == 'patom':

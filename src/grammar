@@ -8,19 +8,24 @@ statement(C) ::= const_decl(C)
 number(N) ::= numeral(N)
 number(neg_num N) ::= minus numeral(N)
 
-term(bt T) ::= basic_term(T)
+term(T) ::= basic_term(T)
 term(T) ::= quantified_term(T)
+term(F) ::= functional_term(F)
+
 basic_term(const C) ::= identifier(C)
-basic_term(var V) ::= variable(V)
 basic_term(num N) ::= number(N)
+basic_term(var V) ::= variable(V)
 basic_term(tvar T V) ::= identifier(T) variable(V)
 basic_term(T) ::= arithmetic_term(T)
-basic_term(F) ::= functional_term(F)
+basic_term(F) ::= basic_functional_term(F)
+
+basic_functional_term(func I Args) ::= identifier(I) lparen basic_terms(Args) rparen
+
 
 ground_term(const C) ::= identifier(C)
 ground_term(num N) ::= number(N)
 ground_term(F) ::= ground_functional_term(F)
-ground_term(F) ::= ground_arithmetic_term(F)
+ground_term(A) ::= ground_arithmetic_term(A)
 
 ground_functional_term(func I Args) ::= identifier(I) lparen ground_terms(Args) rparen
 ground_terms(gterms T) ::= ground_term(T)
@@ -111,14 +116,14 @@ ST2(S) ::= set(S)
 ST2(I) ::= identifier(I)
 
 atom(P) ::= predicate_atom(P)
-atom(B) ::= build_in_atom(B)
+atom(B) ::= built_in_atom(B)
 predicate_atom(patom I) ::= identifier(I)
 predicate_atom(patom I Ts) ::= identifier(I) lparen terms(Ts) rparen
 
 basic_predicate_atom(patom I) ::= identifier(I)
 basic_predicate_atom(patom I Ts) ::= identifier(I) lparen basic_terms(Ts) rparen
 
-build_in_atom(batom T1 O T2) ::= basic_term(T1) op(O) basic_term(T2)
+built_in_atom(batom T1 O T2) ::= basic_term(T1) op(O) basic_term(T2)
 op(O) ::= less(O)
 op(O) ::= greater(O)
 op(O) ::= lessoreq(O)

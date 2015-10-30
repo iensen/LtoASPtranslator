@@ -12,12 +12,6 @@ For example:
     python normalizer.py examples/formula.l
 '''
 
-import main
-
-import sys
-sys.path.insert(0, 'unparser')
-import unparser
-
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 NOT = 'neg_class'
@@ -218,9 +212,7 @@ if __name__ == '__main__':
         Dict[mode] = normalize(parsed, mode)
         
     print('Input:', list_to_str(parsed), sep = '\n', end = '\n\n')
-    # print('Parsed:\n', parsed, '\n', sep = '')
     
     for mode in modes:
         normalized = Dict[mode]
         print(mode + ':', list_to_str(normalized), sep = '\n', end = '\n\n')
-        # print('Flattened:\n', flatten(normalized, mode), sep = '', end = '\n\n')

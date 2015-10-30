@@ -1,8 +1,7 @@
-import sys
-sys.path.insert(0, '..')
-sys.path.insert(0, 'submodules')
 import rewriter
 import reassembler
+
+########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
 transform: transform a parsed L program into a parsed ASP program
