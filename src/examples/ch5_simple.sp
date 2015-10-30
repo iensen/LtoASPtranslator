@@ -3,13 +3,13 @@ sorts
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
 #residual_risk = 
-	{level_busts, asac_usage_risks, wake_vortices, mountain_waves, operation_errors}.
+	{level_busts, asac_usage_risks, wake_vortices, mountain_waves, operational_errors}.
 
 #hazard527 = 
 	{ht_1_8, ht_1_10, ht_2_2, ht_3_6, ht_1_11}.
 
 #risk527 = 
-	{risk(ht_2_2), risk(ht_1_11), risk(ht_1_10), risk(ht_3_6), risk(ht_1_8)}.
+	{risk(ht_1_11), risk(ht_2_2), risk(ht_1_8), risk(ht_3_6), risk(ht_1_10)}.
 
 #hazard537 = 
 	{ht_3_5, hm_1_8, hm_2_2, hm_1_15}.
@@ -58,7 +58,7 @@ sorts
 	#hazard5910.
 
 #rule_gterms = 
-	{ht_1_2, asac_usage_risks, hm_2_17, hm_2_10, risk(hm_1_3), oldi, to_display_apprv_aircraft, ht_1_10, hm_2_1, hm_2_4, fdps_fps, risk(ht_1_8), risk(ht_3_6), hm_2_13, hm_2_27, hm_1_2, hm_1_10, ht_1_1, ht_1_11, ht_3_5, hm_2_7, back_up_systems, operational_errors, hm_2_11, hm_1_1, rdps, risk(ht_1_10), risk(hm_1_14), wake_vortices, ht_1_5, ht_1_9, hm_2_8, risk(hm_1_14), hm_2_5, alert_on_adj_aircraft, hm_1_15, risk(hm_1_3), mountain_waves, ht_1_8, hm_2_9, hm_2_6, risk(ht_1_11), level_busts, risk(ht_1_11), hm_1_8, hm_1_9, operation_errors, ht_2_2, hm_1_6, ht_3_6, hm_2_2, risk(ht_2_2), ifps, hm_1_13}.
+	{level_busts, hm_1_8, asac_usage_risks, oldi, hm_1_13, hm_1_6, hm_2_5, hm_2_2, ht_1_5, hm_1_1, risk(ht_3_6), risk(ht_1_11), hm_2_10, risk(hm_1_14), fdps_fps, ht_2_2, ht_1_8, hm_2_1, risk(ht_1_10), ifps, operational_errors, hm_2_7, hm_2_17, hm_2_4, risk(ht_1_8), risk(ht_2_2), ht_1_10, hm_1_15, ht_1_2, to_display_apprv_aircraft, back_up_systems, ht_1_11, ht_3_6, rdps, ht_3_5, ht_1_9, hm_2_6, hm_2_11, hm_1_9, hm_1_10, hm_2_8, risk(hm_1_14), mountain_waves, risk(ht_1_11), hm_1_2, ht_1_1, wake_vortices, risk(hm_1_3), hm_2_27, risk(hm_1_3), hm_2_13, alert_on_adj_aircraft, hm_2_9}.
 
 #universal = 
 	#types + 
@@ -68,110 +68,109 @@ sorts
 predicates
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
-fc_transition_procedures_verified().
-fc_rvsm_procedures_validated().
-fc_transition_training_produced().
-fc_flt_planning_procedures_validated().
-all_atc_trainings().
+fc_flt_planning_procedures().
+contingency_facilities_validated_by_competent_staff().
+fc_contigency_training_validated().
+atc_clearance_procedures_produced().
+atc_transition_procedures().
+contingency_facilities_produced_by_competent_staff().
+height_keeping_requirements_covered().
 atc_transition_procedures_validated().
 safety_justified_for_2000plus_levels().
-fc_procedure_design_complies_with_SRs().
-tolerable(#universal).
-fc_contigency_training_validated().
-fc_rvsm_training_produced().
-fc_training_design_complies_with_SRs().
-modification_specified(#universal).
-safety_proven_for_2001_levels().
-fc_rvsm_procedures().
-fc_flt_planning_training().
-fc_transition_training_validated_in_NAT().
-total_vertical_risk_covered().
-monitors_validated().
-states_will_be_required_to_institute_fc().
-atc_training_design_complies_with_SRs().
-contingency_facilities_validated_by_competent_staff().
-fc_rvsm_training_validated_in_NAT().
-atc_procedure_design_complies_with_SRs().
-six_new_RVSM_flight_levels().
-atc_contingency_procedures().
 atc_clearance_procedures_validated().
-fc_flt_planning_training_validated_in_NAT().
-thke_measured_by_monitors().
-atc_contingency_procedures_validated().
-modification_made(#universal).
 original_crm_validated_by_nat().
-atc_rvsm_procedures_produced().
-srs_are_fully_traceable_to_concept().
-all_atc_training_produced_by_competent_staff().
-atc_contingency_procedures_produced().
-all_atc_training_validated().
-tls_met().
-fc_transition_procedures_produced().
-atc_transition_procedures_produced().
+modification_made(#universal).
+fc_rvsm_procedures_validated().
+fc_rvsm_procedures_proved_by_NAT().
+safety_proven_for_2001_levels().
+fc_flt_planning_training().
+fps_oldi_messaged_display_rfl().
+concept_meets_RVSM_safety_requirements().
 crm_shows_tls_met().
+atc_rvsm_procedures().
+fc_flt_contigency_procedures_validated().
+atc_clearance_procedures().
+atc_rvsm_procedures_produced().
+safety_reqts_fully_realised().
+fc_flt_contigency_procedures().
+number_of_non_approved_aircraft_acceptable().
+fc_transition_procedures().
+atc_transition_procedures_produced().
+fc_rvsm_training_validated_in_NAT().
+atc_contingency_procedures().
+fc_rvsm_training_validated().
+crm_scenarios_valid().
+thke_complient_with_masps().
+six_new_RVSM_flight_levels_produced_by_competent_staff().
+atc_contingency_procedures_validated().
+overlap_frequency_verified().
+atc_training_design_complies_with_SRs().
+fc_contigency_training_validated_in_NAT().
+tls_met().
+non_approved_aircraft_excluded().
+operation_error_rate_verified().
+atc_procedure_design_complies_with_SRs().
+safety_constraints_satisfied().
+mitigated(#universal).
+validated(#universal).
+crm_assumptions_are_valid().
+fc_transition_training_validated_in_NAT().
+all_atc_training_produced_by_competent_staff().
+residual_risks_controlled().
+six_new_RVSM_flight_levels().
+fc_procedure_design_complies_with_SRs().
+states_will_be_required_to_institute_fc().
+fc_transition_procedures_verified().
+fc_contigency_training().
+all_atc_trainings().
+atc_equipment_design_complies_with_SRs().
 system_monitoring_complies_with_SRs().
 fc_flt_planning_training_validated().
-contingency_facilities_produced_by_competent_staff().
-atc_clearance_procedures().
 airspace_design_complies_with_SRs().
-fc_flt_contigency_procedures_validated().
-fc_contigency_training().
-fc_transition_training_validated().
-contingency_facilities().
-thke_complient_with_masps().
-fc_contigency_training_validated_in_NAT().
-complies_with_recommended_practice(#universal).
-transition_areas().
-fc_are_aware_of_EUR_RVSM().
-validated(#universal).
-overlap_frequency_verified().
-fc_flt_planning_procedures_proved_by_NAT().
-operational_risk_requirements_covered().
+fc_transition_training_produced().
 fc_rvsm_training().
-number_of_non_approved_aircraft_acceptable().
-rvsm_adapted_crm_validated().
-fc_flt_contigency_procedures().
-safety_reqts_fully_realised().
-masps_height_keeping_accuracy_met().
-safety_constraints_satisfied().
-fc_rvsm_training_validated().
-hazards_mitigated().
-crm_scenarios_valid().
-crm_staff_competent().
-fps_oldi_messaged_display_rfl().
-controlled(#universal).
-crm_assumptions_are_valid().
-operation_error_rate_verified().
-crm_valid().
-fc_procedures().
-atc_clearance_procedures_produced().
-aircraft_equipment_design_complies_with_SRs().
-fc_rvsm_procedures_proved_by_NAT().
-atc_transition_procedures().
-mitigated(#universal).
-fc_contigency_training_produced().
-atc_rvsm_procedures_validated().
-atc_equipment_design_complies_with_SRs().
-number_of_approved_aircraft_acceptable().
-fc_transition_training().
-fc_flt_planning_procedures().
-required_height_keeping_accuracy_met().
-six_new_RVSM_flight_levels_validated_by_competent_staff().
-six_new_RVSM_flight_levels_produced_by_competent_staff().
-risks_controlled().
-fc_transition_procedures().
-concept_meets_RVSM_safety_requirements().
-residual_risks_are_controlled().
+fc_flt_planning_training_validated_in_NAT().
+modification_specified(#universal).
+fc_training_design_complies_with_SRs().
+transition_areas().
+monitors_validated().
+atc_contingency_procedures_produced().
 fc_flt_planning_training_produced().
-transition_areas_produced_by_competent_staff().
-fc_flt_contigency_procedures_produced().
-transition_areas_validated_by_competent_staff().
-height_keeping_requirements_covered().
-non_approved_aircraft_excluded().
-residual_risks_controlled().
-atc_rvsm_procedures().
-fc_rvsm_procedures_produced().
+rvsm_adapted_crm_validated().
+fc_rvsm_training_produced().
+number_of_approved_aircraft_acceptable().
+fc_procedures().
+all_atc_training_validated().
+hazards_mitigated().
+tolerable(#universal).
+crm_valid().
 assumptions_about_alert_rate_validated().
+total_vertical_risk_covered().
+atc_rvsm_procedures_validated().
+srs_are_fully_traceable_to_concept().
+transition_areas_produced_by_competent_staff().
+fc_rvsm_procedures_produced().
+fc_transition_training().
+operational_risk_requirements_covered().
+fc_contigency_training_produced().
+fc_are_aware_of_EUR_RVSM().
+fc_transition_procedures_produced().
+controlled(#universal).
+risks_controlled().
+contingency_facilities().
+fc_flt_planning_procedures_validated().
+masps_height_keeping_accuracy_met().
+fc_transition_training_validated().
+fc_flt_contigency_procedures_produced().
+fc_flt_planning_procedures_proved_by_NAT().
+crm_staff_competent().
+six_new_RVSM_flight_levels_validated_by_competent_staff().
+fc_rvsm_procedures().
+complies_with_recommended_practice(#universal).
+thke_measured_by_monitors().
+aircraft_equipment_design_complies_with_SRs().
+transition_areas_validated_by_competent_staff().
+required_height_keeping_accuracy_met().
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 rules
@@ -429,7 +428,7 @@ atc_procedure_design_complies_with_SRs :-
 	atc_clearance_procedures,
 	hazards_mitigated.
 
-fc_transition_procedures :-
+atc_transition_procedures :-
 	atc_transition_procedures_produced,
 	atc_transition_procedures_validated.
 
@@ -551,6 +550,12 @@ atc_equipment_design_complies_with_SRs :-
 	fps_oldi_messaged_display_rfl,
 	hazards_mitigated.
 
+modification_specified(alert_on_adj_aircraft).
+
+modification_made(to_display_apprv_aircraft).
+
+fps_oldi_messaged_display_rfl.
+
 modification_made(X) :-
 	modification_specified(X),
 	complies_with_recommended_practice(X),
@@ -644,139 +649,139 @@ controlled(R) :-
 	#residual_risk(R).
 
 hazards_mitigated :-
+	mitigated(ht_1_8),
 	mitigated(ht_3_6),
 	mitigated(ht_1_10),
-	mitigated(ht_2_2),
 	mitigated(ht_1_11),
-	mitigated(ht_1_8).
+	mitigated(ht_2_2).
 
 hazards_mitigated :-
-	mitigated(hm_1_8),
-	mitigated(hm_2_2),
 	mitigated(ht_1_9),
-	mitigated(hm_1_6),
-	mitigated(hm_1_15),
-	mitigated(ht_3_5).
-
-hazards_mitigated :-
-	mitigated(ht_1_2),
-	mitigated(hm_2_9),
-	mitigated(hm_2_4),
-	mitigated(ht_1_9),
-	mitigated(hm_1_15),
-	mitigated(hm_1_13),
-	mitigated(ht_2_2),
-	mitigated(hm_2_5),
-	mitigated(hm_2_17),
 	mitigated(ht_3_5),
-	mitigated(hm_2_7),
-	mitigated(ht_3_6),
-	mitigated(ht_1_1),
-	mitigated(ht_1_5),
-	mitigated(hm_1_10),
-	mitigated(hm_1_9),
+	mitigated(hm_2_2),
+	mitigated(hm_1_15),
+	mitigated(hm_1_6),
+	mitigated(hm_1_8).
+
+hazards_mitigated :-
+	mitigated(ht_3_5),
+	mitigated(hm_2_17),
 	mitigated(ht_1_8),
-	mitigated(hm_2_1).
+	mitigated(ht_3_6),
+	mitigated(hm_2_1),
+	mitigated(hm_1_13),
+	mitigated(hm_2_4),
+	mitigated(ht_1_1),
+	mitigated(hm_2_5),
+	mitigated(ht_1_9),
+	mitigated(hm_1_9),
+	mitigated(ht_1_2),
+	mitigated(hm_2_7),
+	mitigated(ht_1_5),
+	mitigated(hm_1_15),
+	mitigated(hm_1_10),
+	mitigated(hm_2_9),
+	mitigated(ht_2_2).
 
 hazards_mitigated :-
 	mitigated(hm_2_2),
 	mitigated(hm_1_1).
 
-residual_risks_are_controlled :-
-	controlled(asac_usage_risks),
+residual_risks_controlled :-
 	controlled(level_busts),
 	controlled(wake_vortices),
 	controlled(mountain_waves),
-	controlled(operation_errors).
+	controlled(operational_errors),
+	controlled(asac_usage_risks).
 
 hazards_mitigated :-
-	mitigated(ht_1_2),
-	mitigated(hm_2_9),
-	mitigated(hm_2_4),
-	mitigated(ht_1_9),
-	mitigated(hm_1_15),
-	mitigated(hm_1_13),
-	mitigated(ht_2_2),
-	mitigated(hm_2_5),
-	mitigated(hm_2_17),
 	mitigated(ht_3_5),
-	mitigated(hm_2_7),
-	mitigated(ht_3_6),
-	mitigated(ht_1_1),
-	mitigated(ht_1_5),
-	mitigated(hm_1_10),
-	mitigated(hm_1_9),
+	mitigated(hm_2_17),
 	mitigated(ht_1_8),
-	mitigated(hm_2_1).
+	mitigated(ht_3_6),
+	mitigated(hm_2_1),
+	mitigated(hm_1_13),
+	mitigated(hm_2_4),
+	mitigated(ht_1_1),
+	mitigated(hm_2_5),
+	mitigated(ht_1_9),
+	mitigated(hm_1_9),
+	mitigated(ht_1_2),
+	mitigated(hm_2_7),
+	mitigated(ht_1_5),
+	mitigated(hm_1_15),
+	mitigated(hm_1_10),
+	mitigated(hm_2_9),
+	mitigated(ht_2_2).
+
+complies_with_recommended_practice(back_up_systems).
 
 complies_with_recommended_practice(rdps).
-
-complies_with_recommended_practice(fdps_fps).
-
-complies_with_recommended_practice(oldi).
 
 complies_with_recommended_practice(ifps).
 
 complies_with_recommended_practice(alert_on_adj_aircraft).
 
-complies_with_recommended_practice(back_up_systems).
+complies_with_recommended_practice(fdps_fps).
+
+complies_with_recommended_practice(oldi).
+
+validated(back_up_systems).
 
 validated(rdps).
-
-validated(fdps_fps).
-
-validated(oldi).
 
 validated(ifps).
 
 validated(alert_on_adj_aircraft).
 
-validated(back_up_systems).
+validated(fdps_fps).
+
+validated(oldi).
 
 hazards_mitigated :-
-	mitigated(hm_2_6),
-	mitigated(hm_2_8),
-	mitigated(ht_1_9),
-	mitigated(hm_2_11),
-	mitigated(hm_2_5),
-	mitigated(hm_1_2),
 	mitigated(hm_2_17),
+	mitigated(hm_1_2),
+	mitigated(hm_2_5),
+	mitigated(hm_2_11),
+	mitigated(ht_1_9),
+	mitigated(hm_2_6),
 	mitigated(hm_2_7),
-	mitigated(hm_2_10),
 	mitigated(hm_2_27),
-	mitigated(hm_2_13).
-
-mitigated(hm_2_6).
-
-mitigated(hm_2_8).
-
-mitigated(ht_1_9).
-
-mitigated(hm_2_11).
-
-mitigated(hm_2_5).
-
-mitigated(hm_1_2).
+	mitigated(hm_2_8),
+	mitigated(hm_2_13),
+	mitigated(hm_2_10).
 
 mitigated(hm_2_17).
 
-mitigated(hm_2_7).
+mitigated(hm_1_2).
 
-mitigated(hm_2_10).
+mitigated(hm_2_5).
+
+mitigated(hm_2_11).
+
+mitigated(ht_1_9).
+
+mitigated(hm_2_6).
+
+mitigated(hm_2_7).
 
 mitigated(hm_2_27).
 
+mitigated(hm_2_8).
+
 mitigated(hm_2_13).
 
-risks_controlled :-
-	controlled(risk(ht_1_10)),
-	controlled(risk(ht_2_2)),
-	controlled(risk(ht_1_11)),
-	controlled(risk(ht_1_8)),
-	controlled(risk(ht_3_6)).
+mitigated(hm_2_10).
 
 risks_controlled :-
-	controlled(risk(hm_1_3)),
-	controlled(risk(hm_1_14)).
+	controlled(risk(ht_1_11)),
+	controlled(risk(ht_1_8)),
+	controlled(risk(ht_3_6)),
+	controlled(risk(ht_1_10)),
+	controlled(risk(ht_2_2)).
+
+risks_controlled :-
+	controlled(risk(hm_1_14)),
+	controlled(risk(hm_1_3)).
 
 

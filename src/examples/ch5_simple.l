@@ -1,5 +1,5 @@
 type residual_risk = {level_busts, asac_usage_risks, wake_vortices, mountain_waves,
-                  operation_errors}.
+                  operational_errors}.
          
 type hazard527 = {ht_1_8, ht_1_10, ht_2_2, ht_3_6, ht_1_11}. 
 
@@ -236,7 +236,7 @@ atc_procedure_design_complies_with_SRs if
                                       atc_clearance_procedures and 
                                       hazards_mitigated.
 
-fc_transition_procedures    if atc_transition_procedures_produced and
+atc_transition_procedures    if atc_transition_procedures_produced and
                                atc_transition_procedures_validated.
 
 atc_transition_procedures_produced. 
@@ -315,10 +315,21 @@ atc_equipment_design_complies_with_SRs if
                            fps_oldi_messaged_display_rfl and
                            hazards_mitigated.
 
+/**************************************************************************************
+ * ASSUMPTIONS TO ENSURE atc_equipment_design_complies_with_SRs
+ **************************************************************************************/
+
+modification_specified(alert_on_adj_aircraft).
+modification_made(to_display_apprv_aircraft).
+fps_oldi_messaged_display_rfl.
+
+/**************************************************************************************
+ * END OF ASSUMPTIONS
+ **************************************************************************************/
+
 modification_made(modification X) if  modification_specified(X) and 
                     complies_with_recommended_practice(X) and
                     validated(X).
-
 
 modification_specified(ifps). 
 modification_specified(rdps). 
@@ -395,7 +406,7 @@ hazards_mitigated if mitigated(every hazard565).
 
 hazards_mitigated if mitigated(every hazard5910).
 
-residual_risks_are_controlled if
+residual_risks_controlled if
           controlled(every residual_risk).
 
 hazards_mitigated if mitigated(every hazard575).
