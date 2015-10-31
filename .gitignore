@@ -68,4 +68,3 @@ src/solvers/clingo.exe
 
 # Vu's temporary stuff:
 src/tmp/
-src/checker.py
