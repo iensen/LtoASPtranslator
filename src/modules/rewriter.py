@@ -172,7 +172,6 @@ def reshape(T):
             return ['rule', \
                     ['head', reshape(T[1][1])], \
                     ['body', reshape(T[2][1])]]
-    
     else:
         tr = T[:1]
         for t in T[1:]:

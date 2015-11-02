@@ -1,0 +1,29 @@
+L-ASP TRANSLATOR: 11/01 MONTHLY REPORT
+
+In addition to what could be translated from L to ASP as of the 10/04 monthly report, we add:
+    (1) Abitrary set constructors
+    (2) Nested functional terms
+    (3) Quantified terms of the form:
+            <quantifier> <type_name>
+
+As of now, the unsupported L constructs are:
+    (1) Quantified terms of the form:
+            some <type_name> <variable_name>
+    (2) Constant declarations
+    (3) Cardinality constraints
+    (4) Maybe literals
+    (5) Empty types
+    (6) Negative integers
+
+References:
+    Examples:
+        https://github.com/iensen/LtoASPtranslator/tree/master/src/examples
+        (Look for pairs of .l and .sp files. Especially: ch5 and func_terms.)
+    How to run the translator:
+        https://github.com/iensen/LtoASPtranslator/blob/master/src/translator.py
+    How to run the module 'normalizer' as a stand-alone program:
+        https://github.com/iensen/LtoASPtranslator/blob/master/src/modules/normalizer.py
+    Translator spec:
+        https://github.com/iensen/LtoASPtranslator/blob/master/translator_spec.txt
+    L spec:
+        https://github.com/iensen/LtoASPtranslator/blob/master/Lspec/Lspec.pdf

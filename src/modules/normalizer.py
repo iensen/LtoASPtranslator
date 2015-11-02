@@ -1,21 +1,23 @@
 '''
-This 'normalizer' module converts a propositional formula into conjunctive/disjunctive normal form
+This 'normalizer' module converts a propositional formula into conjunctive/disjunctive normal form.
 
 To use the module as a stand-alone program:
     1.  Write an L program, whose sole statement is a fact, 
-        which represents a propositional formula
+        which represents a propositional formula.
     2.  Via a command-line interface:
         a.  Change the directory to src/modules
         b.  Call 'normalizer':
                 python normalizer.py <path_to_L_program>
                 
-An example (Python 3.4.3):
-    1.  See src/examples/formula.l
+An example:
+    1.  See:
+        https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/formula.l
     2.  Windows Command Prompt:
         a.  Type:
                 cd/d E:\LtoASPtranslator\src\modules
         b.  Type:
                 python normalizer.py ../examples/formula.l
+            (Python 3.4.3)
 '''
 
 ########## ########## ########## ########## ########## ########## ########## ##########
