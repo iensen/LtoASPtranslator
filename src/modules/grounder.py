@@ -1,8 +1,7 @@
-import sys
-sys.path.insert(0, 'modules')
-
 import housekeeper
 
+########## ########## ########## ########## ########## ########## ########## ##########
+########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
@@ -56,10 +55,6 @@ def ground_set_expr(T, D):
     else: # 'diff'
         return ground_set_expr(T[1], D) - ground_set_expr(T[2], D)
     
-########## ########## ########## ########## ########## ########## ########## ##########
-########## ########## ########## ########## ########## ########## ########## ##########
-########## ########## ########## ########## ########## ########## ########## ##########
-
 '''
 sconstr_to_set: tuple * dict(str: set(tuple)) -> tuple
 '''
@@ -77,7 +72,6 @@ def sconstr_to_set(T, type_sets):
     tr = ('set', gterms)
     return tr
 
-########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
 
@@ -118,7 +112,7 @@ def ground_bterm(T, D):
         vname = T[1][1]
         Set = D[vname]
         return Set
-    else: # in housekeeper.bterms
+    else: # in housekeeper.basic_terms
         return {T}
 
 '''
@@ -154,7 +148,7 @@ def bterm_is_ground(T):
         return False
     elif T[0] == 'func':
         return bfunc_is_ground(T)
-    else: # in {'ar_term', 'const', 'num'}
+    else: # in housekeeper.basic_terms
         return True
 
 '''
@@ -211,10 +205,11 @@ def ground_patom(T, D):
         for g_terms in g_termss[1:]:
             g_terms_i = g_terms
             patom_i = header + (g_terms_i,)
-            tr = [conn, tr, patom_i]
+            tr = (conn, tr, patom_i)
             
         return tr
 
+########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
@@ -322,5 +317,3 @@ def quant_func(T):
         if quant != 'basic':
             return quant
     return 'basic'
-      
-########## ########## ########## ########## ########## ########## ########## ##########

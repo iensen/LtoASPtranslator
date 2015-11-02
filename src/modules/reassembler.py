@@ -3,6 +3,8 @@ import grounder
 import housekeeper
 
 ########## ########## ########## ########## ########## ########## ########## ##########
+########## ########## ########## ########## ########## ########## ########## ##########
+########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
 reassemble: reassemble an incomplete dictionary parsed ASP program into a dictionary parsed ASP program
@@ -192,17 +194,17 @@ def extract_rule_gterms(T):
             Set |= extract_rule_gterms(t)
         return Set
 
-'''
-extract_rule_func: extract a rule ground functional term from a rule functional term
+# '''
+# extract_rule_func: extract a rule ground functional term from a rule functional term
 
-Input: a tuple parsed ASP rule functional term:
-('func', ('identifier', 'f'), ('terms', ('bt', ('const', ('identifier', 'a'))),...))
+# Input: a tuple parsed ASP rule functional term:
+# ('func', ('identifier', 'f'), ('terms', ('bt', ('const', ('identifier', 'a'))),...))
 
-Output: a set of a tuple parsed ASP rule ground functional term:
-{('func', ('identifier', 'f'), ('gterms', ('const', ('identifier', 'a')),...))}
+# Output: a set of a tuple parsed ASP rule ground functional term:
+# {('func', ('identifier', 'f'), ('gterms', ('const', ('identifier', 'a')),...))}
 
-extract_rule_func: tuple -> set
-'''
+# extract_rule_func: tuple -> set
+# '''
 # def extract_rule_func(T):
     # Tuple = ()
     # for t in T[2][1:]:
@@ -247,5 +249,3 @@ def find_predicates(T):
         for t in T[1:]:
             Set |= find_predicates(t)
         return Set
-        
-########## ########## ########## ########## ########## ########## ########## ##########

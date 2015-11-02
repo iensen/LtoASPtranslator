@@ -11,6 +11,6 @@ type t10 = f1(V2, d, f2(V1, f3(5))) where V2 in t2, V1 in t1.
 
 
 p1(a1, f1(every t2, 2, f3(every t1))) and p2(f5(f7(1), some t2)) if 
-not p3 or p9(0, f28(some t2, some t1, 3, f16(some t2))).
+    not p3 or p9(0, f28(some t2, some t1, 3, f16(some t2))).
 
 q1(a1, g1(every t3, g2(a4, g4(every t10, 3)))).

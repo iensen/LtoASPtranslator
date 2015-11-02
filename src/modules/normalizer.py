@@ -1,16 +1,26 @@
 '''
-This module 'normalizer' converts a propositional formula to conjunctive/disjunctive normal form.
+This 'normalizer' module converts a propositional formula into conjunctive/disjunctive normal form
 
-Using a command-line interface:
-    1.  Change the directory to: src
-    2.  Provide an input formula in the form of an L program whose 
-        sole statement is a head-only rule (such as: not(p and (q or r))):
-            python normalizer.py <path_to_input_formula>
-        
-For example:
-    cd/d E:/LtoASPtranslator/src
-    python normalizer.py examples/formula.l
+To use the module as a stand-alone program:
+    1.  Write an L program, whose sole statement is a fact, 
+        which represents a propositional formula
+    2.  Via a command-line interface:
+        a.  Change the directory to src/modules
+        b.  Call 'normalizer':
+                python normalizer.py <path_to_L_program>
+                
+An example (Python 3.4.3):
+    1.  See src/examples/formula.l
+    2.  Windows Command Prompt:
+        a.  Type:
+                cd/d E:\LtoASPtranslator\src\modules
+        b.  Type:
+                python normalizer.py ../examples/formula.l
 '''
+
+########## ########## ########## ########## ########## ########## ########## ##########
+
+import unparser
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 
@@ -43,7 +53,6 @@ normalize: list * str -> list
 '''
 def normalize(T, mode):
     T = NOTing(T)
-    
     global floated
     
     floated = True
@@ -51,7 +60,7 @@ def normalize(T, mode):
         floated = False
         if mode == 'CNF':
             T = ORing(T)
-        else:
+        else: # 'DNF'
             T = ANDing(T)
             
     floated = True
@@ -87,7 +96,7 @@ def NOTing(T):
 ANDing: list -> list
 '''
 def ANDing(T):
-    if T[0] == NOT:
+    if T[0] == NOT: # 'NOTing' is called first in 'normalize'
         return [NOT, ANDing(T[1])]
     elif T[0] == AND:
         if T[1][0] == OR:
@@ -107,7 +116,7 @@ def ANDing(T):
 ORing: list -> list
 '''
 def ORing(T):
-    if T[0] == NOT:
+    if T[0] == NOT: # 'NOTing' is called first in 'normalize'
         return [NOT, ORing(T[1])]
     elif T[0] == AND:
         return [AND, ORing(T[1]), ORing(T[2])]
@@ -156,11 +165,14 @@ def elim(T):
         if T[1][0] == TRUE:
             floated = True
             return [TRUE]
+            
+        # classical negation: the excluded middle :
         # if T[1] == [NOT, T[2]]:
             # floated = True
             # return [TRUE]
         elif T[2][0] in {FALSE, TRUE}: # or T[2] == [NOT, T[1]]
             return elim([OR, T[2], T[1]])
+            
         elif T[1] == T[2]:
             floated = True
             return elim(T[1])
@@ -201,8 +213,13 @@ def parentheses(st, cond):
     return st
     
 ########## ########## ########## ########## ########## ########## ########## ##########
-        
+
 if __name__ == '__main__':
+    import sys
+    sys.path.insert(0, '..')
+    
+    import main
+
     file_input = sys.argv[1]
     parsed = main.parse_file(file_input)[0][1][1]
 
