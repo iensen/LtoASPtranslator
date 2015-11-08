@@ -82,7 +82,6 @@ functional_term(func I Args) ::= identifier(I) lparen terms(Args) rparen
 basic_terms(bterms T) ::= basic_term(T)
 basic_terms(bterms T cut_root(Ts)) ::= basic_term(T) comma basic_terms(Ts)
 
-quantified_term(qt Q I V) ::= quantifier(Q) identifier(I) variable(V)
 quantified_term(qt Q I) ::= quantifier(Q) identifier(I)
 
 const_decl(cdecl C T) ::= const identifier(C) eq ground_arithmetic_term(T) dot

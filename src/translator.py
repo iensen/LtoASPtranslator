@@ -25,8 +25,6 @@ An example, with Windows Command Prompt:
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 
-import main
-
 import sys
 sys.path.insert(0, 'modules')
 
@@ -50,6 +48,7 @@ def assign(p):
 ########## ########## ########## ########## ########## ########## ########## ##########
     
 if __name__ == '__main__':
+    import main
     file_input = sys.argv[1]
     parsed = main.parse_file(file_input)
     assign(parsed)
