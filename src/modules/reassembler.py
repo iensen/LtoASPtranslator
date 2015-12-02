@@ -22,10 +22,10 @@ Output: a dictionary parsed ASP program:
 reassemble: dict -> dict
 '''
 def reassemble(T):
-    return {
-            'sdefs': combine_sdefs(T), 
-            'pdecls': introduce_pdecls(find_predicates(T['rules'])), 
-            'rules': T['rules']}
+    return {    'cdefs': T['cdefs'],
+                'sdefs': combine_sdefs(T), 
+                'pdecls': introduce_pdecls(find_predicates(T['rules'])), 
+                'rules': T['rules']}
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
@@ -47,18 +47,18 @@ Output: parsed ASP sort definitions:
 combine_sdefs: dict -> list
 '''
 def combine_sdefs(T):
-    tr = ['sdefs']
+    tr = 'sdefs',
     for t in T['sdefs'][1:]:
-        tr += [t]
+        tr += t,
     types = add_sdef_types(T['sdefs'])
-    if types != []:
-        tr += [types]
-    rule_gterms = add_sdef_rule_gterms(extract_rule_gterms(housekeeper.list_to_tuple(T['rules'])))
-    if rule_gterms != []:
-        tr += [rule_gterms]
+    if types != ():
+        tr += types,
+    rule_gterms = add_sdef_rule_gterms(extract_rule_gterms(T['rules']))
+    if rule_gterms != ():
+        tr += rule_gterms,
     universal = add_sdef_universal(T)
-    if universal != []:
-        tr += [universal]
+    if universal != ():
+        tr += universal,
     return tr
     
 ########## ########## ########## ########## ########## ########## ########## ##########
@@ -76,12 +76,13 @@ add_sdef_types: list -> list
 '''
 def add_sdef_types(T):
     if len(T) == 1:
-        return []
+        return ()
     else:
         tr = T[1][1]
         for t in T[2:]:
-            tr = ['union', tr, t[1]]
-        return ['sdef', ['sname', ('identifier', 'types')], tr]
+            tr = 'union', tr, t[1]
+        tr = 'sdef', ('sname', ('identifier', 'types')), tr
+        return tr
 
 '''
 add_sdef_rule_gterms: add the sort definition of #rule_gterms, whose members are ground terms extracted from rules
@@ -97,12 +98,13 @@ add_sdef_rule_gterms: set -> list
 '''
 def add_sdef_rule_gterms(T):
     if T == set():
-        return []
+        return ()
     else:
-        tr = ['gterms']
+        tr = 'gterms',
         for t in T:
-            tr += [housekeeper.tuple_to_list(t)]
-        return ['sdef', ['sname', ('identifier', 'rule_gterms')], ['set', tr]]
+            tr += t,
+        tr = 'sdef', ('sname', ('identifier', 'rule_gterms')), ('set', tr)
+        return tr
 
 '''
 add_sdef_universal: add the sort definition of #universal, which is the union of the sorts #types and #rule_gterms
@@ -119,18 +121,18 @@ add_sdef_universal: dict -> list
 '''
 def add_sdef_universal(T):
     types = add_sdef_types(T['sdefs'])
-    rule_gterms = add_sdef_rule_gterms(extract_rule_gterms(housekeeper.list_to_tuple(T['rules'])))
+    rule_gterms = add_sdef_rule_gterms(extract_rule_gterms(T['rules']))
     pair = (types, rule_gterms)
-    tr = []
+    tr = ()
     for s in pair:
-        if s != []:
-            tr += [s[1]]
-    if tr != []:
+        if s != ():
+            tr += s[1],
+    if tr != ():
         if len(tr) == 1:
             tr = tr[0]
         else:
-            tr = ['union'] + tr
-        tr = ['sdef', ['sname', ('identifier', 'universal')], tr]
+            tr = ('union',) + tr
+        tr = 'sdef', ('sname', ('identifier', 'universal')), tr
     return tr
     
 ########## ########## ########## ########## ########## ########## ########## ##########
@@ -151,17 +153,17 @@ Output: parsed ASP predicate declarations:
 introduce_pdecls: set -> list
 '''
 def introduce_pdecls(T):
-    tr = ['pdecls']
+    tr = 'pdecls',
     for t in T:
         pname = t[0]
         arity = t[1]
-        pdecl = ['pdecl', ('identifier', pname)]
+        pdecl = 'pdecl', ('identifier', pname)
         if arity > 0:
-            snames = ['snames']
+            snames = 'snames',
             for i in range(arity):
-                snames += [['sname', ('identifier', 'universal')]]
-            pdecl += [snames]
-        tr += [pdecl]
+                snames += ('sname', ('identifier', 'universal')),
+            pdecl += snames,
+        tr += pdecl,
     return tr
     
 ########## ########## ########## ########## ########## ########## ########## ##########
@@ -186,37 +188,14 @@ def extract_rule_gterms(T):
         return {T}
     elif T[0] == 'func':
         gr = grounder.bfunc_is_ground(T)
-        return {T} if gr else set()
-        # return extract_rule_func(T)
+        return  {T} if gr else \
+                set()
     else:
         Set = set()
         for t in T[1:]:
             Set |= extract_rule_gterms(t)
         return Set
 
-# '''
-# extract_rule_func: extract a rule ground functional term from a rule functional term
-
-# Input: a tuple parsed ASP rule functional term:
-# ('func', ('identifier', 'f'), ('terms', ('bt', ('const', ('identifier', 'a'))),...))
-
-# Output: a set of a tuple parsed ASP rule ground functional term:
-# {('func', ('identifier', 'f'), ('gterms', ('const', ('identifier', 'a')),...))}
-
-# extract_rule_func: tuple -> set
-# '''
-# def extract_rule_func(T):
-    # Tuple = ()
-    # for t in T[2][1:]:
-        # if t[1][0] in {'const', 'num'}:
-            # Tuple += (t[1],)
-    # if Tuple == ():  
-        # return set()
-    # else:
-        # Tuple = ('gterms',) + Tuple
-        # Tuple = T[:2] + (Tuple,)
-        # return {Tuple}
-    
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
 

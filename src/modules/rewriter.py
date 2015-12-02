@@ -4,6 +4,8 @@ import normalizer
 import housekeeper
 
 ########## ########## ########## ########## ########## ########## ########## ##########
+########## ########## ########## ########## ########## ########## ########## ##########
+########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
 rewrite: rewrite a dictionary parsed L program into an incomplete dictionary parsed ASP program
@@ -19,12 +21,73 @@ rewrite: dict -> dict
 '''
 def rewrite(T):
     global g_tdecls
-    g_tdecls = grounder.ground_tdecls(housekeeper.list_to_tuple(T['tdecls']))
-    g_rules = housekeeper.tuple_to_list(grounder.ground_rules(
-                housekeeper.list_to_tuple(T['rules']), g_tdecls))
-    return {'sdefs': rewrite_tdecls(T['tdecls']), 'rules': rewrite_rules(g_rules)}
+    g_tdecls = grounder.ground_tdecls(T['tdecls'])
+    
+    g_rules = grounder.ground_rules((T['rules']), g_tdecls)
+                
+    rewritten = {   'cdefs': rewrite_cdecls(T['cdecls']),
+                    'sdefs': rewrite_tdecls(T['tdecls']), 
+                    'rules': rewrite_rules(g_rules)}
+    return rewritten
 
 ########## ########## ########## ########## ########## ########## ########## ##########
+########## ########## ########## ########## ########## ########## ########## ##########
+########## ########## ########## ########## ########## ########## ########## ##########
+
+'''
+rewrite_cdecls: list -> list
+'''
+def rewrite_cdecls(T):
+    tr = 'cdefs',
+    dict1 = eval_cdecls(T)
+    for key in dict1:
+        cname = ('identifier', key)
+        val = ('numeral', str(dict1[key]))
+        tr += ('cdef', cname, val),
+    return tr
+
+'''
+eval_cdecls: tuple -> dict(str: int)
+'''
+def eval_cdecls(T):
+    dict1 = {}
+    cdecls = T[1:]
+    for cdecl in cdecls:
+        dict2 = eval_cdecl(cdecl, dict1)
+        dict1.update(dict2)
+    return dict1
+    
+'''
+eval_cdecl: tuple * dict -> dict
+'''
+def eval_cdecl(T, D):
+    cname = T[1][1]
+    val = eval_gar_term(T[2], D)
+    return {cname: val}
+    
+'''
+eval_gar_term: tuple * dict -> int
+'''
+def eval_gar_term(T, D):
+    if T[0] in {'gar_term', 'sum', 'product'}:
+        operand1 = eval_gar_term(T[1], D)
+        infix = T[2][1]
+        operand2 = eval_gar_term(T[3], D)
+        if infix == '+':
+            return operand1 + operand2
+        elif infix == '-':
+            return operand1 - operand2
+        elif infix == '*':
+            return operand1 * operand2
+        elif infix == '/':
+            return operand1 // operand2
+        elif infix == '%':
+            return operand1 % operand2
+    elif T[0] == 'identifier':
+        return D[T[1]]
+    else: # 'numeral'
+        return int(T[1])
+
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
 
@@ -44,32 +107,31 @@ def rewrite_tdecls(T):
     if T[0] in housekeeper.lexemes:
         return T
     elif T[0] == 'sconstr':
-        Tuple = grounder.sconstr_to_set(housekeeper.list_to_tuple(T), g_tdecls)
-        return housekeeper.tuple_to_list(Tuple)
+        Tuple = grounder.sconstr_to_set(T, g_tdecls)
+        return Tuple
     elif T[0] in housekeeper.set_ops:
         tr = T[:1]
         for t in T[1:]:
-            tr += \
-                [['sname', rewrite_tdecls(t)]] \
-                    if t[0] == 'identifier' else \
-                [rewrite_tdecls(t)]
+            operand = rewrite_tdecls(t)
+            if t[0] == 'identifier':
+                operand = 'sname', operand
+            tr += operand,
         return tr
     elif T[0] == 'tdecl':
-        tr = ['sdef', ['sname', rewrite_tdecls(T[1])]]
-        tr += \
-            [['sname', rewrite_tdecls(T[2])]] \
-                if T[2][0] == 'identifier' else \
-            [rewrite_tdecls(T[2])]
-        return tr
-    elif T[0] == 'tdecls':
-        tr = ['sdefs']
-        for t in T[1:]:
-            tr += [rewrite_tdecls(t)]
+        tr = 'sdef',
+        sname = 'sname', rewrite_tdecls(T[1])
+        
+        set_expr = rewrite_tdecls(T[2])
+        if T[2][0] == 'identifier':
+            set_expr = 'sname', set_expr
+        
+        tr += sname, set_expr
         return tr
     else:
-        tr = T[:1]
+        tr =    ('sdefs',) if T[0] == 'tdecls' else \
+                T[:1]
         for t in T[1:]:
-            tr += [rewrite_tdecls(t)]
+            tr += rewrite_tdecls(t),
         return tr
 
 ########## ########## ########## ########## ########## ########## ########## ##########
@@ -87,33 +149,45 @@ Output: parsed ASP rules:
 rewrite_rules: list -> list
 '''
 def rewrite_rules(T):
-    rewritten = ['rules']
+    rewritten = 'rules',
     for t in T[1:]:
-        List = tvars_to_satoms(t)
-        t = reshape(t)
-        if List != []:
-            if t[0] == 'fact':
-                t[0] = 'rule'
-                body = List[0]
-                for l in List[1:]:
-                    body = ['conj', body, l]
-                body = ['body', body]
-                t += [body]
-            else:
-                for l in List:
-                    t[2][1] = ['conj', t[2][1], l]
-                    
+        satoms = tvars_to_satoms(t)
+        tuple1 = reshape(t)
+        
+        tuple2 = ()
+        if satoms == ():
+            tuple2 += tuple1
+        else:
+            if tuple1[0] == 'fact':
+                tuple2 += 'rule', tuple1[1]
+                
+                body = satoms[0]
+                for satom in satoms[1:]:
+                    body = 'conj', body, satom
+                body = 'body', body
+                
+                tuple2 += body,
+            else: # 'rule'
+                tuple2 += tuple1[:2]
+                
+                body = tuple1[2][1]
+                for satom in satoms:
+                    body = 'conj', body, satom
+                body = 'body', body
+                
+                tuple2 += body,
+                
         # normalizer start
-        if t[0] == 'fact':
-            disjs = normalizer.flatten(normalizer.normalize(t[1][1], 'CNF'), 'CNF')
+        if tuple2[0] == 'fact':
+            disjs = normalizer.flatten(normalizer.normalize(tuple2[1][1], 'CNF'), 'CNF')
             for disj in disjs:
-                rewritten += [['fact', ['head', disj]]]
+                rewritten += ('fact', ('head', disj)),
         else: # 'rule'
-            disjs = normalizer.flatten(normalizer.normalize(t[1][1], 'CNF'), 'CNF')
-            conjs = normalizer.flatten(normalizer.normalize(t[2][1], 'DNF'), 'DNF')
+            disjs = normalizer.flatten(normalizer.normalize(tuple2[1][1], 'CNF'), 'CNF')
+            conjs = normalizer.flatten(normalizer.normalize(tuple2[2][1], 'DNF'), 'DNF')
             for disj in disjs:
                 for conj in conjs:
-                    rewritten += [['rule', ['head', disj], ['body', conj]]]
+                    rewritten += ('rule', ('head', disj), ('body', conj)),
         # normalizer end
         
     return rewritten
@@ -133,13 +207,14 @@ tvars_to_satoms: list -> list
 '''
 def tvars_to_satoms(T):
     if T[0] in housekeeper.lexemes:
-        return []
+        return ()
     elif T[0] == 'tvar':
-        sname = ['sname', T[1]]
+        sname = 'sname', T[1]
         vname = T[2]
-        return [['literal', ['satom', sname, vname]]]
+        tr = ('satom', sname, vname),
+        return tr
     else:
-        tr = []
+        tr = ()
         for t in T[1:]:
             tr += tvars_to_satoms(t)
         return tr
@@ -157,23 +232,25 @@ Output: a parsed ASP rule without corresponding sort atoms:
 reshape: list -> list
 '''
 def reshape(T):
-    if type(T) == tuple:
+    if T[0] in housekeeper.lexemes:
         return T
     elif T[0] == 'tvar':
-        return ['var', T[2]]
-    elif T[0] in housekeeper.comp_ops:
-        return T
-    elif T[0] == 'neg_class':
-        return ['neg_class', reshape(T[1])]
+        return 'var', T[2]
+    elif T[0] == 'mlit':
+        patom = reshape(T[1])
+        head = 'head', ('disj', patom, ('neg_class', patom))
+        return head
+    elif T[0] == 'psent':
+        return 'head', reshape(T[1])
+    elif T[0] == 'sent':
+        return 'body', reshape(T[1])
     elif T[0] == 'rule':
         if len(T) == 2:
-            return ['fact', ['head', reshape(T[1][1])]]
+            return 'fact', reshape(T[1])
         else: # >= 3
-            return ['rule', \
-                    ['head', reshape(T[1][1])], \
-                    ['body', reshape(T[2][1])]]
+            return 'rule', reshape(T[1]), reshape(T[2])
     else:
         tr = T[:1]
         for t in T[1:]:
-            tr += [reshape(t)]
+            tr += reshape(t),
         return tr

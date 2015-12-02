@@ -25,31 +25,18 @@ An example, with Windows Command Prompt:
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 
+import main
+
 import sys
 sys.path.insert(0, 'modules')
-
-import rewriter
-import reassembler
 import transformer
 import unparser
 
 ########## ########## ########## ########## ########## ########## ########## ##########
    
-def assign(p):
-    global rewritten
-    global reassembled
-    global transformed
-    global translated
-    rewritten = rewriter.rewrite(transformer.list_to_dict(p))
-    reassembled = reassembler.reassemble(rewritten)
-    transformed = transformer.transform(p)
-    translated = unparser.unparse(transformed)
-
-########## ########## ########## ########## ########## ########## ########## ##########
-    
 if __name__ == '__main__':
-    import main
-    file_input = sys.argv[1]
-    parsed = main.parse_file(file_input)
-    assign(parsed)
-    print(translated)
+    l = sys.argv[1]
+    parsed = main.parse_file(l)
+    transformed = transformer.transform(parsed)
+    asp = unparser.unparse(transformed)
+    print(asp)

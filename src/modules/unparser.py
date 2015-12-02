@@ -16,6 +16,9 @@ unparse: list -> str
 def unparse(T):
     prog = ''
     for t in T[1:]:
+        if t[0] == 'cdefs':
+            cdefs = unparse_cdefs(t)
+            prog += cdefs
         if t[0] == 'sdefs':
             sdefs = unparse_sdefs(t)
             if sdefs != '':
@@ -27,8 +30,23 @@ def unparse(T):
         if t[0] == 'rules':
             rules = unparse_rules(t)
             if rules != '':
-                prog += '\n' + comment_line + '\nrules\n' + comment_line + '\n\n' + rules
+                prog +=     '\n' + comment_line + '\nrules\n' + comment_line + \
+                            '\n\n' + rules
     return prog
+
+########## ########## ########## ########## ########## ########## ########## ##########
+
+'''
+unparse_cdefs: list -> str
+'''
+def unparse_cdefs(T):
+    st = ''
+    cdefs = T[1:]
+    for cdef in cdefs:
+        cname = cdef[1][1]
+        val = cdef[2][1]
+        st += '#const ' + cname + ' = ' + val + '.\n'
+    return st
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 
@@ -63,7 +81,8 @@ def unparse_sdefs(T):
     elif T[0] == 'sname':
         return '#' + unparse_sdefs(T[1])
     elif T[0] in housekeeper.set_ops:
-        return unparse_sdefs(T[1]) + housekeeper.set_ops[T[0]] + '\n\t' + unparse_sdefs(T[2])
+        return  unparse_sdefs(T[1]) + housekeeper.set_ops[T[0]] + '\n\t' + \
+                unparse_sdefs(T[2])
     elif T[0] == 'sdef':
         return unparse_sdefs(T[1]) + ' = \n\t' + unparse_sdefs(T[2]) + '.\n\n'
     else:
@@ -123,10 +142,12 @@ Output: ASP rules:
 unparse_rules: list -> str
 '''
 def unparse_rules(T):
-    if T[0] in housekeeper.lexemes:
-        return T[1]
-    elif T[0] in housekeeper.ar_ops:
+    if T[0] in housekeeper.ar_ops:
         return ' ' + T[1] + ' '
+    elif T[0] in housekeeper.comp_ops:
+        return ' ' + T[1][0] + ' '
+    elif T[0] in housekeeper.lexemes:
+        return T[1]
     elif T[0] == 'sname':
         return '#' + unparse_rules(T[1])
     elif T[0] in housekeeper.cut_root_comma:
@@ -136,8 +157,6 @@ def unparse_rules(T):
         return st
     elif T[0] == 'func':
         return unparse_rules(T[1]) + '(' + unparse_rules(T[2]) + ')'
-    elif T[0] in housekeeper.comp_ops:
-        return ' ' + T[1][0] + ' '
     elif T[0] == 'satom':
         return unparse_rules(T[1]) + '(' + unparse_rules(T[2]) + ')'
     elif T[0] == 'patom':
