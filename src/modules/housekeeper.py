@@ -1,7 +1,11 @@
 # Frequently referred labels from L/ASP lexicon/grammar:
 
-ar_ops = {'plus', 'minus', 'mult', 'div', 'mod'}
+infixes1 = {'plus', 'minus'}
+infixes2 = {'mult', 'div', 'mod'}
+ar_ops = infixes1 | infixes2
+
 comp_ops = {'eq', 'noteq', 'less', 'lessoreq', 'greater', 'greateroreq'}
+
 lexemes = ar_ops | comp_ops | {'identifier', 'numeral', 'variable', 'every', 'some'}
 
 ground_terms = {    'const', 'num', 

@@ -47,7 +47,7 @@ head(S) ::= p_sentence(S)
 
 maybe_lit(mlit A) ::= maybe basic_predicate_atom(A)
 
-card_constr(cconst L A R) ::= bound(L) lessoreq bar lcurparen basic_predicate_atom(A) rcurparen bar lessoreq bound(R)
+card_constr(cconstr L A R) ::= bound(L) lessoreq bar lcurparen basic_predicate_atom(A) rcurparen bar lessoreq bound(R)
 bound(I) ::= identifier(I)
 bound(N) ::= number(N)
 bound(A) ::= ground_arithmetic_term(A)

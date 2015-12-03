@@ -22,7 +22,8 @@ def unparse(T):
         if t[0] == 'sdefs':
             sdefs = unparse_sdefs(t)
             if sdefs != '':
-                prog += comment_line + '\nsorts\n' + comment_line + '\n\n' + sdefs
+                prog +=     '\n' + comment_line + '\nsorts\n' + comment_line + \
+                            '\n\n' + sdefs
         if t[0] == 'pdecls':
             pdecls = unparse_pdecls(t)
             if pdecls != '':
@@ -142,8 +143,15 @@ Output: ASP rules:
 unparse_rules: list -> str
 '''
 def unparse_rules(T):
-    if T[0] in housekeeper.ar_ops:
-        return ' ' + T[1] + ' '
+    if T[0] == 'mod':
+        return '\\'
+    elif T[0] in housekeeper.ar_ops:
+        return T[1]
+    elif T[0] in {'gar_term', 'ar_term', 'sum', 'product'}:
+        st =    '(' + unparse_rules(T[1]) + ' ' + unparse_rules(T[2]) + ' ' + \
+                unparse_rules(T[3]) + ')'
+        return st
+        
     elif T[0] in housekeeper.comp_ops:
         return ' ' + T[1][0] + ' '
     elif T[0] in housekeeper.lexemes:
@@ -172,7 +180,7 @@ def unparse_rules(T):
         return unparse_rules(T[1]) + ',\n\t' + unparse_rules(T[2])
     elif T[0] == 'disj':
         return unparse_rules(T[1]) + ' |\n' + unparse_rules(T[2])
-    elif T[0] == 'constr':
+    elif T[0] == 'iconstr':
         return ':- ' + unparse_rules(T[1]) + '.\n\n'
     elif T[0] == 'fact':
         return unparse_rules(T[1]) + '.\n\n'

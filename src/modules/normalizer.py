@@ -30,8 +30,8 @@ NOT = 'neg_class'
 AND = 'conj'
 OR = 'disj'
 
-FALSE = 'false'
-TRUE = 'true'
+FALSE = '#false'
+TRUE = '#true'
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 

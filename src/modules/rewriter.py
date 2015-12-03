@@ -4,8 +4,6 @@ import normalizer
 import housekeeper
 
 ########## ########## ########## ########## ########## ########## ########## ##########
-########## ########## ########## ########## ########## ########## ########## ##########
-########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
 rewrite: rewrite a dictionary parsed L program into an incomplete dictionary parsed ASP program
@@ -20,19 +18,39 @@ Output: an incomplete dictionary parsed ASP program:
 rewrite: dict -> dict
 '''
 def rewrite(T):
+    e_cdecls = eval_cdecls(T['cdecls']) # dict
+    e_tdecls = eval_tdecls(T['tdecls'], e_cdecls)
+
     global g_tdecls
-    g_tdecls = grounder.ground_tdecls(T['tdecls'])
-    
+    g_tdecls = grounder.ground_tdecls(e_tdecls)
     g_rules = grounder.ground_rules((T['rules']), g_tdecls)
                 
     rewritten = {   'cdefs': rewrite_cdecls(T['cdecls']),
-                    'sdefs': rewrite_tdecls(T['tdecls']), 
+                    'sdefs': rewrite_tdecls(e_tdecls), 
                     'rules': rewrite_rules(g_rules)}
     return rewritten
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
+
+'''
+eval_tdecls: tuple * dict(str: int) -> tuple
+'''
+def eval_tdecls(T, D):
+    if T[0] == 'identifier':
+        key = T[1]
+        if key in D:
+            val = str(D[key])
+            val = 'numeral', val
+            return val
+        else:
+            return T
+    else:
+        tuple1 = T[:1]
+        for t in T[1:]:
+            tuple1 += eval_tdecls(t, D),
+        return tuple1
 
 '''
 rewrite_cdecls: list -> list
@@ -45,6 +63,8 @@ def rewrite_cdecls(T):
         val = ('numeral', str(dict1[key]))
         tr += ('cdef', cname, val),
     return tr
+    
+########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
 eval_cdecls: tuple -> dict(str: int)
