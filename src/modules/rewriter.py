@@ -46,6 +46,8 @@ def eval_tdecls(T, D):
             return val
         else:
             return T
+    elif T[0] in housekeeper.lexemes:
+        return T
     else:
         tuple1 = T[:1]
         for t in T[1:]:
