@@ -1,0 +1,29 @@
+L-ASP TRANSLATOR: 2015/12/06 MONTHLY REPORT
+
+After the 2015/11/01 monthly report, these L constructs:
+    Were translated into SPARC:
+        Constant declarations
+        Maybe literals
+    Were thoroughly discussed and are being translated (should be done soon):
+        Modulo operation
+        Arithmetic expressions in set constructs
+        Cardinality constraints
+    Need to wait for new version of SPARC:
+        Negative integers
+    Need more discussion:
+        Empty type
+        
+See also:
+    Discussions:
+        https://github.com/iensen/LtoASPtranslator/tree/master/discussions
+        
+References:
+    Examples:
+        https://github.com/iensen/LtoASPtranslator/tree/master/src/examples
+        (Look for pairs of .l and .sp files, especially: ch5 and func_terms)
+    How to run the translator:
+        https://github.com/iensen/LtoASPtranslator/blob/master/src/translator.py
+    Translator spec:
+        https://github.com/iensen/LtoASPtranslator/blob/master/translator_spec.txt
+    L spec:
+        https://github.com/iensen/LtoASPtranslator/blob/master/Lspec/Lspec.pdf
