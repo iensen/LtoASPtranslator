@@ -22,7 +22,7 @@ Evgenii and Vu
         Later:
             Allow modulo in SPARC (operator "\" in Clingo)
             
-3. SET CONSTRUCT
+3. SET CONSTRUCTS
     Problem:
         L's type declarations are more flexible than SPARC's sort definitions
         For instance:

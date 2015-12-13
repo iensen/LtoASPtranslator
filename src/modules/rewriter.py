@@ -1,3 +1,4 @@
+import arithmetizer
 import grounder
 import normalizer
 
@@ -17,15 +18,18 @@ Output: an incomplete dictionary parsed ASP program:
     
 rewrite: dict -> dict
 '''
-def rewrite(T):
-    e_cdecls = eval_cdecls(T['cdecls']) # dict
-    e_tdecls = eval_tdecls(T['tdecls'], e_cdecls)
+def rewrite(D):
+    for key in D:
+        D[key] = arithmetizer.demodularize(D[key])
+    
+    e_cdecls = eval_cdecls(D['cdecls']) # dict
+    e_tdecls = eval_tdecls(D['tdecls'], e_cdecls)
 
     global g_tdecls
     g_tdecls = grounder.ground_tdecls(e_tdecls)
-    g_rules = grounder.ground_rules((T['rules']), g_tdecls)
+    g_rules = grounder.ground_rules((D['rules']), g_tdecls)
                 
-    rewritten = {   'cdefs': rewrite_cdecls(T['cdecls']),
+    rewritten = {   'cdefs': rewrite_cdecls(D['cdecls']),
                     'sdefs': rewrite_tdecls(e_tdecls), 
                     'rules': rewrite_rules(g_rules)}
     return rewritten

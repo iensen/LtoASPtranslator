@@ -21,11 +21,11 @@ Output: a dictionary parsed ASP program:
 
 reassemble: dict -> dict
 '''
-def reassemble(T):
-    return {    'cdefs': T['cdefs'],
-                'sdefs': combine_sdefs(T), 
-                'pdecls': introduce_pdecls(find_predicates(T['rules'])), 
-                'rules': T['rules']}
+def reassemble(D):
+    return {    'cdefs': D['cdefs'],
+                'sdefs': combine_sdefs(D), 
+                'pdecls': introduce_pdecls(find_predicates(D['rules'])), 
+                'rules': D['rules']}
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########

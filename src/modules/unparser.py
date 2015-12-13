@@ -143,9 +143,7 @@ Output: ASP rules:
 unparse_rules: list -> str
 '''
 def unparse_rules(T):
-    if T[0] == 'mod':
-        return '\\'
-    elif T[0] in housekeeper.ar_ops:
+    if T[0] in housekeeper.ar_ops:
         return T[1]
     elif T[0] in {'gar_term', 'ar_term', 'sum', 'product'}:
         st =    '(' + unparse_rules(T[1]) + ' ' + unparse_rules(T[2]) + ' ' + \
