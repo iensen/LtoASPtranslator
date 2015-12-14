@@ -181,10 +181,10 @@ Output: a set of tuple parsed ASP rule ground terms:
 extract_rule_gterms: tuple -> set
 '''
 def extract_rule_gterms(T):
-    if T[0] in housekeeper.lexemes:
-        return set()
-    elif T[0] == 'const':
+    if T[0] in {'const', 'numeral'}:
         return {T}
+    elif T[0] in housekeeper.lexemes:
+        return set()
     elif T[0] == 'func':
         gr = grounder.bfunc_is_ground(T)
         return  {T} if gr else \

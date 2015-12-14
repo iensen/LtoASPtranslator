@@ -9,16 +9,20 @@ sorts
 #types = 
 	#node.
 
+#rule_gterms = 
+	{1, 2, 5, 0}.
+
 #universal = 
-	#types.
+	#types + 
+	#rule_gterms.
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 predicates
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
 removed(#universal).
-edge(#universal, #universal).
 disconnected().
+edge(#universal, #universal).
 reachable(#universal, #universal).
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
