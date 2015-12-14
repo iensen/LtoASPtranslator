@@ -41,7 +41,7 @@ def ground_set_expr(T, D):
         l = int(T[1][1])
         r = int(T[2][1])
         for i in range(l, r + 1):
-            Set |= {('num', ('numeral', str(i)))}
+            Set |= {('numeral', str(i))}
         return Set
     elif T[0] == 'identifier':
         tname = T[1]

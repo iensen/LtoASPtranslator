@@ -16,9 +16,6 @@ unparse: list -> str
 def unparse(T):
     prog = ''
     for t in T[1:]:
-        if t[0] == 'cdefs':
-            cdefs = unparse_cdefs(t)
-            prog += cdefs
         if t[0] == 'sdefs':
             sdefs = unparse_sdefs(t)
             if sdefs != '':
@@ -34,20 +31,6 @@ def unparse(T):
                 prog +=     '\n' + comment_line + '\nrules\n' + comment_line + \
                             '\n\n' + rules
     return prog
-
-########## ########## ########## ########## ########## ########## ########## ##########
-
-'''
-unparse_cdefs: list -> str
-'''
-def unparse_cdefs(T):
-    st = ''
-    cdefs = T[1:]
-    for cdef in cdefs:
-        cname = cdef[1][1]
-        val = cdef[2][1]
-        st += '#const ' + cname + ' = ' + val + '.\n'
-    return st
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 
@@ -163,6 +146,11 @@ def unparse_rules(T):
         return st
     elif T[0] == 'func':
         return unparse_rules(T[1]) + '(' + unparse_rules(T[2]) + ')'
+    elif T[0] == '#count':
+        bterms = T[1]
+        atoms = T[2]
+        st = '#count{' + unparse_rules(bterms) + ': ' + unparse_rules(atoms) + '}'
+        return st
     elif T[0] == 'satom':
         return unparse_rules(T[1]) + '(' + unparse_rules(T[2]) + ')'
     elif T[0] == 'patom':
@@ -179,7 +167,7 @@ def unparse_rules(T):
     elif T[0] == 'disj':
         return unparse_rules(T[1]) + ' |\n' + unparse_rules(T[2])
     elif T[0] == 'iconstr':
-        return ':- ' + unparse_rules(T[1]) + '.\n\n'
+        return ':-\t' + unparse_rules(T[1]) + '.\n\n'
     elif T[0] == 'fact':
         return unparse_rules(T[1]) + '.\n\n'
     elif T[0] == 'rule':

@@ -22,8 +22,7 @@ Output: a dictionary parsed ASP program:
 reassemble: dict -> dict
 '''
 def reassemble(D):
-    return {    'cdefs': D['cdefs'],
-                'sdefs': combine_sdefs(D), 
+    return {    'sdefs': combine_sdefs(D), 
                 'pdecls': introduce_pdecls(find_predicates(D['rules'])), 
                 'rules': D['rules']}
 
@@ -184,7 +183,7 @@ extract_rule_gterms: tuple -> set
 def extract_rule_gterms(T):
     if T[0] in housekeeper.lexemes:
         return set()
-    elif T[0] in {'const', 'num'}:
+    elif T[0] == 'const':
         return {T}
     elif T[0] == 'func':
         gr = grounder.bfunc_is_ground(T)

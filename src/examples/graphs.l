@@ -8,16 +8,16 @@ edge(node X, node Y) if X%n = (Y + 2)%n.
 maybe removed(node N).
 
 reachable(node X, X) if not removed(X).
-reachable(node X,node Y) if edge(X,Y)
+reachable(node X, node Y) if edge(X, Y)
 and not removed(X)
 and not removed(Y).
-reachable(node X,node Y) if reachable(X,some node Z)
+reachable(node X, node Y) if reachable(X, node Z)
 and reachable(Z,Y)
 and not removed(X)
 and not removed(Y)
 and not removed(Z).
 disconnected if
-not reachable(some node X, some node Y)
+not reachable(node X, node Y)
 and not removed(X)
 and not removed(Y).
 1<=|{disconnected}|<=1.

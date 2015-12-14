@@ -8,17 +8,77 @@ comp_ops = {'eq', 'noteq', 'less', 'lessoreq', 'greater', 'greateroreq'}
 
 lexemes = ar_ops | comp_ops | {'identifier', 'numeral', 'variable', 'every', 'some'}
 
-ground_terms = {    'const', 'num', 
+ground_terms = {    'const',
                     'ar_term',  # possibly non-ground
                     'func'}     # possibly non-basic
 basic_terms = ground_terms | {'var', 'tvar'}
 terms = basic_terms | {'qt'}
 
-cut_root_comma = {'snames', 'terms', 'bterms', 'gterms', 'tvars'}
+cut_root_comma = {'snames', 'terms', 'bterms', 'gterms', 'tvars', 'atoms'}
 
 set_ops = {'union': ' + ', 'inters': ' * ', 'diff': ' - '}
 
 ########## ########## ########## ########## ########## ########## ########## ##########
+########## ########## ########## ########## ########## ########## ########## ##########
+
+'''
+get_vars: tuple -> set(tuple)
+'''
+def get_vars(T):
+    if T[0] == 'variable':
+        return {T}
+    elif T[0] in lexemes:
+        return set()
+    else:
+        set1 = set()
+        for t in T[1:]:
+            set1 |= get_vars(t)
+        return set1
+        
+########## ########## ########## ########## ########## ########## ########## ##########
+
+'''
+tvars_to_satoms: from typed variables of a parsed L rule, return corresponding ASP sort atoms
+
+Input: a parsed L rule with typed variables:
+['rule',...['literal', ['patom',...,['terms', ['bt', ['tvar', ('identifier', t1), ('variable', 'X1')]],...]]],...]
+
+Output: corresponding ASP sort atoms:
+[['literal', ['satom', ['sname', ('identifier', 't1')], ('variable', 'X1')]],...]
+
+tvars_to_satoms: list -> list
+'''
+def tvars_to_satoms(T):
+    if T[0] in lexemes:
+        return ()
+    elif T[0] == 'tvar':
+        sname = 'sname', T[1]
+        vname = T[2]
+        tr = ('satom', sname, vname),
+        return tr
+    else:
+        tr = ()
+        for t in T[1:]:
+            tr += tvars_to_satoms(t)
+        return tr
+
+'''
+detype_vars: tuple <->
+'''
+def detype_vars(T):
+    if T[0] in lexemes:
+        return T
+    elif T[0] == 'tvar':
+        if T[2][0] == 'variable':
+            return 'var', T[2]
+        else: # V in t
+            return T
+    else:
+        tr = T[:1]
+        for t in T[1:]:
+            tr += detype_vars(t),
+        return tr
+        
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
@@ -104,7 +164,7 @@ dict_to_list: dict -> list
 '''
 def dict_to_list(T):
     prog = ()
-    for keyw in ('cdefs', 'sdefs', 'pdecls', 'rules'):
+    for keyw in ('sdefs', 'pdecls', 'rules'):
         if len(T[keyw]) > 1:
             prog += T[keyw],
     if prog != ():

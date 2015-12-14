@@ -119,7 +119,7 @@ v_hop(node N).
 */	
 
 /* L Rules */
-not_discordant(note N1,N2,right,H) if 
+not_discordant(node N1,N2,right,H) if 
 			N2 > N1 and
 			N2-N1 = H.
 not_discordant(N1,N2,right,H) if 
