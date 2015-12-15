@@ -1,0 +1,11 @@
+clingo version 4.5.3
+Solving...
+Answer: 1
+t1(1) t1(2) t3(1) t3(2) t2(1) t2(2) universal(0) universal(1) universal(2)
+SATISFIABLE
+
+Models       : 1     
+Calls        : 1
+Time         : 0.003s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.000s
+
