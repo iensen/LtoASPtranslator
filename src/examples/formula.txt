@@ -1,15 +1,5 @@
-clingo version 4.5.3
-Solving...
-Answer: 1
--b11 -p12 -p21
-Answer: 2
-b11 p21
-Answer: 3
-b11 p12
-SATISFIABLE
+{-p12, -b11, -p21}
 
-Models       : 3     
-Calls        : 1
-Time         : 0.000s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
-CPU Time     : 0.000s
+{b11, p21}
 
+{p12, b11}

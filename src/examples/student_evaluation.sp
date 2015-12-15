@@ -49,7 +49,7 @@ sorts
 	#assessment.
 
 #rule_gterms = 
-	{satisfactory, e2, q3, q2, pass, bob, a, ann, chris, fail, dennis, b, average, d, below_average, c, f, e1, above_average, unsatisfactory, q1}.
+	{c, d, chris, fail, pass, satisfactory, q2, e1, dennis, q1, q3, b, average, a, above_average, e2, below_average, unsatisfactory, bob, ann, f}.
 
 #universal = 
 	#types + 
@@ -59,13 +59,13 @@ sorts
 predicates
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
-has_an_excellent_exam(#universal).
+has_score(#universal, #universal, #universal).
 has_an_unacceptable_assessment(#universal).
 evaluated(#universal, #universal).
-ranked(#universal, #universal).
-has_score(#universal, #universal, #universal).
-has_all_acceptable_assessments(#universal).
 has_a_good_exam(#universal).
+ranked(#universal, #universal).
+has_an_excellent_exam(#universal).
+has_all_acceptable_assessments(#universal).
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 rules

@@ -14,7 +14,7 @@ sorts
 	#type2.
 
 #rule_gterms = 
-	{0, 7, 1, 2}.
+	{1, 7, 0, 2}.
 
 #universal = 
 	#types + 
@@ -24,9 +24,9 @@ sorts
 predicates
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
+q(#universal).
 p(#universal, #universal).
 t(#universal, #universal).
-q(#universal).
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 rules

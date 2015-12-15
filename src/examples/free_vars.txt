@@ -1,13 +1,3 @@
-clingo version 4.5.3
-Solving...
-Answer: 1
-type1(1) type1(2) type1(5) type2(1) type2(2) universal(0) universal(1) universal(2) universal(5) universal(7) p(5,2) -q(1) -q(2) -q(5)
-Answer: 2
-type1(1) type1(2) type1(5) type2(1) type2(2) universal(0) universal(1) universal(2) universal(5) universal(7) p(5,2) -q(1) -q(2) q(5)
-SATISFIABLE
+{p(5,2), -q(1), -q(2), -q(5)}
 
-Models       : 2     
-Calls        : 1
-Time         : 0.004s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
-CPU Time     : 0.000s
-
+{p(5,2), q(5), -q(1), -q(2)}

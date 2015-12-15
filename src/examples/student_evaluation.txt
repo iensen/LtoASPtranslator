@@ -1,11 +1,1 @@
-clingo version 4.5.3
-Solving...
-Answer: 1
-has_score(ann,q1,pass) has_score(ann,q2,pass) has_score(ann,q3,pass) has_score(ann,e1,a) has_score(ann,e2,b) has_score(bob,q1,pass) has_score(bob,q2,pass) has_score(bob,q3,pass) has_score(bob,e1,b) has_score(bob,e2,b) has_score(chris,q1,fail) has_score(chris,q1,pass) has_score(chris,e1,b) has_score(chris,e2,d) has_score(dennis,q1,pass) has_score(dennis,q2,pass) has_score(dennis,q3,pass) has_score(dennis,e1,f) has_score(dennis,e2,c) unacceptable_grade(fail) unacceptable_grade(f) universal(ann) universal(q1) universal(a) universal(average) universal(below_average) universal(q2) universal(b) universal(q3) universal(c) universal(d) universal(pass) universal(f) universal(dennis) universal(e1) universal(above_average) universal(e2) universal(fail) universal(chris) universal(bob) universal(unsatisfactory) universal(satisfactory) student(ann) student(chris) student(bob) student(dennis) assessment(q1) assessment(q2) assessment(q3) assessment(e1) assessment(e2) exam(e1) exam(e2) satisfactory_rank(average) satisfactory_rank(below_average) satisfactory_rank(above_average) has_an_unacceptable_assessment(chris) has_an_unacceptable_assessment(dennis) has_an_excellent_exam(ann) has_a_good_exam(bob) has_a_good_exam(chris) has_a_good_exam(ann) ranked(chris,below_average) evaluated(chris,satisfactory)
-SATISFIABLE
-
-Models       : 1     
-Calls        : 1
-Time         : 0.005s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
-CPU Time     : 0.000s
-
+{has_a_good_exam(bob), has_a_good_exam(chris), has_a_good_exam(ann), has_score(ann,q1,pass), has_score(ann,q2,pass), has_score(ann,q3,pass), has_score(ann,e1,a), has_score(ann,e2,b), has_score(bob,q1,pass), has_score(bob,q2,pass), has_score(bob,q3,pass), has_score(bob,e1,b), has_score(bob,e2,b), has_score(chris,q1,fail), has_score(chris,q1,pass), has_score(chris,e1,b), has_score(chris,e2,d), has_score(dennis,q1,pass), has_score(dennis,q2,pass), has_score(dennis,q3,pass), has_score(dennis,e1,f), has_score(dennis,e2,c), ranked(chris,below_average), evaluated(chris,satisfactory), has_an_excellent_exam(ann), has_an_unacceptable_assessment(chris), has_an_unacceptable_assessment(dennis)}
