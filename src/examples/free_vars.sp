@@ -14,7 +14,7 @@ sorts
 	#type2.
 
 #rule_gterms = 
-	{1, 7, 0, 2}.
+	{7, 2, 1, 0}.
 
 #universal = 
 	#types + 

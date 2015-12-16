@@ -13,16 +13,16 @@ sorts
 predicates
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
-aic_issued().
-detailed_switchover_plan().
-atmf_will_be_applied().
-risks_identified().
-existing_standard_fuel_low_procedure().
-switchover_safe().
+mitigated(#universal).
 risks_mitigated().
 contingency_plan_in_place().
+atmf_will_be_applied().
+existing_standard_fuel_low_procedure().
+switchover_safe().
+aic_issued().
+risks_identified().
 new_flight_crew_procedures().
-mitigated(#universal).
+detailed_switchover_plan().
 training_programs().
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%

@@ -1,1 +1,2 @@
-{new_flight_crew_procedures, aic_issued}
+new_flight_crew_procedures aic_issued
+SATISFIABLE
