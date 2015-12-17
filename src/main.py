@@ -76,8 +76,12 @@ def parse_file(program_file):
     preprocessor_instance = Preprocessor(program_file)
 
     chunks = preprocessor_instance.get_chunks()
-    lexicon_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "lexicon")
-    grammar_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "grammar")
+    
+    # lexicon_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "lexicon")
+    lexicon_file = 'lexicon' # For PyInstaller
+    
+    # grammar_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "grammar")
+    grammar_file = 'grammar' # For PyInstaller
 
     lexer = Lexer(lexicon_file, False)
     parser = Parser(grammar_file, lexer.lexicon_dict.keys())

@@ -1,4 +1,3 @@
-
 from enum import Enum
 import os
 from genparser.src.astgen.parsing.lexer import *
