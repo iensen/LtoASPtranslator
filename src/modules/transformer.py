@@ -1,7 +1,6 @@
-import rewriter
-import reassembler
-
-import housekeeper
+from . import rewriter
+from . import reassembler
+from . import housekeeper
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 

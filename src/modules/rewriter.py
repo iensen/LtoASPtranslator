@@ -1,9 +1,8 @@
-import arithmetizer
-import constrainer
-import grounder
-import normalizer
-
-import housekeeper
+from . import arithmetizer
+from . import constrainer
+from . import grounder
+from . import normalizer
+from . import housekeeper
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 

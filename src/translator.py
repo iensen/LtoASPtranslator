@@ -35,18 +35,17 @@ An example, with Windows Command Prompt:
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 
-import main
-
 import sys
-sys.path.insert(0, 'modules')
-import transformer
-import unparser
+
+import main
+import modules.transformer
+import modules.unparser
 
 ########## ########## ########## ########## ########## ########## ########## ##########
    
 if __name__ == '__main__':
     l = sys.argv[1]
     parsed = main.parse_file(l)
-    transformed = transformer.transform(parsed)
-    asp = unparser.unparse(transformed)
-    print(asp)
+    transformed = modules.transformer.transform(parsed)
+    asp = modules.unparser.unparse(transformed)
+    # print(asp)

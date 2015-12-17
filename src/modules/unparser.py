@@ -1,4 +1,4 @@
-import housekeeper
+from . import housekeeper
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 
@@ -19,8 +19,8 @@ def unparse(T):
         if t[0] == 'sdefs':
             sdefs = unparse_sdefs(t)
             if sdefs != '':
-                prog +=     '\n' + comment_line + '\nsorts\n' + comment_line + \
-                            '\n\n' + sdefs
+                prog += comment_line + '\nsorts\n' + comment_line + \
+                        '\n\n' + sdefs
         if t[0] == 'pdecls':
             pdecls = unparse_pdecls(t)
             if pdecls != '':
