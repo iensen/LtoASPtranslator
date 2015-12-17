@@ -48,4 +48,4 @@ if __name__ == '__main__':
     parsed = main.parse_file(l)
     transformed = modules.transformer.transform(parsed)
     asp = modules.unparser.unparse(transformed)
-    # print(asp)
+    print(asp)
