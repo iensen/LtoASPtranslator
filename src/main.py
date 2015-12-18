@@ -74,14 +74,26 @@ def parse_program(chunks, lexer, parser):
 def parse_file(program_file):
     # create preprocessor instance
     preprocessor_instance = Preprocessor(program_file)
-
     chunks = preprocessor_instance.get_chunks()
     
+    # Choose one from two assignments of lexicon_file:
+    # Assignment 1
     # lexicon_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "lexicon")
-    lexicon_file = 'lexicon' # For PyInstaller
+    ''' When the above assignment is chosen, calling translator.exe produces:
+            FileNotFoundError: [Errno 2] No such file or directory:
+                'C:\\Users\\Vu\\AppData\\Local\\Temp\\_MEI142402\\lexicon'
+    '''
+    # Assignment 2
+    lexicon_file = 'lexicon'
+    ''' When the above assignment is chosen,
+        moving translator.exe to a different directory and call it produces:
+            FileNotFoundError: [Errno 2] No such file or directory: 
+                'lexicon'
+    '''
     
+    # The same problem with grammar_file:
     # grammar_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "grammar")
-    grammar_file = 'grammar' # For PyInstaller
+    grammar_file = 'grammar'
 
     lexer = Lexer(lexicon_file, False)
     parser = Parser(grammar_file, lexer.lexicon_dict.keys())
