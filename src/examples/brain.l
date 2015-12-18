@@ -95,7 +95,7 @@ is_node(node N).
 
 /* ASP RULE: v_hop(N). */
 /*LRULE:*/
-v_hop(node N).
+v_hop(hopc N). /* In SPARC: v_hop(#hopc). Not: v_hop(#node). */
 
 
 /*

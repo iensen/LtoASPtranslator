@@ -132,9 +132,8 @@ def unparse_rules(T):
         st =    '(' + unparse_rules(T[1]) + ' ' + unparse_rules(T[2]) + ' ' + \
                 unparse_rules(T[3]) + ')'
         return st
-        
     elif T[0] in housekeeper.comp_ops:
-        return ' ' + T[1][0] + ' '
+        return ' ' + T[1] + ' '
     elif T[0] in housekeeper.lexemes:
         return T[1]
     elif T[0] == 'sname':

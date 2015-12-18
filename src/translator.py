@@ -42,7 +42,7 @@ import modules.transformer
 import modules.unparser
 
 ########## ########## ########## ########## ########## ########## ########## ##########
-   
+
 if __name__ == '__main__':
     l = sys.argv[1]
     parsed = main.parse_file(l)
