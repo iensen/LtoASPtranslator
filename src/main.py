@@ -86,7 +86,7 @@ def parse_file(program_file):
     # Assignment 2
     lexicon_file = 'lexicon'
     ''' When the above assignment is chosen,
-        moving translator.exe to a different directory and call it produces:
+        moving translator.exe to a different directory and calling it produce:
             FileNotFoundError: [Errno 2] No such file or directory: 
                 'lexicon'
     '''
