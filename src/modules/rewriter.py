@@ -23,12 +23,39 @@ def rewrite(D):
     D = arithmetizer.replace(D)
     D = arithmetizer.eval(D)
     
+    tdecls = D['tdecls']
+    rules = D['rules']
+    
     global g_tdecls
-    g_tdecls = grounder.ground_tdecls(D['tdecls'])
-    g_rules = grounder.ground_rules(D['rules'], g_tdecls)
+    g_tdecls = grounder.ground_tdecls(tdecls)
+    # From L to ASP, only set contructs are grounded;
+    # other set expressions are kept as are, for readability
+    
+    rules = qt_legacy_to_tvar(rules)
+    g_rules = grounder.ground_rules(rules, g_tdecls)
 
-    rewritten = {'sdefs': rewrite_tdecls(D['tdecls']), 'rules': rewrite_rules(g_rules)}
+    rewritten = {'sdefs': rewrite_tdecls(tdecls), 'rules': rewrite_rules(g_rules)}
     return rewritten
+    
+'''
+qt_legacy_to_tvar: From <every/some type Var> to <type Var>
+ASP-like convention in L: <every> in head, <some> in sentence
+
+qt_legacy_to_tvar: tuple <->
+'''
+def qt_legacy_to_tvar(T):
+    if T[0] in housekeeper.lexemes:
+        return T
+    elif T[0] == 'qt_legacy':
+        tname = T[2]
+        vname = T[3]
+        tvar = 'tvar', tname, vname
+        return tvar
+    else:
+        tr = T[0],
+        for t in T[1:]:
+            tr += qt_legacy_to_tvar(t),
+        return tr
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########

@@ -5,8 +5,8 @@ from genparser.src.astgen.parsing.parser import *
 from preprocessor import Preprocessor
 
 
-tests = ['neg_arith.l', 'switchover.l', 'sentence_head.l','commas.l', 'brain.l', 'ch5.l', 'graphs.l', 'mix_types_rules.l', 'safety.l',
-        't1.l', 't2.l', 't3.l', 't4.l']
+tests = [   'neg_arith.l', 'switchover.l', 'sentence_head.l', 'graphs.l',
+            'safety.l', 't3.l', 'ch5.l', 'brain.l']
 prefix = os.path.join(os.path.dirname(os.path.abspath(__file__))) + "/examples/"
 # enumerate of the types of program elements
 class Element(Enum):
@@ -61,5 +61,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    print('\nPress Enter to quit.')
-    input() # Hold console open

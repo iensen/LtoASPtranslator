@@ -3,18 +3,17 @@
 infixes1 = {'plus', 'minus'}
 infixes2 = {'mult', 'div', 'mod'}
 ar_ops = infixes1 | infixes2
-
 comp_ops = {'eq', 'noteq', 'less', 'lessoreq', 'greater', 'greateroreq'}
-
 lexemes = ar_ops | comp_ops | {'identifier', 'numeral', 'variable', 'every', 'some'}
 
 ground_terms = {    'const',
                     'ar_term',  # possibly non-ground
                     'func'}     # possibly non-basic
 basic_terms = ground_terms | {'var', 'tvar'}
-terms = basic_terms | {'qt'}
+terms = basic_terms | {'qt_legacy', 'qt'}
 
-cut_root_comma = {'snames', 'terms', 'bterms', 'gterms', 'tvars', 'atoms'}
+cut_root_comma = {  'gterms', 'bterms', 'terms', 'var_ts',  # L
+                    'snames', 'atoms'}                      # ASP
 
 set_ops = {'union': ' + ', 'inters': ' * ', 'diff': ' - '}
 
@@ -69,10 +68,7 @@ def detype_vars(T):
     if T[0] in lexemes:
         return T
     elif T[0] == 'tvar':
-        if T[2][0] == 'variable':
-            return 'var', T[2]
-        else: # V in t
-            return T
+        return 'var', T[2]
     else:
         tr = T[:1]
         for t in T[1:]:

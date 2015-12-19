@@ -76,6 +76,9 @@ def parse_file(program_file):
     preprocessor_instance = Preprocessor(program_file)
     chunks = preprocessor_instance.get_chunks()
     
+########## ########## ########## ########## ########## ########## ########## ##########
+    # Issue when attempting to make a standalone executable from the translator:
+    
     # Choose one from two assignments of lexicon_file:
     # Assignment 1
     # lexicon_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "lexicon")
@@ -94,6 +97,7 @@ def parse_file(program_file):
     # The same problem with grammar_file:
     # grammar_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "grammar")
     grammar_file = 'grammar'
+########## ########## ########## ########## ########## ########## ########## ##########
 
     lexer = Lexer(lexicon_file, False)
     parser = Parser(grammar_file, lexer.lexicon_dict.keys())

@@ -94,8 +94,8 @@ is_node(node N).
 
 
 /* ASP RULE: v_hop(N). */
-/*LRULE:*/
-v_hop(hopc N). /* In SPARC: v_hop(#hopc). Not: v_hop(#node). */
+/*L RULE:*/
+v_hop(hopc N).
 
 
 /*
@@ -561,7 +561,7 @@ hop_count(N2,N3,Count+2) :-
 hop_count(node N2, node N3, hopc Count) if
        hop_count(N1,some node N2,Count-2) and
        not bad_node(N2) and
-       case(some casenum C,N2,some direction Dir) and
+       case(some case_num C,N2,some direction Dir) and
        C != 2 and 
        skip_link(N1,N2,Dir) and
        link(N2,N3,Dir).
@@ -806,7 +806,7 @@ sent_to(node N1,node N2,good) or sent_to(N1,N2,bad(N1)) if
        link(N1,N2,Dir).    
 
 % a bad node may send any hop count out as part of the message
-1{hop_count(N1,N2,H):v_hop(H)}1 :- 
+1{hop_count(N1,N2,H)}1 :- 
        bad_node(N1),
        not omit(N1,N2),
        link(N1,N2,Dir).   
@@ -840,12 +840,12 @@ maybe partner(node N1, node N2, node N3) if
                         if is_node(N1) and is_node(N2).
    
 
-maybe hop_count(node N1, node N2, vhop H) if bad_node(N1) 
+maybe hop_count(node N1, node N2, hopc H) if bad_node(N1) 
                                              and not omit(N1, N2)
                                              and link(N1, N2, some direction Dir).
 
 
-1<=|{hop_count(node N1, node N2, vhop H)}|<=1 if is_node(N1) and is_node(N2).
+1<=|{hop_count(node N1, node N2, hopc H)}|<=1 if is_node(N1) and is_node(N2).
 
 
 maybe integrity(node N1, node N2) if bad_node(N1) 

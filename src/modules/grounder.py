@@ -58,10 +58,10 @@ sconstr_to_set: tuple * dict(str: set(tuple)) -> tuple
 '''
 def sconstr_to_set(T, type_sets):
     var_sets = {}
-    tvars = T[2][1:]
-    for tvar in tvars:
-        vname = tvar[1][1]
-        tname = tvar[2][1]
+    var_ts = T[2][1:]
+    for var_t in var_ts:
+        vname = var_t[1][1]
+        tname = var_t[2][1]
         Set = type_sets[tname]
         var_sets[vname] = Set
     bterm = T[1]

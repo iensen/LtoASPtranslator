@@ -6,9 +6,8 @@ statement(T) ::= type_decl(T)
 statement(R) ::= rule(R)
 
 const_decl(cdecl C C1) ::= const identifier(C) eq identifier(C1) dot
-const_decl(cdecl C N) ::= const identifier(C) eq number(N) dot
 const_decl(cdecl C T) ::= const identifier(C) eq ground_arithmetic_term(T) dot
-
+const_decl(cdecl C N) ::= const identifier(C) eq number(N) dot
 number(N) ::= numeral(N)
 number(neg_num N) ::= minus numeral(N)
 
@@ -33,10 +32,10 @@ limit(I) ::= identifier(I)
 limit(N) ::= number(N)
 limit(A) ::= ground_arithmetic_term(A)
 
-set_constr(sconstr T Vs) ::= basic_term(T) where tvars(Vs)
-tvars(tvars V) ::= tvar(V)
-tvars(tvars V cut_root(Vs)) ::= tvar(V) comma tvars(Vs)
-tvar(tvar V T) ::= variable(V) in identifier(T)
+set_constr(sconstr T Vs) ::= basic_term(T) where var_ts(Vs)
+var_ts(var_ts V) ::= var_t(V)
+var_ts(var_ts V cut_root(Vs)) ::= var_t(V) comma var_ts(Vs)
+var_t(var_t V T) ::= variable(V) in identifier(T)
 
 rule(rule H) ::= head(H) dot
 rule(rule H S) ::= head(H) if sentence(S) dot
@@ -109,20 +108,21 @@ ground_term(F) ::= ground_functional_term(F)
 
 basic_term(const C) ::= identifier(C)
 basic_term(N) ::= number(N)
-basic_term(var V) ::= variable(V)
-basic_term(tvar T V) ::= identifier(T) variable(V)
 basic_term(T) ::= arithmetic_term(T)
 basic_term(F) ::= basic_functional_term(F)
+basic_term(var V) ::= variable(V)
+basic_term(T) ::= tvar(T)
+tvar(tvar T V) ::= identifier(T) variable(V)
 
-ground_arithmetic_term(gar_term T) ::= minus T0_g(T)
-ground_arithmetic_term(gar_term T) ::= minus lparen T0_g(T) rparen
+ground_arithmetic_term(gar_term M T) ::= minus(M) T0_g(T)
+ground_arithmetic_term(gar_term M T) ::= minus(M) lparen T0_g(T) rparen
 ground_arithmetic_term(gar_term T1 I T2) ::= lparen T0_g(T1) infix_1(I) T1_g(T2) rparen
 ground_arithmetic_term(gar_term T1 I T2) ::= lparen T1_g(T1) infix_2(I) T2_g(T2) rparen
 ground_arithmetic_term(gar_term T1 I T2) ::= T0_g(T1) infix_1(I) T1_g(T2)
 ground_arithmetic_term(gar_term T1 I T2) ::= T1_g(T1) infix_2(I) T2_g(T2)
 
-arithmetic_term(ar_term T) ::= minus T0(T)
-arithmetic_term(ar_term T) ::= minus lparen T0(T) rparen
+arithmetic_term(ar_term M T) ::= minus(M) T0(T)
+arithmetic_term(ar_term M T) ::= minus(M) lparen T0(T) rparen
 arithmetic_term(ar_term T1 I T2) ::= lparen T0(T1) infix_1(I) T1(T2) rparen
 arithmetic_term(ar_term T1 I T2) ::= lparen T1(T1) infix_2(I) T2(T2) rparen
 arithmetic_term(ar_term T1 I T2) ::= T0(T1) infix_1(I) T1(T2)
@@ -144,7 +144,7 @@ T2(T) ::= lparen T0(T) rparen
 T2(I) ::= identifier(I)
 T2(N) ::= number(N)
 T2(V) ::= variable(V)
-T2(tvar I V) ::= identifier(I) variable(V)
+T2(T) ::= tvar(T)
 
 infix_1(P) ::= plus(P)
 infix_1(M) ::= minus(M)
@@ -152,7 +152,7 @@ infix_2(M) ::= mult(M)
 infix_2(D) ::= div(D)
 infix_2(M) ::= mod(M)
 
-quantified_term(qt2 I V) ::= some identifier(I) variable(V)
+quantified_term(qt_legacy Q I V) ::= quantifier(Q) identifier(I) variable(V)
 quantified_term(qt Q I) ::= quantifier(Q) identifier(I)
 quantifier(E) ::= every(E)
 quantifier(A) ::= some(A)
