@@ -1,4 +1,3 @@
-
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 sorts
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
@@ -13,17 +12,17 @@ sorts
 predicates
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
-mitigated(#universal).
-risks_mitigated().
-contingency_plan_in_place().
-atmf_will_be_applied().
-existing_standard_fuel_low_procedure().
-switchover_safe().
-aic_issued().
 risks_identified().
-new_flight_crew_procedures().
-detailed_switchover_plan().
+atmf_will_be_applied().
+mitigated(#universal).
 training_programs().
+new_flight_crew_procedures().
+risks_mitigated().
+switchover_safe().
+detailed_switchover_plan().
+contingency_plan_in_place().
+existing_standard_fuel_low_procedure().
+aic_issued().
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 rules

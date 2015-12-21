@@ -1082,10 +1082,11 @@ bad :- bad_accepted.
 /* L RULE: */
 bad if bad_accepted.
 
-/* ASP RULE*
+/* ASP RULE
 bad :- good_not_accepted, sending(N1), sending(N2), N1!=N2, not bad_node(N1), not bad_node(N2).
 */
-/* L rule cannot be obtained because L does not support relations*/
+
+/* L rule cannot be obtained because L does not support relations */
 
 /* ASP RULE
 % -bad_node(N) :- sending(N).
@@ -1093,17 +1094,15 @@ bad :- good_not_accepted, sending(N1), sending(N2), N1!=N2, not bad_node(N1), no
 */
 
 /* L Rule*/
-
 maybe bad_node(node N).
 0<=|{bad_node(node N)}|<=2.
-
 
 
 /* ASP RULE: 
 :- not bad.
 */
-/* L RULE :
-*/
+
+/* L RULE : */
 1<=|{bad}|<=1.
 
 

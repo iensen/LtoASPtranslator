@@ -35,8 +35,6 @@ An example, with Windows Command Prompt:
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 
-import sys
-
 import main
 import modules.transformer
 import modules.unparser
@@ -44,6 +42,7 @@ import modules.unparser
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 if __name__ == '__main__':
+    import sys
     l = sys.argv[1]
     parsed = main.parse_file(l)
     transformed = modules.transformer.transform(parsed)

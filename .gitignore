@@ -67,5 +67,6 @@ __pycache__/
 # Vu's temporary stuff
 # ########## ########## ########## ########## ########## ########## ########## ##########
 misc
+solver
 src/pyi
 src/tmp

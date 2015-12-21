@@ -1,5 +1,5 @@
 from . import arithmetizer
-from . import constrainer
+from . import aggregator
 from . import grounder
 from . import normalizer
 from . import housekeeper
@@ -119,6 +119,8 @@ Output: parsed ASP rules:
 rewrite_rules: list -> list
 '''
 def rewrite_rules(T):
+    T = aggregator.aggregate_rules(T)
+    
     rewritten = 'rules',
     for t in T[1:]:
         satoms = housekeeper.tvars_to_satoms(t)
@@ -203,10 +205,7 @@ def reshape(T):
     elif T[0] == 'sent':
         return 'body', reshape(T[1])
     elif T[0] == 'rule':
-        if T[1][0] == 'cconstr':
-            iconstr = constrainer.rule_to_iconstr(T)
-            return reshape(iconstr)
-        elif len(T) == 2:
+        if len(T) == 2:
             return 'fact', reshape(T[1])
         else: # >= 3
             return 'rule', reshape(T[1]), reshape(T[2])

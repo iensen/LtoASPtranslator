@@ -10,7 +10,7 @@ sorts
 
 #data = 
 	{good} + 
-	{bad(6), bad(2), bad(7), bad(4), bad(0), bad(5), bad(1), bad(3)}.
+	{bad(0), bad(7), bad(6), bad(5), bad(3), bad(1), bad(2), bad(4)}.
 
 #hopc = 
 	0..10.
@@ -26,7 +26,7 @@ sorts
 	#case_num.
 
 #rule_gterms = 
-	{right, bad(6), bad(7), bad(4), good, 8, 3, 1, bad(3), left, bad(2), bad(0), 2, bad(5), 0, 8, bad(1)}.
+	{3, 2, bad(5), 8, bad(3), right, bad(1), bad(4), good, 0, bad(0), bad(7), bad(6), 1, left, bad(2), 8}.
 
 #universal = 
 	#types + 
@@ -36,36 +36,36 @@ sorts
 predicates
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
-case(#universal, #universal, #universal).
-is_node(#universal).
-bad_accepted().
-inline_passed(#universal).
-good_not_accepted().
-integrity(#universal, #universal).
-bad().
-not_discordant(#universal, #universal, #universal, #universal).
-direct_link(#universal, #universal, #universal).
-bad_node(#universal).
-frame_sent(#universal, #universal).
-accepted(#universal, #universal).
-link(#universal, #universal, #universal).
-sent_to(#universal, #universal, #universal).
-partner(#universal, #universal, #universal).
-hop_count(#universal, #universal, #universal).
-inline_accept(#universal, #universal, #universal).
-recon_accept(#universal, #universal).
-omit(#universal, #universal).
 adjusted_hop_sum(#universal, #universal, #universal, #universal).
-pair_cong(#universal, #universal).
-sending(#universal).
+bad_accepted().
+link(#universal, #universal, #universal).
+partner(#universal, #universal, #universal).
+omit(#universal, #universal).
 recon_case_met(#universal, #universal, #universal).
 recon_qualify_hop(#universal, #universal, #universal).
+sending(#universal).
+hop_count(#universal, #universal, #universal).
+direct_link(#universal, #universal, #universal).
+recon_accept(#universal, #universal).
 not_omit(#universal, #universal).
 hop_add(#universal, #universal, #universal).
-id(#universal, #universal, #universal).
-skip_link(#universal, #universal, #universal).
+pair_cong(#universal, #universal).
+is_node(#universal).
+inline_passed(#universal).
+accepted(#universal, #universal).
+bad().
 v_hop(#universal).
+skip_link(#universal, #universal, #universal).
+not_discordant(#universal, #universal, #universal, #universal).
+inline_accept(#universal, #universal, #universal).
+integrity(#universal, #universal).
+sent_to(#universal, #universal, #universal).
+bad_node(#universal).
 discordant(#universal, #universal, #universal, #universal).
+case(#universal, #universal, #universal).
+id(#universal, #universal, #universal).
+frame_sent(#universal, #universal).
+good_not_accepted().
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 rules
@@ -95,17 +95,7 @@ not_discordant(N1, N2, left, H) :-
 	((N1 + 8) - N2) = H.
 
 frame_sent(N1, N2) :-
-	sent_to(N1, N2, good),
-	#node(N1),
-	#node(N2).
-
-frame_sent(N1, N2) :-
 	sent_to(N1, N2, bad(7)),
-	#node(N1),
-	#node(N2).
-
-frame_sent(N1, N2) :-
-	sent_to(N1, N2, bad(1)),
 	#node(N1),
 	#node(N2).
 
@@ -115,12 +105,12 @@ frame_sent(N1, N2) :-
 	#node(N2).
 
 frame_sent(N1, N2) :-
-	sent_to(N1, N2, bad(2)),
+	sent_to(N1, N2, bad(4)),
 	#node(N1),
 	#node(N2).
 
 frame_sent(N1, N2) :-
-	sent_to(N1, N2, bad(0)),
+	sent_to(N1, N2, bad(1)),
 	#node(N1),
 	#node(N2).
 
@@ -130,12 +120,22 @@ frame_sent(N1, N2) :-
 	#node(N2).
 
 frame_sent(N1, N2) :-
+	sent_to(N1, N2, bad(2)),
+	#node(N1),
+	#node(N2).
+
+frame_sent(N1, N2) :-
+	sent_to(N1, N2, good),
+	#node(N1),
+	#node(N2).
+
+frame_sent(N1, N2) :-
 	sent_to(N1, N2, bad(3)),
 	#node(N1),
 	#node(N2).
 
 frame_sent(N1, N2) :-
-	sent_to(N1, N2, bad(4)),
+	sent_to(N1, N2, bad(0)),
 	#node(N1),
 	#node(N2).
 
@@ -591,9 +591,9 @@ omit(N1, N2) |
 	#node(N1),
 	#node(N2).
 
-:-	0 > #count{0, N2, N1: omit(N1, N2)}.
+:-	0 > #count{0, N1, N2: omit(N1, N2)}.
 
-:-	1 < #count{0, N2, N1: omit(N1, N2)}.
+:-	1 < #count{0, N1, N2: omit(N1, N2)}.
 
 sent_to(N1, N2, good) |
 sent_to(N1, N2, bad(N1)) :-
@@ -614,19 +614,13 @@ id(N1, N2, N3) |
 	#node(N3),
 	#direction(Dir).
 
-:-	1 > #count{0, N3: id(N1, N2, N3)},
+:-	1 > #count{0, N3: id(N1, N2, N3), #node(N1), #node(N2), #node(N3)},
 	is_node(N1),
-	is_node(N2),
-	#node(N1),
-	#node(N2),
-	#node(N3).
+	is_node(N2).
 
-:-	1 < #count{0, N3: id(N1, N2, N3)},
+:-	1 < #count{0, N3: id(N1, N2, N3), #node(N1), #node(N2), #node(N3)},
 	is_node(N1),
-	is_node(N2),
-	#node(N1),
-	#node(N2),
-	#node(N3).
+	is_node(N2).
 
 partner(N1, N2, N3) |
 -partner(N1, N2, N3) :-
@@ -646,19 +640,13 @@ partner(N1, N2, N3) |
 	#node(N2),
 	#node(N3).
 
-:-	1 > #count{0, N3: partner(N1, N2, N3)},
+:-	1 > #count{0, N3: partner(N1, N2, N3), #node(N1), #node(N2), #node(N3)},
 	is_node(N1),
-	is_node(N2),
-	#node(N1),
-	#node(N2),
-	#node(N3).
+	is_node(N2).
 
-:-	1 < #count{0, N3: partner(N1, N2, N3)},
+:-	1 < #count{0, N3: partner(N1, N2, N3), #node(N1), #node(N2), #node(N3)},
 	is_node(N1),
-	is_node(N2),
-	#node(N1),
-	#node(N2),
-	#node(N3).
+	is_node(N2).
 
 hop_count(N1, N2, H) |
 -hop_count(N1, N2, H) :-
@@ -670,19 +658,13 @@ hop_count(N1, N2, H) |
 	#hopc(H),
 	#direction(Dir).
 
-:-	1 > #count{0, H: hop_count(N1, N2, H)},
+:-	1 > #count{0, H: hop_count(N1, N2, H), #node(N1), #node(N2), #hopc(H)},
 	is_node(N1),
-	is_node(N2),
-	#node(N1),
-	#node(N2),
-	#hopc(H).
+	is_node(N2).
 
-:-	1 < #count{0, H: hop_count(N1, N2, H)},
+:-	1 < #count{0, H: hop_count(N1, N2, H), #node(N1), #node(N2), #hopc(H)},
 	is_node(N1),
-	is_node(N2),
-	#node(N1),
-	#node(N2),
-	#hopc(H).
+	is_node(N2).
 
 integrity(N1, N2) |
 -integrity(N1, N2) :-
@@ -810,22 +792,22 @@ recon_case_met(N1, N2, N3) :-
 	#hopc(H).
 
 accepted(N, Data) :-
-	inline_accept(N, Data, right),
-	#node(N),
-	#data(Data).
-
-accepted(N, Data) :-
 	inline_accept(N, Data, left),
 	#node(N),
 	#data(Data).
 
 accepted(N, Data) :-
-	recon_accept(N, left),
+	inline_accept(N, Data, right),
 	#node(N),
 	#data(Data).
 
 accepted(N, Data) :-
 	recon_accept(N, right),
+	#node(N),
+	#data(Data).
+
+accepted(N, Data) :-
+	recon_accept(N, left),
 	#node(N),
 	#data(Data).
 
@@ -848,11 +830,9 @@ bad_node(N) |
 -bad_node(N) :-
 	#node(N).
 
-:-	0 > #count{0, N: bad_node(N)},
-	#node(N).
+:-	0 > #count{0, N: bad_node(N), #node(N)}.
 
-:-	2 < #count{0, N: bad_node(N)},
-	#node(N).
+:-	2 < #count{0, N: bad_node(N), #node(N)}.
 
 :-	1 > #count{0: bad}.
 
