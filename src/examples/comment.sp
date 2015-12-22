@@ -15,12 +15,22 @@ sorts
 predicates
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
-q(#universal).
 p(#universal).
+q(#universal).
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 rules
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
+
+% Closed-World Assumption:
+-p(AutoVar0) :-
+	not p(AutoVar0),
+	#universal(AutoVar0).
+
+% Closed-World Assumption:
+-q(AutoVar0) :-
+	not q(AutoVar0),
+	#universal(AutoVar0).
 
 p(X) :-
 	q(X),

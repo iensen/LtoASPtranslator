@@ -171,6 +171,9 @@ def unparse_rules(T):
         return unparse_rules(T[1]) + '.\n\n'
     elif T[0] == 'rule':
         return unparse_rules(T[1]) + ' :-\n\t' + unparse_rules(T[2]) + '.\n\n'
+    elif T[0] == 'CWA':
+        return  '% Closed-World Assumption:\n' + \
+                unparse_rules(T[1]) + ' :-\n\t' + unparse_rules(T[2]) + '.\n\n'
     else:
         st = ''
         for t in T[1:]:

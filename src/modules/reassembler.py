@@ -21,9 +21,16 @@ Output: a dictionary parsed ASP program:
 reassemble: dict -> dict
 '''
 def reassemble(D):
+    rules = D['rules']
+    found_predicates = find_predicates(rules) # set
+    introduced_pdecls = introduce_pdecls(found_predicates)
+    
+    gottenCWAs = getCWAs(found_predicates) # set
+    rules = rules[1:]
+    rules = ('rules',) + tuple(gottenCWAs) + rules
     return {    'sdefs': combine_sdefs(D), 
-                'pdecls': introduce_pdecls(find_predicates(D['rules'])), 
-                'rules': D['rules']}
+                'pdecls': introduced_pdecls, 
+                'rules': rules}
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
@@ -196,6 +203,43 @@ def extract_rule_gterms(T):
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
+
+'''
+getCWAs: set(tuple(str, int)) -> set(tuple)
+'''
+def getCWAs(S):
+    CWAs = set()
+    for pair in S:
+        pname = 'identifier', pair[0]
+        patom = 'patom', pname
+        
+        arity = pair[1]
+        satoms = ()
+        if arity > 0:
+            terms = 'terms',
+            for i in range(arity):
+                vname = 'AutoVar' + str(i)
+                vname = 'variable', vname
+                
+                var = 'var', vname
+                terms += var,
+                
+                sname = 'identifier', 'universal'
+                sname = 'sname', sname
+                satom = 'satom', sname, vname
+                satoms += satom,
+            patom += terms,
+        head = 'neg_class', patom
+        head = 'head', head
+        
+        body = 'neg_def', patom
+        for satom in satoms:
+            body = 'conj', body, satom
+        body = 'body', body
+        
+        CWA = 'CWA', head, body
+        CWAs |= {CWA}
+    return CWAs
 
 '''
 find_predicates: find predicate names and arities from rules

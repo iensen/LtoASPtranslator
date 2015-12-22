@@ -1,2 +1,2 @@
-h
+-b2 h -h1 -h2 -b1
 SATISFIABLE

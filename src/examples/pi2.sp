@@ -9,6 +9,14 @@ b().
 rules
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
+% Closed-World Assumption:
+-b :-
+	not b.
+
+% Closed-World Assumption:
+-a :-
+	not a.
+
 a :-
 	b.
 

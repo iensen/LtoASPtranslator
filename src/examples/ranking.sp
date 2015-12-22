@@ -48,7 +48,7 @@ sorts
 	#assessment.
 
 #rule_gterms = 
-	{pass, bob, unsatisfactory, b, e2, c, a, chris, dennis, f, above_average, q2, q3, average, satisfactory, d, below_average, ann, fail, q1, e1}.
+	{below_average, dennis, q1, above_average, chris, f, average, unsatisfactory, satisfactory, d, bob, ann, q2, fail, pass, b, a, e2, q3, c, e1}.
 
 #universal = 
 	#types + 
@@ -58,17 +58,56 @@ sorts
 predicates
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
-has_score(#universal, #universal, #universal).
-has_an_unacceptable_assessment(#universal).
-has_all_acceptable_assessments(#universal).
 ranked(#universal, #universal).
 evaluated(#universal, #universal).
+has_score(#universal, #universal, #universal).
+has_all_acceptable_assessments(#universal).
+has_an_unacceptable_assessment(#universal).
 has_an_excellent_exam(#universal).
 has_a_good_exam(#universal).
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 rules
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
+
+% Closed-World Assumption:
+-has_all_acceptable_assessments(AutoVar0) :-
+	not has_all_acceptable_assessments(AutoVar0),
+	#universal(AutoVar0).
+
+% Closed-World Assumption:
+-has_an_unacceptable_assessment(AutoVar0) :-
+	not has_an_unacceptable_assessment(AutoVar0),
+	#universal(AutoVar0).
+
+% Closed-World Assumption:
+-evaluated(AutoVar0, AutoVar1) :-
+	not evaluated(AutoVar0, AutoVar1),
+	#universal(AutoVar0),
+	#universal(AutoVar1).
+
+% Closed-World Assumption:
+-has_a_good_exam(AutoVar0) :-
+	not has_a_good_exam(AutoVar0),
+	#universal(AutoVar0).
+
+% Closed-World Assumption:
+-has_score(AutoVar0, AutoVar1, AutoVar2) :-
+	not has_score(AutoVar0, AutoVar1, AutoVar2),
+	#universal(AutoVar0),
+	#universal(AutoVar1),
+	#universal(AutoVar2).
+
+% Closed-World Assumption:
+-has_an_excellent_exam(AutoVar0) :-
+	not has_an_excellent_exam(AutoVar0),
+	#universal(AutoVar0).
+
+% Closed-World Assumption:
+-ranked(AutoVar0, AutoVar1) :-
+	not ranked(AutoVar0, AutoVar1),
+	#universal(AutoVar0),
+	#universal(AutoVar1).
 
 has_an_unacceptable_assessment(S) :-
 	has_score(S, A, G),

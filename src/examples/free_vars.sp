@@ -13,7 +13,7 @@ sorts
 	#type2.
 
 #rule_gterms = 
-	{0, 1, 7, 2}.
+	{1, 2, 7, 0}.
 
 #universal = 
 	#types + 
@@ -23,13 +23,30 @@ sorts
 predicates
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
-t(#universal, #universal).
-p(#universal, #universal).
 q(#universal).
+p(#universal, #universal).
+t(#universal, #universal).
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 rules
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
+
+% Closed-World Assumption:
+-p(AutoVar0, AutoVar1) :-
+	not p(AutoVar0, AutoVar1),
+	#universal(AutoVar0),
+	#universal(AutoVar1).
+
+% Closed-World Assumption:
+-q(AutoVar0) :-
+	not q(AutoVar0),
+	#universal(AutoVar0).
+
+% Closed-World Assumption:
+-t(AutoVar0, AutoVar1) :-
+	not t(AutoVar0, AutoVar1),
+	#universal(AutoVar0),
+	#universal(AutoVar1).
 
 p(X, Y) :-
 	(X + Y) = 7,
