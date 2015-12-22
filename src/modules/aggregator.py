@@ -1,3 +1,10 @@
+'''
+This module "aggregator.py" translates L cardinality contraints into
+ASP body #count aggregates
+'''
+
+########## ########## ########## ########## ########## ########## ########## ##########
+
 from . import housekeeper
 
 ########## ########## ########## ########## ########## ########## ########## ##########

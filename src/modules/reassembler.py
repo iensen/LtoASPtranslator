@@ -1,8 +1,15 @@
+'''
+This module:
+    From rules, collects ground terms (which possibly belong to no declared type)
+    Declares predicates
+    Add Closed-World Assumptions
+'''
+
+########## ########## ########## ########## ########## ########## ########## ##########
+
 from . import grounder
 from . import housekeeper
 
-########## ########## ########## ########## ########## ########## ########## ##########
-########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
@@ -22,15 +29,17 @@ reassemble: dict -> dict
 '''
 def reassemble(D):
     rules = D['rules']
-    found_predicates = find_predicates(rules) # set
+    found_predicates = find_predicates(rules) # set(tuple(str, int))
     introduced_pdecls = introduce_pdecls(found_predicates)
     
     gottenCWAs = getCWAs(found_predicates) # set
     rules = rules[1:]
     rules = ('rules',) + tuple(gottenCWAs) + rules
+    
     return {    'sdefs': combine_sdefs(D), 
                 'pdecls': introduced_pdecls, 
-                'rules': rules}
+                'rules': rules,
+                'display': get_display(found_predicates)}
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
@@ -240,6 +249,16 @@ def getCWAs(S):
         CWA = 'CWA', head, body
         CWAs |= {CWA}
     return CWAs
+    
+'''
+get_display: set(tuple(str, int)) -> tuple
+'''
+def get_display(S):
+    display = 'display',
+    for pair in S:
+        pname = 'identifier', pair[0]
+        display += pname,
+    return display
 
 '''
 find_predicates: find predicate names and arities from rules

@@ -1,3 +1,9 @@
+'''
+This is the primary module. It rewrites L ASTs into ASP ASTs
+'''
+
+########## ########## ########## ########## ########## ########## ########## ##########
+
 from . import arithmetizer
 from . import aggregator
 from . import grounder

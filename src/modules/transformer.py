@@ -1,3 +1,9 @@
+'''
+This module transforms an L program AST into a (complete) ASP program AST
+'''
+
+########## ########## ########## ########## ########## ########## ########## ##########
+
 from . import rewriter
 from . import reassembler
 from . import housekeeper

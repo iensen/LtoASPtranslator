@@ -1,3 +1,9 @@
+'''
+This module writes an ASP program from an ASP AST
+'''
+
+########## ########## ########## ########## ########## ########## ########## ##########
+
 from . import housekeeper
 
 ########## ########## ########## ########## ########## ########## ########## ##########
@@ -21,15 +27,20 @@ def unparse(T):
             if sdefs != '':
                 prog += comment_line + '\nsorts\n' + comment_line + \
                         '\n\n' + sdefs
-        if t[0] == 'pdecls':
+        elif t[0] == 'pdecls':
             pdecls = unparse_pdecls(t)
             if pdecls != '':
                 prog += comment_line + '\npredicates\n' + comment_line + '\n\n' + pdecls
-        if t[0] == 'rules':
+        elif t[0] == 'rules':
             rules = unparse_rules(t)
             if rules != '':
-                prog +=     '\n' + comment_line + '\nrules\n' + comment_line + \
-                            '\n\n' + rules
+                prog += '\n' + comment_line + '\nrules\n' + comment_line + \
+                        '\n\n' + rules
+        else: # 'display'
+            display = unparse_display(t)
+            if display != '':
+                prog += '\n' + comment_line + '\ndisplay\n' + comment_line + \
+                        '\n\n' + display
     return prog
 
 ########## ########## ########## ########## ########## ########## ########## ##########
@@ -178,6 +189,18 @@ def unparse_rules(T):
         st = ''
         for t in T[1:]:
             st += unparse_rules(t)
+        return st
+
+'''
+def unparse_display: list -> str
+'''
+def unparse_display(T):
+    if T[0] == 'identifier':
+        return T[1] + '.\n'
+    else: # 'display'
+        st = ''
+        for t in T[1:]:
+            st += unparse_display(t)
         return st
 
 ########## ########## ########## ########## ########## ########## ########## ##########

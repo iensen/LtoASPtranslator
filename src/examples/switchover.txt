@@ -1,2 +1,2 @@
--risks_mitigated -contingency_plan_in_place -switchover_safe new_flight_crew_procedures -training_programs -detailed_switchover_plan -risks_identified -existing_standard_fuel_low_procedure aic_issued -atmf_will_be_applied -mitigated(h1_1)
+new_flight_crew_procedures aic_issued
 SATISFIABLE

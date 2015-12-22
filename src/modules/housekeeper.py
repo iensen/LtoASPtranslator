@@ -1,3 +1,10 @@
+'''
+This module contains miscellaneous sets and functions,
+which are frequently used by other modules
+'''
+
+########## ########## ########## ########## ########## ########## ########## ##########
+
 # Frequently referred labels from L/ASP lexicon/grammar:
 
 infixes1 = {'plus', 'minus'}
@@ -160,7 +167,7 @@ dict_to_list: dict -> list
 '''
 def dict_to_list(T):
     prog = ()
-    for keyw in ('sdefs', 'pdecls', 'rules'):
+    for keyw in ('sdefs', 'pdecls', 'rules', 'display'):
         if len(T[keyw]) > 1:
             prog += T[keyw],
     if prog != ():

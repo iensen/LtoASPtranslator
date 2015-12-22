@@ -1,3 +1,10 @@
+'''
+This module grounds universally/existentially quantified terms to 
+conjunctions/disjuctions
+'''
+
+########## ########## ########## ########## ########## ########## ########## ##########
+
 from . import housekeeper
 
 ########## ########## ########## ########## ########## ########## ########## ##########

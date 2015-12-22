@@ -12,50 +12,25 @@ sorts
 predicates
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
-contingency_plan_in_place().
-training_programs().
-switchover_safe().
-atmf_will_be_applied().
-risks_identified().
-mitigated(#universal).
-new_flight_crew_procedures().
-existing_standard_fuel_low_procedure().
 detailed_switchover_plan().
+risks_identified().
 risks_mitigated().
+switchover_safe().
+new_flight_crew_procedures().
 aic_issued().
+contingency_plan_in_place().
+existing_standard_fuel_low_procedure().
+atmf_will_be_applied().
+mitigated(#universal).
+training_programs().
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 rules
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
 % Closed-World Assumption:
--contingency_plan_in_place :-
-	not contingency_plan_in_place.
-
-% Closed-World Assumption:
--existing_standard_fuel_low_procedure :-
-	not existing_standard_fuel_low_procedure.
-
-% Closed-World Assumption:
--detailed_switchover_plan :-
-	not detailed_switchover_plan.
-
-% Closed-World Assumption:
--mitigated(AutoVar0) :-
-	not mitigated(AutoVar0),
-	#universal(AutoVar0).
-
-% Closed-World Assumption:
--risks_identified :-
-	not risks_identified.
-
-% Closed-World Assumption:
 -switchover_safe :-
 	not switchover_safe.
-
-% Closed-World Assumption:
--atmf_will_be_applied :-
-	not atmf_will_be_applied.
 
 % Closed-World Assumption:
 -new_flight_crew_procedures :-
@@ -70,8 +45,33 @@ rules
 	not training_programs.
 
 % Closed-World Assumption:
+-detailed_switchover_plan :-
+	not detailed_switchover_plan.
+
+% Closed-World Assumption:
+-risks_identified :-
+	not risks_identified.
+
+% Closed-World Assumption:
+-contingency_plan_in_place :-
+	not contingency_plan_in_place.
+
+% Closed-World Assumption:
 -aic_issued :-
 	not aic_issued.
+
+% Closed-World Assumption:
+-existing_standard_fuel_low_procedure :-
+	not existing_standard_fuel_low_procedure.
+
+% Closed-World Assumption:
+-atmf_will_be_applied :-
+	not atmf_will_be_applied.
+
+% Closed-World Assumption:
+-mitigated(AutoVar0) :-
+	not mitigated(AutoVar0),
+	#universal(AutoVar0).
 
 switchover_safe :-
 	detailed_switchover_plan,
@@ -90,4 +90,20 @@ aic_issued.
 
 new_flight_crew_procedures.
 
+
+%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
+display
+%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
+
+detailed_switchover_plan.
+risks_identified.
+risks_mitigated.
+switchover_safe.
+new_flight_crew_procedures.
+aic_issued.
+contingency_plan_in_place.
+existing_standard_fuel_low_procedure.
+atmf_will_be_applied.
+mitigated.
+training_programs.
 

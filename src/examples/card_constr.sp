@@ -36,13 +36,13 @@ rules
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
 % Closed-World Assumption:
--p3(AutoVar0) :-
-	not p3(AutoVar0),
+-p2(AutoVar0) :-
+	not p2(AutoVar0),
 	#universal(AutoVar0).
 
 % Closed-World Assumption:
--p2(AutoVar0) :-
-	not p2(AutoVar0),
+-p3(AutoVar0) :-
+	not p3(AutoVar0),
 	#universal(AutoVar0).
 
 % Closed-World Assumption:
@@ -61,4 +61,12 @@ rules
 	p3(V3),
 	#t3(V3).
 
+
+%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
+display
+%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
+
+p3.
+p1.
+p2.
 

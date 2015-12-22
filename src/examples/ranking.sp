@@ -48,7 +48,7 @@ sorts
 	#assessment.
 
 #rule_gterms = 
-	{below_average, dennis, q1, above_average, chris, f, average, unsatisfactory, satisfactory, d, bob, ann, q2, fail, pass, b, a, e2, q3, c, e1}.
+	{ann, pass, b, unsatisfactory, d, q1, f, below_average, chris, average, bob, q2, satisfactory, e2, above_average, a, e1, c, dennis, q3, fail}.
 
 #universal = 
 	#types + 
@@ -58,22 +58,23 @@ sorts
 predicates
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
-ranked(#universal, #universal).
-evaluated(#universal, #universal).
 has_score(#universal, #universal, #universal).
 has_all_acceptable_assessments(#universal).
+ranked(#universal, #universal).
+has_a_good_exam(#universal).
+evaluated(#universal, #universal).
 has_an_unacceptable_assessment(#universal).
 has_an_excellent_exam(#universal).
-has_a_good_exam(#universal).
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 rules
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
 % Closed-World Assumption:
--has_all_acceptable_assessments(AutoVar0) :-
-	not has_all_acceptable_assessments(AutoVar0),
-	#universal(AutoVar0).
+-evaluated(AutoVar0, AutoVar1) :-
+	not evaluated(AutoVar0, AutoVar1),
+	#universal(AutoVar0),
+	#universal(AutoVar1).
 
 % Closed-World Assumption:
 -has_an_unacceptable_assessment(AutoVar0) :-
@@ -81,10 +82,9 @@ rules
 	#universal(AutoVar0).
 
 % Closed-World Assumption:
--evaluated(AutoVar0, AutoVar1) :-
-	not evaluated(AutoVar0, AutoVar1),
-	#universal(AutoVar0),
-	#universal(AutoVar1).
+-has_all_acceptable_assessments(AutoVar0) :-
+	not has_all_acceptable_assessments(AutoVar0),
+	#universal(AutoVar0).
 
 % Closed-World Assumption:
 -has_a_good_exam(AutoVar0) :-
@@ -194,4 +194,16 @@ has_score(dennis, e1, f).
 
 has_score(dennis, e2, c).
 
+
+%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
+display
+%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
+
+has_score.
+has_all_acceptable_assessments.
+ranked.
+has_a_good_exam.
+evaluated.
+has_an_unacceptable_assessment.
+has_an_excellent_exam.
 

@@ -19,19 +19,14 @@ sorts
 predicates
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
-edge(#universal, #universal).
 removed(#universal).
 reachable(#universal, #universal).
+edge(#universal, #universal).
 disconnected().
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 rules
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
-
-% Closed-World Assumption:
--removed(AutoVar0) :-
-	not removed(AutoVar0),
-	#universal(AutoVar0).
 
 % Closed-World Assumption:
 -reachable(AutoVar0, AutoVar1) :-
@@ -40,14 +35,19 @@ rules
 	#universal(AutoVar1).
 
 % Closed-World Assumption:
--disconnected :-
-	not disconnected.
+-removed(AutoVar0) :-
+	not removed(AutoVar0),
+	#universal(AutoVar0).
 
 % Closed-World Assumption:
 -edge(AutoVar0, AutoVar1) :-
 	not edge(AutoVar0, AutoVar1),
 	#universal(AutoVar0),
 	#universal(AutoVar1).
+
+% Closed-World Assumption:
+-disconnected :-
+	not disconnected.
 
 :-	0 > #count{0, N: removed(N), #node(N)}.
 
@@ -99,4 +99,13 @@ disconnected :-
 
 :-	1 < #count{0: disconnected}.
 
+
+%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
+display
+%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
+
+removed.
+reachable.
+edge.
+disconnected.
 

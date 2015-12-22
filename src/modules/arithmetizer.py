@@ -1,8 +1,18 @@
+'''
+This "arithmetizer.py" module handles arithmetic when translating from L to ASP
+'''
+
+########## ########## ########## ########## ########## ########## ########## ##########
+
 from . import housekeeper
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
+demodularize: Convert modulo-expressions to modulo-free-expressions:
+    a % b := a - (a / b) * b
+Because SPARC doesn't support the modulo operation
+
 demodularize: dict(str: tuple) <->
 '''
 def demodularize(D):
