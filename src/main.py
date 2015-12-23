@@ -76,28 +76,12 @@ def parse_file(program_file):
     preprocessor_instance = Preprocessor(program_file)
     chunks = preprocessor_instance.get_chunks()
     
-########## ########## ########## ########## ########## ########## ########## ##########
-    # Issue when attempting to make a standalone executable from the translator:
-    
-    # Choose one from two assignments of lexicon_file:
-    # Assignment 1
     lexicon_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "lexicon")
-    ''' When the above assignment is chosen, calling translator.exe produces:
-            FileNotFoundError: [Errno 2] No such file or directory:
-                'C:\\Users\\Vu\\AppData\\Local\\Temp\\_MEI142402\\lexicon'
-    '''
-    # Assignment 2
-    # lexicon_file = 'lexicon'
-    ''' When the above assignment is chosen,
-        moving translator.exe to a different directory and calling it produce:
-            FileNotFoundError: [Errno 2] No such file or directory: 
-                'lexicon'
-    '''
-    
-    # The same problem with grammar_file:
     grammar_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "grammar")
+    
+    # When using PyInstaller, uncomment 2 lines below:
+    # lexicon_file = 'lexicon'
     # grammar_file = 'grammar'
-########## ########## ########## ########## ########## ########## ########## ##########
 
     lexer = Lexer(lexicon_file, False)
     parser = Parser(grammar_file, lexer.lexicon_dict.keys())

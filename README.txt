@@ -5,18 +5,28 @@ L-ASP TRANSLATOR SPECIFICATION
 "docs/translator_spec.txt"
 
 ########## ########## ########## ########## ########## ########## ########## ##########
-L SOLVER EXECUTABLE
+L SOLVER STANDALONE (Windows without Python)
 "solver.zip"
-This file is a standalone L solver for Windows
 To use, download and unzip the file. Double-click "solver.bat"
 
 ########## ########## ########## ########## ########## ########## ########## ##########
-L PARSER GUIDE
+L PARSER GUIDE (Python 3.4)
 "docs/Lparser_guide.txt"
-
+Using a command-line interface:
+    1.  Change the current directory to "src"
+    2.  Specify where to read source L program:
+            python[3] main.py <path_to_L_program>
+            (If "python" fails, then try "python3")
+Example (on Windows):
+    1.
+            cd/d E:\LtoASPtranslator\src
+    2.
+            python main.py examples/pi2.l
+You should see:
+            [['rule', ['psent', ['patom', ('identifier', 'a')]], ['sent', ['patom', ('identifier', 'b')]]]]
 
 ########## ########## ########## ########## ########## ########## ########## ##########
-L-ASP TRANSLATOR GUIDE
+L-ASP SOLVER GUIDE
 Using a command-line interface:
     1.  Change the current directory to "src"
     
@@ -25,7 +35,7 @@ Using a command-line interface:
             
     3'. Answer set mode:
         Specify where to read translated ASP program and OVERWRITE output models:
-            java -jar sparc.jar -solver clingo -A -loutput <path_to_ASP_program> > <path_to_output_file>
+            java -jar sparc.jar -solver clingo -A -loutput <path_to_ASP_program>
             
     3". Querying mode:
         Specify where to read translated ASP program:
@@ -36,7 +46,7 @@ Using a command-line interface:
         Quit:
             exit
             
-Example (Python 3.4 on Windows):
+Example:
     1.
             cd/d E:\LtoASPtranslator\src
         
@@ -44,7 +54,7 @@ Example (Python 3.4 on Windows):
             python translator.py examples/ranking.l > examples/ranking.sp
 
     3'.
-            java -jar sparc.jar -solver clingo -A -loutput examples/ranking.sp > examples/ranking.txt
+            java -jar sparc.jar -solver clingo -A -loutput examples/ranking.sp
         
     3".
             java -jar sparc.jar -solver clingo examples/ranking.sp
