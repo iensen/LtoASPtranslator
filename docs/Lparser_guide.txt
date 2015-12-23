@@ -1,0 +1,29 @@
+L PARSER GUIDE
+
+The L parser parses an L program. 
+The output is a list of parsed L statements, 
+each of which represents either an L constant declaration, type declaration, or rule.
+
+The form of a parsed L program is described in the spec of the generic parser
+https://github.com/iensen/genparser/blob/master/docs/main/astgen.pdf
+used with L lexicon and grammar:
+https://github.com/iensen/LtoASPtranslator/blob/master/src/lexicon
+https://github.com/iensen/LtoASPtranslator/blob/master/src/grammar
+
+
+########## ########## ########## ########## ########## ########## ########## ##########
+USAGE
+
+Using a command-line interface:
+    1.  Change current directory to "src"
+    2.  Specify where to read source L program:
+            python[3] main.py <path_to_L_program>
+            (If "python" fails, then try "python3")
+            
+Example (Windows):
+    1.
+            cd/d E:\LtoASPtranslator\src
+    2.
+            python main.py examples/pi2.l
+        You should see:
+            [['rule', ['psent', ['patom', ('identifier', 'a')]], ['sent', ['patom', ('identifier', 'b')]]]]

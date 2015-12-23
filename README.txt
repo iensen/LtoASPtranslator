@@ -1,4 +1,18 @@
-CONTENTS
+L SOLVER
+
+Produces answer sets of programs written in logic programming language L
+Combines: L-ASP translator, SPARC, and Clingo
+
+Example:
+    Source L program:
+    https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.l
+    Translated ASP program:
+    https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.sp
+    Models:
+    https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.txt
+
+Download repository:
+https://github.com/iensen/LtoASPtranslator/archive/master.zip
 
 
 ########## ########## ########## ########## ########## ########## ########## ##########
@@ -15,25 +29,7 @@ Unzip the file. Double-click "solver.bat"
 
 
 ########## ########## ########## ########## ########## ########## ########## ##########
-L PARSER GUIDE (Python 3.4)
-
-Using a command-line interface:
-    1.  Change current directory to "src"
-    2.  Specify where to read source L program:
-            python[3] main.py <path_to_L_program>
-            (If "python" fails, then try "python3")
-            
-Example (Windows):
-    1.
-            cd/d E:\LtoASPtranslator\src
-    2.
-            python main.py examples/pi2.l
-    You should see:
-            [['rule', ['psent', ['patom', ('identifier', 'a')]], ['sent', ['patom', ('identifier', 'b')]]]]
-
-            
-########## ########## ########## ########## ########## ########## ########## ##########
-L SOLVER (SOURCE CODE) GUIDE
+L SOLVER (SOURCE CODE) GUIDE (Python 3.4)
 
 Using a command-line interface:
     1.  Change current directory to "src"
