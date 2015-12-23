@@ -6,19 +6,19 @@ Newly translated L constructs:
     Cardinality constraints
 
 Notes:
-    Negative integers need new version of SPARC
-    Empty type is currently unsupported
-    Using Closed-World Assumption for each predicate. May change later
-    After translation to ASP, displaying only positive literals in models
+    (1) Using Closed-World Assumption for each predicate. May change later
+    (2) After translation to ASP, displaying only positive literals in models
+    (3) When collecting ground terms from L rules to declare in Sparc,
+        translator misses some terms in certain cases. Will fix soon
+    (4) Empty type is currently unsupported
+    (5) Negative integers are currently unsupported in SPARC
     
-Illustrative example:
-    https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.l
-    
-L solver standalone (Windows without Python):
-    https://github.com/iensen/LtoASPtranslator/blob/master/solver.zip?raw=true
-
-Translator spec:
-    https://github.com/iensen/LtoASPtranslator/blob/master/translator_spec.txt
-
-README file:
-    https://github.com/iensen/LtoASPtranslator/blob/master/README.txt
+References:
+    New example:
+        https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.l
+    L solver standalone (Windows without Python):
+        https://github.com/iensen/LtoASPtranslator/blob/master/Lsolver.zip?raw=true
+    README file:
+        https://github.com/iensen/LtoASPtranslator/blob/master/README.txt
+    Translator spec:
+        https://github.com/iensen/LtoASPtranslator/blob/master/docs/translator_spec.txt

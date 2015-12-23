@@ -11,7 +11,7 @@ from . import housekeeper
 '''
 demodularize: Convert modulo-expressions to modulo-free-expressions:
     a % b := a - (a / b) * b
-Because SPARC doesn't support the modulo operation
+Because Sparc doesn't support the modulo operation
 
 demodularize: dict(str: tuple) <->
 '''

@@ -9,13 +9,13 @@ sorts
 	1..2.
 
 #quiz = 
-	{q(2), q(1)}.
+	{q(1), q(2)}.
 
 #exam_num = 
 	1..3.
 
 #exam = 
-	{e(1), e(2), e(3)}.
+	{e(3), e(2), e(1)}.
 
 #assessment = 
 	#quiz + 
@@ -52,7 +52,7 @@ sorts
 	#rank.
 
 #rule_gterms = 
-	{1, q(2), e(2), average, a, e(1), q(1), b, f, pass, dale, 0, bree, gray, ann, cher, inferior, e(3), outstanding, above_average, d, flo, fail, below_average, c}.
+	{e(1), below_average, average, a, b, inferior, q(1), bree, above_average, e(3), e(2), q(2), 1, c, gray, 0, f, outstanding, pass, dale, d, ann, flo, fail, cher}.
 
 #universal = 
 	#types + 
@@ -63,22 +63,16 @@ predicates
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
 student_meets_criterion(#universal, #universal).
-student_dropped(#universal).
 acceptable_assessment(#universal, #universal).
-assessment_score(#universal, #universal, #universal).
-higher_rank(#universal, #universal).
 student_rank(#universal, #universal).
+student_dropped(#universal).
+higher_rank(#universal, #universal).
 student_remaining(#universal).
+assessment_score(#universal, #universal, #universal).
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 rules
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
-
-% Closed-World Assumption:
--higher_rank(AutoVar0, AutoVar1) :-
-	not higher_rank(AutoVar0, AutoVar1),
-	#universal(AutoVar0),
-	#universal(AutoVar1).
 
 % Closed-World Assumption:
 -student_meets_criterion(AutoVar0, AutoVar1) :-
@@ -87,8 +81,19 @@ rules
 	#universal(AutoVar1).
 
 % Closed-World Assumption:
+-higher_rank(AutoVar0, AutoVar1) :-
+	not higher_rank(AutoVar0, AutoVar1),
+	#universal(AutoVar0),
+	#universal(AutoVar1).
+
+% Closed-World Assumption:
 -student_dropped(AutoVar0) :-
 	not student_dropped(AutoVar0),
+	#universal(AutoVar0).
+
+% Closed-World Assumption:
+-student_remaining(AutoVar0) :-
+	not student_remaining(AutoVar0),
 	#universal(AutoVar0).
 
 % Closed-World Assumption:
@@ -102,11 +107,6 @@ rules
 	not student_rank(AutoVar0, AutoVar1),
 	#universal(AutoVar0),
 	#universal(AutoVar1).
-
-% Closed-World Assumption:
--student_remaining(AutoVar0) :-
-	not student_remaining(AutoVar0),
-	#universal(AutoVar0).
 
 % Closed-World Assumption:
 -assessment_score(AutoVar0, AutoVar1, AutoVar2) :-
@@ -170,16 +170,6 @@ assessment_score(gray, q(1), fail).
 assessment_score(gray, e(1), f).
 
 acceptable_assessment(S, A) :-
-	assessment_score(S, A, a),
-	#student(S),
-	#assessment(A).
-
-acceptable_assessment(S, A) :-
-	assessment_score(S, A, c),
-	#student(S),
-	#assessment(A).
-
-acceptable_assessment(S, A) :-
 	assessment_score(S, A, b),
 	#student(S),
 	#assessment(A).
@@ -190,7 +180,17 @@ acceptable_assessment(S, A) :-
 	#assessment(A).
 
 acceptable_assessment(S, A) :-
+	assessment_score(S, A, a),
+	#student(S),
+	#assessment(A).
+
+acceptable_assessment(S, A) :-
 	assessment_score(S, A, d),
+	#student(S),
+	#assessment(A).
+
+acceptable_assessment(S, A) :-
+	assessment_score(S, A, c),
 	#student(S),
 	#assessment(A).
 
@@ -211,21 +211,21 @@ higher_rank(R1, R3) :-
 
 student_meets_criterion(S, outstanding) :-
 	acceptable_assessment(S, e(2)),
-	acceptable_assessment(S, q(2)),
-	acceptable_assessment(S, e(1)),
-	acceptable_assessment(S, q(1)),
 	acceptable_assessment(S, e(3)),
+	acceptable_assessment(S, q(1)),
+	acceptable_assessment(S, e(1)),
+	acceptable_assessment(S, q(2)),
 	assessment_score(S, e(2), a),
-	assessment_score(S, e(1), a),
 	assessment_score(S, e(3), a),
+	assessment_score(S, e(1), a),
 	#student(S).
 
 student_meets_criterion(S, above_average) :-
 	acceptable_assessment(S, e(2)),
-	acceptable_assessment(S, q(2)),
-	acceptable_assessment(S, e(1)),
-	acceptable_assessment(S, q(1)),
 	acceptable_assessment(S, e(3)),
+	acceptable_assessment(S, q(1)),
+	acceptable_assessment(S, e(1)),
+	acceptable_assessment(S, q(2)),
 	assessment_score(S, E1, a),
 	assessment_score(S, E2, a),
 	E1 != E2,
@@ -236,49 +236,49 @@ student_meets_criterion(S, above_average) :-
 student_meets_criterion(S, average) :-
 	assessment_score(S, e(2), a),
 	acceptable_assessment(S, e(2)),
-	acceptable_assessment(S, q(2)),
-	acceptable_assessment(S, e(1)),
-	acceptable_assessment(S, q(1)),
 	acceptable_assessment(S, e(3)),
-	#student(S).
-
-student_meets_criterion(S, average) :-
-	assessment_score(S, e(1), a),
-	acceptable_assessment(S, e(2)),
-	acceptable_assessment(S, q(2)),
-	acceptable_assessment(S, e(1)),
 	acceptable_assessment(S, q(1)),
-	acceptable_assessment(S, e(3)),
+	acceptable_assessment(S, e(1)),
+	acceptable_assessment(S, q(2)),
 	#student(S).
 
 student_meets_criterion(S, average) :-
 	assessment_score(S, e(3), a),
 	acceptable_assessment(S, e(2)),
-	acceptable_assessment(S, q(2)),
-	acceptable_assessment(S, e(1)),
-	acceptable_assessment(S, q(1)),
 	acceptable_assessment(S, e(3)),
+	acceptable_assessment(S, q(1)),
+	acceptable_assessment(S, e(1)),
+	acceptable_assessment(S, q(2)),
+	#student(S).
+
+student_meets_criterion(S, average) :-
+	assessment_score(S, e(1), a),
+	acceptable_assessment(S, e(2)),
+	acceptable_assessment(S, e(3)),
+	acceptable_assessment(S, q(1)),
+	acceptable_assessment(S, e(1)),
+	acceptable_assessment(S, q(2)),
 	#student(S).
 
 student_meets_criterion(S, below_average) :-
 	acceptable_assessment(S, e(2)),
-	acceptable_assessment(S, q(2)),
-	acceptable_assessment(S, e(1)),
-	acceptable_assessment(S, q(1)),
 	acceptable_assessment(S, e(3)),
+	acceptable_assessment(S, q(1)),
+	acceptable_assessment(S, e(1)),
+	acceptable_assessment(S, q(2)),
 	#student(S).
+
+student_meets_criterion(ann, inferior).
+
+student_meets_criterion(flo, inferior).
+
+student_meets_criterion(bree, inferior).
 
 student_meets_criterion(gray, inferior).
 
 student_meets_criterion(cher, inferior).
 
-student_meets_criterion(flo, inferior).
-
 student_meets_criterion(dale, inferior).
-
-student_meets_criterion(bree, inferior).
-
-student_meets_criterion(ann, inferior).
 
 -student_rank(S, R2) :-
 	-student_meets_criterion(S, R2),
@@ -319,10 +319,10 @@ display
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
 student_meets_criterion.
-student_dropped.
 acceptable_assessment.
-assessment_score.
-higher_rank.
 student_rank.
+student_dropped.
+higher_rank.
 student_remaining.
+assessment_score.
 

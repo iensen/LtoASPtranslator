@@ -3,7 +3,7 @@
     2015/12/22
     Vu Phan
 
-    This sample L program outputs ranks of students in an imaginary course
+    This L program outputs ranks of students in an imaginary course
 */
 
 
@@ -124,7 +124,7 @@ maybe student_rank(student S, rank R) if student_remaining(S).
 /*
     Translated ASP program:
         https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.sp
-    SPARC querying mode:
+    Sparc querying mode:
         ?- student_rank(S, R)
         R = average S = cher
         R = below_average S = dale

@@ -1,14 +1,17 @@
 L SOLVER
 
 Produces answer sets of programs written in logic programming language L
-Combines: L-ASP translator, SPARC, and Clingo
+Combines: 
+    L-ASP translator (Evgenii Balai & Vu Phan) 
+    Sparc (Evgenii Balai)
+    Clingo (Potassco)
 
 Example:
     Source L program:
     https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.l
     Translated ASP program:
     https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.sp
-    Models:
+    Output models:
     https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.txt
 
 Download repository:
@@ -16,20 +19,13 @@ https://github.com/iensen/LtoASPtranslator/archive/master.zip
 
 
 ########## ########## ########## ########## ########## ########## ########## ##########
-L-ASP TRANSLATOR SPECIFICATION
+L SOLVER STANDALONE (Windows without Python)
 
-https://github.com/iensen/LtoASPtranslator/blob/master/translator_spec.txt
-
-
-########## ########## ########## ########## ########## ########## ########## ##########
-L SOLVER (STANDALONE) GUIDE (Windows without Python)
-
-https://github.com/iensen/LtoASPtranslator/blob/master/solver.zip?raw=true
-Unzip the file. Double-click "solver.bat"
+https://github.com/iensen/LtoASPtranslator/blob/master/Lsolver.zip?raw=true
 
 
 ########## ########## ########## ########## ########## ########## ########## ##########
-L SOLVER (SOURCE CODE) GUIDE (Python 3.4)
+L SOLVER SOURCE CODE (Python 3.4)
 
 Using a command-line interface:
     1.  Change current directory to "src"
@@ -50,7 +46,7 @@ Using a command-line interface:
         Quit:
             exit
             
-Example:
+Example (Windows):
     1.
             cd/d E:\LtoASPtranslator\src
         
@@ -65,3 +61,18 @@ Example:
             student_rank(S, R)
             (Press Enter until all five atoms have been displayed)
             exit
+
+            
+########## ########## ########## ########## ########## ########## ########## ##########
+REFERENCES
+
+L specification:
+    https://github.com/iensen/LtoASPtranslator/blob/master/Lspec/Lspec.pdf
+L parser guide:
+    https://github.com/iensen/LtoASPtranslator/blob/master/docs/Lparser_guide.txt
+L-ASP translator specification:
+    https://github.com/iensen/LtoASPtranslator/blob/master/docs/translator_spec.txt
+Sparc manual:
+    https://github.com/iensen/sparc/blob/master/User_Manual/Sparc_Manual.pdf
+Clingo guide:
+    http://sourceforge.net/projects/potassco/files/guide/2.0/guide-2.0.pdf

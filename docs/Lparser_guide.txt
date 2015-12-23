@@ -1,8 +1,7 @@
 L PARSER GUIDE
 
-The L parser parses an L program. 
-The output is a list of parsed L statements, 
-each of which represents either an L constant declaration, type declaration, or rule.
+The L parser parses an L program into a list of parsed L statements, 
+each of which represents either an L constant declaration, type declaration, or rule
 
 The form of a parsed L program is described in the spec of the generic parser
 https://github.com/iensen/genparser/blob/master/docs/main/astgen.pdf

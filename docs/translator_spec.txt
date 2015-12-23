@@ -2,25 +2,12 @@ L-ASP TRANSLATOR SPECIFICATION
 
 Given an L program, the translator produces a semantically equivalent ASP program.
 
-Examples:
-https://github.com/iensen/LtoASPtranslator/tree/master/src/examples
-.l: source L program (try "ranking.l")
-.sp: translated ASP program
-.txt: solver output
 
-L spec:
-https://github.com/iensen/LtoASPtranslator/blob/master/Lspec/Lspec.pdf
-ASP manual:
-https://github.com/iensen/sparc/blob/master/User_Manual/Sparc_Manual.pdf
-
-
-% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
-% MODULES
-% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
+########## ########## ########## ########## ########## ########## ########## ##########
+MODULES
 
 The translator has three primary modules: parser, transformer, and unparser. 
 The control flow is:
-
     L program
         |
         |   parser
@@ -43,6 +30,7 @@ The control flow is:
 * 1.        PARSER
 * ********** ********** ********** **********
 
+https://github.com/iensen/LtoASPtranslator/blob/master/docs/Lparser_guide.txt
 
 
 * ********** ********** ********** **********
@@ -53,7 +41,6 @@ From a parsed L program produced by the parser,
 the transformer gives a parsed ASP program.
 
 The transformer has two secondary modules: rewriter and reassembler. The control flow is:
-
     parsed L program
         |
         |   rewriter
@@ -140,4 +127,4 @@ The reassembler remedies its incomplete "ASP program" input by:
 * ********** ********** ********** **********
 
 Given a parsed ASP program from the transformer, 
-this primary module 'unparser' writes the corresponding ASP program.
+this last primary module 'unparser' writes the corresponding ASP program.
