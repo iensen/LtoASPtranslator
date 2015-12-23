@@ -1,11 +1,11 @@
 '''
-This module contains miscellaneous sets and functions,
+This module contains miscellaneous sets/dictionaries/functions,
 which are frequently used by other modules
 '''
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 
-# Frequently referred labels from L/ASP lexicon/grammar:
+# Frequently referred parse tree labels:
 
 infixes1 = {'plus', 'minus'}
 infixes2 = {'mult', 'div', 'mod'}

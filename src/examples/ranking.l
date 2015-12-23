@@ -6,6 +6,7 @@
     This sample L program outputs ranks of students in an imaginary course
 */
 
+
 type student = {ann, bree, cher, dale, flo, gray}. 
     /* Define a set by listing its members */
 
@@ -63,8 +64,8 @@ assessment_score(gray, e(1), f).
     
 acceptable_assessment(student S, assessment A) if
     assessment_score(S, A, some acceptable_grade).
-    /* Assessment A of student S is acceptable if its grade is 
-        either: pass (for a quiz) or a/b/c/d (for an exam) */
+/* Assessment A of student S is acceptable if its grade is 
+    either: pass (for a quiz), or a/b/c/d (for an exam) */
     
     
 type rank = {outstanding, above_average, average, below_average, inferior}.
@@ -77,7 +78,7 @@ higher_rank(below_average, inferior).
 higher_rank(rank R1, rank R3) if
     higher_rank(R1, rank R2) and
     higher_rank(R2, R3).
-    /* Transitivity */
+/* Transitivity */
 
     
 /* Note below: If a student meets the criterion for a rank, 
@@ -90,7 +91,7 @@ student_meets_criterion(student S, outstanding) if
 student_meets_criterion(student S, above_average) if
     acceptable_assessment(S, every assessment) and
         assessment_score(S, exam E1, a) and assessment_score(S, exam E2, a) and E1 != E2.
-        /* Scoring "a" on two distinct exams */
+        /* Scoring "a" on two (distinct) exams */
 
 student_meets_criterion(student S, average) if
     acceptable_assessment(S, every assessment) and
@@ -100,28 +101,30 @@ student_meets_criterion(student S, below_average) if
     acceptable_assessment(S, every assessment).
     
 student_meets_criterion(every student, inferior).
-    /* Default rank's criterion is met by all students */
+/* Default rank's criterion is met by all students */
 
     
 not student_rank(student S, rank R2) if
     not student_meets_criterion(S, rank R2) or
     student_meets_criterion(S, rank R1) and higher_rank(R1, R2).
-    /* A student isn't in a rank if either:
-        she doesn't meet the criterion for that rank, or
-        she already meets the criterion for a higher rank */
+/* A student isn't in a rank if either:
+    she doesn't meet the criterion for that rank, or
+    she already meets the criterion for a higher rank */
     
     
 student_dropped(gray).
 student_remaining(student S) if not student_dropped(S).
 
 maybe student_rank(student S, rank R) if student_remaining(S).
-    /* For each rank, a remaining student is either in or not in that rank */
+/* For each rank, a remaining student is either in or not in that rank */
 
 1 <= |{student_rank(student S, rank R)}| <= 1 if student_remaining(S).
-    /* Each remaining student is in precisely one rank */
+/* Each remaining student is in precisely one rank */
 
 /*
-    SPARC querying mode answers:
+    Translated ASP program:
+        https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.sp
+    SPARC querying mode:
         ?- student_rank(S, R)
         R = average S = cher
         R = below_average S = dale

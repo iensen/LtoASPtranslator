@@ -1,2 +1,2 @@
-new_flight_crew_procedures aic_issued
+aic_issued new_flight_crew_procedures
 SATISFIABLE

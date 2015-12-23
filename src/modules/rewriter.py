@@ -1,5 +1,5 @@
 '''
-This is the primary module. It rewrites L ASTs into ASP ASTs
+This is a key module. It rewrites L ASTs into ASP ASTs
 '''
 
 ########## ########## ########## ########## ########## ########## ########## ##########

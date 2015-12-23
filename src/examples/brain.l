@@ -1102,7 +1102,5 @@ maybe bad_node(node N).
 :- not bad.
 */
 
-/* L RULE : 
+/* L RULE : */
 1<=|{bad}|<=1.
-*/
-

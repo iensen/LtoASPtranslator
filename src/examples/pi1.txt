@@ -1,2 +1,2 @@
-b a
+a b
 SATISFIABLE

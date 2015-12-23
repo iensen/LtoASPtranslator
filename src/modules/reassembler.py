@@ -2,7 +2,7 @@
 This module:
     From rules, collects ground terms (which possibly belong to no declared type)
     Declares predicates
-    Add Closed-World Assumptions
+    Adds Closed-World Assumptions
 '''
 
 ########## ########## ########## ########## ########## ########## ########## ##########

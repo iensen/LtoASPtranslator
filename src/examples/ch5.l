@@ -1,4 +1,3 @@
-
 /*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%~DIAGRAM A-4~%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%*/
 /*The following corresponds to diagram A-4, goal G2: */
@@ -569,13 +568,3 @@ safety_constraints_satisfied if
 
 safety_proven_for_2001_levels. /* Section 5.10.1i and 5.10.2 */
 safety_justified_for_2000plus_levels. /* Section 5.10.1ii */
-     
-
-
-                    
-
-
-
-
-                     
-                     

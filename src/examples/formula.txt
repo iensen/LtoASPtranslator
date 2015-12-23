@@ -1,4 +1,4 @@
 
-b11 p21
+p21 b11
 b11 p12
 SATISFIABLE

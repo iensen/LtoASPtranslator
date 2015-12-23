@@ -1,5 +1,6 @@
 '''
-This 'normalizer' module converts a propositional formula into conjunctive/disjunctive normal form.
+This 'normalizer' module converts a propositional formula into 
+conjunctive/disjunctive normal form.
 '''
 
 ########## ########## ########## ########## ########## ########## ########## ##########
