@@ -1,75 +1,131 @@
-/* 
-This L program:
+/*
+    RANKING.L: AN ILLUSTRATIVE L PROGRAM
+    2015/12/22
+    Vu Phan
 
-    Introduces a hypothetical method of evaluating students in a course as satisfactory or unsatisfactory
-    
-    Includes sample students, assessments, and scores.  
+    This sample L program outputs ranks of students in an imaginary course
 */
 
-/* EVALUATION MECHANISM */
+type student = {ann, bree, cher, dale, flo, gray}. 
+    /* Define a set by listing its members */
 
-type pass_fail_grade = {pass, fail}.
-type letter_grade = {a, b, c, d, f}.
-type grade = letter_grade + pass_fail_grade.
-type acceptable_grade = {pass, a, b, c, d}.
-type unacceptable_grade = grade \ acceptable_grade.
 
-has_an_unacceptable_assessment(student S) if 
-    has_score(S, assessment A, unacceptable_grade G).
-has_all_acceptable_assessments(student S) if 
-    not has_an_unacceptable_assessment(S).
+const quizzes = 2. /* Define a constant */
+type quiz_num = {1..quizzes}. /* Range of integers */
+type quiz = q(Num) where Num in quiz_num. /* Set-builder notation */
 
-has_an_excellent_exam(student S) if has_score(S, exam E, a).
-has_a_good_exam(student S) if has_score(S, exam E, b).
+const exams = quizzes + 1.
+type exam_num = {1..exams}.
+type exam = e(Num) where Num in exam_num.
 
-ranked(student S, above_average) if 
-    has_all_acceptable_assessments(S) and has_an_excellent_exam(S).
-ranked(student S, average) if    
-    has_all_acceptable_assessments(S) and not has_an_excellent_exam(S) and  has_a_good_exam(S).
-ranked(student S, below_average) if
-    has_an_unacceptable_assessment(S) and has_a_good_exam(S).
+type assessment = quiz + exam. /* Union of sets */
+
+
+type quiz_grade = {pass, fail}.
+type exam_grade = {a, b, c, d, f}.
+type grade = quiz_grade + exam_grade.
+type acceptable_grade = grade \ {fail, f}. /* Difference of sets */
     
-type satisfactory_rank = {above_average, average, below_average}.
-
-evaluated(student S, satisfactory) if ranked(S, satisfactory_rank R).
-evaluated(student S, unsatisfactory) if not evaluated(S, satisfactory).
     
-/* SAMPLE DATA */
+assessment_score(ann, q(1), pass). /* Student "ann" scores "pass" on assessment "q(1)" */
+assessment_score(ann, q(2), pass). 
+assessment_score(ann, e(1), a). 
+assessment_score(ann, e(2), a). 
+assessment_score(ann, e(3), a). 
 
-type student = {ann, bob, chris, dennis}.
+assessment_score(bree, q(1), pass). 
+assessment_score(bree, q(2), pass). 
+assessment_score(bree, e(1), a). 
+assessment_score(bree, e(2), a).
+assessment_score(bree, e(3), b). 
 
-type quiz = {q1, q2, q3}.
-type exam = {e1, e2}.
-type assessment = quiz + exam.
+assessment_score(cher, q(1), pass). 
+assessment_score(cher, q(2), pass). 
+assessment_score(cher, e(1), a). 
+assessment_score(cher, e(2), b). 
+assessment_score(cher, e(3), b).
 
-has_score(ann, q1, pass). has_score(ann, q2, pass). has_score(ann, q3, pass). 
-has_score(ann, e1, a). has_score(ann, e2, b).
+assessment_score(dale, q(1), pass). 
+assessment_score(dale, q(2), pass). 
+assessment_score(dale, e(1), b). 
+assessment_score(dale, e(2), b).
+assessment_score(dale, e(3), b).
 
-has_score(bob, q1, pass). has_score(bob, q2, pass). has_score(bob, q3, pass). 
-has_score(bob, e1, b). has_score(bob, e2, b). 
+assessment_score(flo, q(1), pass). 
+assessment_score(flo, q(2), fail). 
+assessment_score(flo, e(1), d). 
+assessment_score(flo, e(2), d).
+assessment_score(flo, e(3), f). 
 
-has_score(chris, q1, fail). has_score(chris, q1, pass). has_score(chris, q1, pass). 
-has_score(chris, e1, b). has_score(chris, e2, d).
+assessment_score(gray, q(1), fail).
+assessment_score(gray, e(1), f).
 
-has_score(dennis, q1, pass). has_score(dennis, q2, pass). has_score(dennis, q3, pass). 
-has_score(dennis, e1, f). has_score(dennis, e2, c).
+    
+acceptable_assessment(student S, assessment A) if
+    assessment_score(S, A, some acceptable_grade).
+    /* Assessment A of student S is acceptable if its grade is 
+        either: pass (for a quiz) or a/b/c/d (for an exam) */
+    
+    
+type rank = {outstanding, above_average, average, below_average, inferior}.
+
+higher_rank(outstanding, above_average).
+higher_rank(above_average, average).
+higher_rank(average, below_average).
+higher_rank(below_average, inferior).
+
+higher_rank(rank R1, rank R3) if
+    higher_rank(R1, rank R2) and
+    higher_rank(R2, R3).
+    /* Transitivity */
+
+    
+/* Note below: If a student meets the criterion for a rank, 
+                then she also meets the criterion for each lower rank */
+    
+student_meets_criterion(student S, outstanding) if
+    acceptable_assessment(S, every assessment) and
+    assessment_score(S, every exam, a).
+    
+student_meets_criterion(student S, above_average) if
+    acceptable_assessment(S, every assessment) and
+        assessment_score(S, exam E1, a) and assessment_score(S, exam E2, a) and E1 != E2.
+        /* Scoring "a" on two distinct exams */
+
+student_meets_criterion(student S, average) if
+    acceptable_assessment(S, every assessment) and
+    assessment_score(S, some exam, a).
+    
+student_meets_criterion(student S, below_average) if
+    acceptable_assessment(S, every assessment).
+    
+student_meets_criterion(every student, inferior).
+    /* Default rank's criterion is met by all students */
+
+    
+not student_rank(student S, rank R2) if
+    not student_meets_criterion(S, rank R2) or
+    student_meets_criterion(S, rank R1) and higher_rank(R1, R2).
+    /* A student isn't in a rank if either:
+        she doesn't meet the criterion for that rank, or
+        she already meets the criterion for a higher rank */
+    
+    
+student_dropped(gray).
+student_remaining(student S) if not student_dropped(S).
+
+maybe student_rank(student S, rank R) if student_remaining(S).
+    /* For each rank, a remaining student is either in or not in that rank */
+
+1 <= |{student_rank(student S, rank R)}| <= 1 if student_remaining(S).
+    /* Each remaining student is in precisely one rank */
 
 /*
-This L program is translated into the ASP program student_evaluation.sp. Solving the ASP program with SPARC:
-
-    SPARC  V2.46
-    program translated
-    
-    ?- evaluated(S, E)
-    S = ann E = satisfactory
-    S = bob E = satisfactory
-    S = chris E = satisfactory
-    S = dennis E = unsatisfactory
-    
-    ?- ranked(S, R)
-    R = above_average S = ann
-    R = average S = bob
-    R = below_average S = chris
-    
-    ?- exit
+    SPARC querying mode answers:
+        ?- student_rank(S, R)
+        R = average S = cher
+        R = below_average S = dale
+        R = outstanding S = ann
+        R = inferior S = flo
+        R = above_average S = bree
 */

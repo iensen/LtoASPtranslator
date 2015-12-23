@@ -1,22 +1,14 @@
 L-ASP TRANSLATOR SPECIFICATION
 
-The instruction on how to run the translator is provided at:
-https://github.com/iensen/LtoASPtranslator/blob/master/src/translator.py
-
-
-% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
-% DESCRIPTION
-% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
-
 Given an L program, the translator produces a semantically equivalent ASP program.
 
-Examples are located at:
+Examples:
 https://github.com/iensen/LtoASPtranslator/tree/master/src/examples
-(Look for pairs of .l and .sp files. Especially: ch5 and func_terms.)
+Especially: ranking.l
 
-L spec is provided at:
+L spec:
 https://github.com/iensen/LtoASPtranslator/blob/master/Lspec/Lspec.pdf
-ASP manual is given here:
+ASP manual:
 https://github.com/iensen/sparc/blob/master/User_Manual/Sparc_Manual.pdf
 
 
@@ -50,12 +42,9 @@ The translator has three primary modules: parser, transformer, and unparser. The
 
 This primary module parses an L program. The output is a list of parsed L statements, each of which represents either an L constant declaration, type declaration, or rule.
 
-This L parser is introduced at:
-https://github.com/iensen/LtoASPtranslator/blob/master/README.txt
-
 The form of a parsed L program is described in the spec of a generic parser:
 https://github.com/iensen/genparser/blob/master/docs/main/astgen.pdf
-The L lexicon and grammar in use are located at:
+The L lexicon and grammar in use:
 https://github.com/iensen/LtoASPtranslator/tree/master/src
 
 
@@ -64,11 +53,6 @@ https://github.com/iensen/LtoASPtranslator/tree/master/src
 * ********** ********** ********** **********
 
 From a parsed L program produced by the parser, the transformer outputs a parsed ASP program.
-
-The form of a parsed ASP program is detailed at:
-https://github.com/iensen/genparser/blob/master/docs/main/astgen.pdf
-The ASP lexicon and grammar are here:
-https://github.com/iensen/LtoASPtranslator/tree/master/src
 
 The transformer has two secondary modules: rewriter and reassembler. The control flow is:
 
@@ -126,11 +110,8 @@ The tertiary module 'normalizer' converts a sentence into conjunctive/disjunctiv
     Into:
         p1. p2.
         q :- r1. q :- r2.
-
-The normalizer can run as a stand-alone program:
-https://github.com/iensen/LtoASPtranslator/blob/master/src/modules/normalizer.py
-
-
+        
+        
 * ********** ********** ********** 
 * 2.2.      REASSEMBLER
 * ********** ********** ********** 

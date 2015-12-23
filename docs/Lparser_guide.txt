@@ -3,9 +3,6 @@ CONTENTS
     
      src -- source code, including examples in src/examples
 
-    
-     README.txt -- this readme file
-
 
 
 
