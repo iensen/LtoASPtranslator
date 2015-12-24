@@ -116,7 +116,7 @@ student_dropped(gray).
 student_remaining(student S) if not student_dropped(S).
 
 maybe student_rank(student S, rank R) if student_remaining(S).
-/* For each rank, a remaining student is either in or not in that rank */
+/* For each rank, a remaining student is possibly in that rank */
 
 1 <= |{student_rank(student S, rank R)}| <= 1 if student_remaining(S).
 /* Each remaining student is in precisely one rank */
