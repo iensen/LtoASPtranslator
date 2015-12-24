@@ -25,7 +25,7 @@ For Windows
 - Python 3.4 or higher
 - Command-line syntax
   - Change current directory to `src`  
-    (Example with Windows Command Prompt)  
+    *Example with Windows Command Prompt:*  
     `cd/d E:/LtoASPtranslator/src`
   - Specify where to read source L program and OVERWRITE translated ASP program  
     `python translator.py examples/ranking.l > examples/ranking.sp`
