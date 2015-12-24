@@ -19,6 +19,6 @@ References:
     L solver standalone (Windows without Python):
         https://github.com/iensen/LtoASPtranslator/blob/master/Lsolver.zip?raw=true
     README file:
-        https://github.com/iensen/LtoASPtranslator/blob/master/README.txt
+        https://github.com/iensen/LtoASPtranslator/blob/master/README.md
     Translator spec:
         https://github.com/iensen/LtoASPtranslator/blob/master/docs/translator_spec.txt

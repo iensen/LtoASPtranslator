@@ -8,7 +8,7 @@
 
 
 type student = {ann, bree, cher, dale, flo, gray}. 
-    /* Define a set by listing its members */
+    /* Comment: Define a set by listing its members */
 
 
 const quizzes = 2. /* Define a constant */
