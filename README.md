@@ -1,13 +1,23 @@
-[source L program]: https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.l
-[translated ASP program]: https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.sp
-[output models]: https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.txt
-[L SOLVER STANDALONE]: https://github.com/iensen/LtoASPtranslator/blob/master/Lsolver.zip?raw=true
-[L SOLVER SOURCE CODE]: https://github.com/iensen/LtoASPtranslator/archive/master.zip
-[L specification]: https://github.com/iensen/LtoASPtranslator/blob/master/Lspec/Lspec.pdf
-[L parser guide]: https://github.com/iensen/LtoASPtranslator/blob/master/docs/Lparser_guide.txt
-[L-ASP translator specification]: https://github.com/iensen/LtoASPtranslator/blob/master/docs/translator_spec.txt
-[Sparc manual]: https://github.com/iensen/sparc/blob/master/User_Manual/Sparc_Manual.pdf
-[Clingo guide]: http://sourceforge.net/projects/potassco/files/guide/2.0/guide-2.0.pdf
+[.l]: 
+https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.l
+[.sp]: 
+https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.sp
+[.txt]: 
+https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.txt
+[.exe]: 
+https://github.com/iensen/LtoASPtranslator/blob/master/Lsolver.zip?raw=true
+[.py]: 
+https://github.com/iensen/LtoASPtranslator/archive/master.zip
+[L]: 
+https://github.com/iensen/LtoASPtranslator/blob/master/Lspec/Lspec.pdf
+[parser]: 
+https://github.com/iensen/LtoASPtranslator/blob/master/docs/Lparser_guide.txt
+[translator]: 
+https://github.com/iensen/LtoASPtranslator/blob/master/docs/translator_spec.txt
+[Sparc]: 
+https://github.com/iensen/sparc/blob/master/User_Manual/Sparc_Manual.pdf
+[Clingo]: 
+http://sourceforge.net/projects/potassco/files/guide/2.0/guide-2.0.pdf
 
 # L SOLVER
 - Description
@@ -16,12 +26,15 @@
     - L-ASP translator (Evgenii Balai & Vu Phan)
     - Sparc (Evgenii Balai)
     - Clingo (Potassco)
-- Example: [source L program], [translated ASP program], and [output models]
+- Example
+  - [**_source L program_**][.l] 
+  - [**_translated ASP program_**][.sp] 
+  - [**_output models_**][.txt]
 
-## [L SOLVER STANDALONE]
+## [L SOLVER STANDALONE][.exe]
 For Windows
 
-## [L SOLVER SOURCE CODE]
+## [L SOLVER SOURCE CODE][.py]
 - Python 3.4 or higher
 - Command-line syntax
   - Change current directory to `src`  
@@ -30,10 +43,10 @@ For Windows
   - Specify where to read source L program and OVERWRITE translated ASP program  
     `python translator.py examples/ranking.l > examples/ranking.sp`
   - Choose mode
-    - *Answer set mode*  
+    - **Answer set mode**  
       Specify where to read translated ASP program  
       `java -jar sparc.jar -solver clingo examples/ranking.sp -A -loutput`
-    - *Querying mode*  
+    - **Querying mode**  
       - Specify where to read translated ASP program  
         `java -jar sparc.jar -solver clingo examples/ranking.sp`
       - Query  
@@ -43,8 +56,8 @@ For Windows
         `exit`
 
 ## REFERENCES
-- [L specification]
-- [L parser guide]
-- [L-ASP translator specification]
-- [Sparc manual]
-- [Clingo guide]
+- [L specification][L]
+- [L parser guide][parser]
+- [L-ASP translator specification][translator]
+- [Sparc manual][Sparc]
+- [Clingo guide][Clingo]
