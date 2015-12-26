@@ -27,8 +27,8 @@ sorts
 predicates
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
-p2(#universal).
 p3(#universal).
+p2(#universal).
 p1(#universal, #universal).
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
@@ -36,15 +36,15 @@ rules
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
 % Closed-World Assumption:
--p3(AutoVar0) :-
-	not p3(AutoVar0),
-	#universal(AutoVar0).
-
-% Closed-World Assumption:
 -p1(AutoVar0, AutoVar1) :-
 	not p1(AutoVar0, AutoVar1),
 	#universal(AutoVar0),
 	#universal(AutoVar1).
+
+% Closed-World Assumption:
+-p3(AutoVar0) :-
+	not p3(AutoVar0),
+	#universal(AutoVar0).
 
 % Closed-World Assumption:
 -p2(AutoVar0) :-
@@ -66,7 +66,7 @@ rules
 display
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
-p2.
 p3.
+p2.
 p1.
 

@@ -78,10 +78,6 @@ def parse_file(program_file):
     
     lexicon_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "lexicon")
     grammar_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "grammar")
-    
-    # When using PyInstaller, uncomment 2 lines below:
-    # lexicon_file = 'lexicon'
-    # grammar_file = 'grammar'
 
     lexer = Lexer(lexicon_file, False)
     parser = Parser(grammar_file, lexer.lexicon_dict.keys())

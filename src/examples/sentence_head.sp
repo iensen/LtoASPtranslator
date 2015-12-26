@@ -2,36 +2,36 @@
 predicates
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
+a().
 c().
+q().
+g().
 b().
 d().
-q().
-a().
-g().
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 rules
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
 % Closed-World Assumption:
--g :-
-	not g.
+-q :-
+	not q.
 
 % Closed-World Assumption:
 -c :-
 	not c.
 
 % Closed-World Assumption:
--a :-
-	not a.
-
-% Closed-World Assumption:
 -b :-
 	not b.
 
 % Closed-World Assumption:
--q :-
-	not q.
+-g :-
+	not g.
+
+% Closed-World Assumption:
+-a :-
+	not a.
 
 % Closed-World Assumption:
 -d :-
@@ -66,10 +66,10 @@ b |
 display
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
+a.
 c.
+q.
+g.
 b.
 d.
-q.
-a.
-g.
 

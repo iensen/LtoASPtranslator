@@ -12,17 +12,17 @@ sorts
 predicates
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
+new_flight_crew_procedures().
+switchover_safe().
 atmf_will_be_applied().
+risks_mitigated().
+training_programs().
+aic_issued().
+mitigated(#universal).
 risks_identified().
 existing_standard_fuel_low_procedure().
-aic_issued().
-risks_mitigated().
-detailed_switchover_plan().
-mitigated(#universal).
 contingency_plan_in_place().
-training_programs().
-switchover_safe().
-new_flight_crew_procedures().
+detailed_switchover_plan().
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 rules
@@ -33,8 +33,20 @@ rules
 	not new_flight_crew_procedures.
 
 % Closed-World Assumption:
--existing_standard_fuel_low_procedure :-
-	not existing_standard_fuel_low_procedure.
+-atmf_will_be_applied :-
+	not atmf_will_be_applied.
+
+% Closed-World Assumption:
+-contingency_plan_in_place :-
+	not contingency_plan_in_place.
+
+% Closed-World Assumption:
+-aic_issued :-
+	not aic_issued.
+
+% Closed-World Assumption:
+-switchover_safe :-
+	not switchover_safe.
 
 % Closed-World Assumption:
 -training_programs :-
@@ -49,29 +61,17 @@ rules
 	not risks_mitigated.
 
 % Closed-World Assumption:
--detailed_switchover_plan :-
-	not detailed_switchover_plan.
-
-% Closed-World Assumption:
 -mitigated(AutoVar0) :-
 	not mitigated(AutoVar0),
 	#universal(AutoVar0).
 
 % Closed-World Assumption:
--atmf_will_be_applied :-
-	not atmf_will_be_applied.
+-existing_standard_fuel_low_procedure :-
+	not existing_standard_fuel_low_procedure.
 
 % Closed-World Assumption:
--contingency_plan_in_place :-
-	not contingency_plan_in_place.
-
-% Closed-World Assumption:
--switchover_safe :-
-	not switchover_safe.
-
-% Closed-World Assumption:
--aic_issued :-
-	not aic_issued.
+-detailed_switchover_plan :-
+	not detailed_switchover_plan.
 
 switchover_safe :-
 	detailed_switchover_plan,
@@ -95,15 +95,15 @@ new_flight_crew_procedures.
 display
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
+new_flight_crew_procedures.
+switchover_safe.
 atmf_will_be_applied.
+risks_mitigated.
+training_programs.
+aic_issued.
+mitigated.
 risks_identified.
 existing_standard_fuel_low_procedure.
-aic_issued.
-risks_mitigated.
-detailed_switchover_plan.
-mitigated.
 contingency_plan_in_place.
-training_programs.
-switchover_safe.
-new_flight_crew_procedures.
+detailed_switchover_plan.
 

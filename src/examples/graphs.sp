@@ -9,7 +9,7 @@ sorts
 	#node.
 
 #rule_gterms = 
-	{5, 0, 2, 1}.
+	{2, 0, 5, 1}.
 
 #universal = 
 	#types + 
@@ -19,9 +19,9 @@ sorts
 predicates
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
+disconnected().
 removed(#universal).
 edge(#universal, #universal).
-disconnected().
 reachable(#universal, #universal).
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
@@ -29,13 +29,10 @@ rules
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
 % Closed-World Assumption:
--removed(AutoVar0) :-
-	not removed(AutoVar0),
-	#universal(AutoVar0).
-
-% Closed-World Assumption:
--disconnected :-
-	not disconnected.
+-edge(AutoVar0, AutoVar1) :-
+	not edge(AutoVar0, AutoVar1),
+	#universal(AutoVar0),
+	#universal(AutoVar1).
 
 % Closed-World Assumption:
 -reachable(AutoVar0, AutoVar1) :-
@@ -44,10 +41,13 @@ rules
 	#universal(AutoVar1).
 
 % Closed-World Assumption:
--edge(AutoVar0, AutoVar1) :-
-	not edge(AutoVar0, AutoVar1),
-	#universal(AutoVar0),
-	#universal(AutoVar1).
+-disconnected :-
+	not disconnected.
+
+% Closed-World Assumption:
+-removed(AutoVar0) :-
+	not removed(AutoVar0),
+	#universal(AutoVar0).
 
 :-	0 > #count{0, N: removed(N), #node(N)}.
 
@@ -104,8 +104,8 @@ disconnected :-
 display
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
+disconnected.
 removed.
 edge.
-disconnected.
 reachable.
 
