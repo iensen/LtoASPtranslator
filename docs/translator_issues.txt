@@ -10,7 +10,25 @@ Errors:
         to define the ASP sort #rule_gterms. 
         But the translator misses variables (which are possibly subterms of
         functional or arithmetic terms).
-
+        Example:
+            L:
+                p(0). /* Term "0" will be collected to #rule_gterms */
+                
+                type t = {1}.
+                q(t V, V + 10). /* Term "V + 10" == {11} will be missed */
+            ASP:
+                sorts
+                #t = {1}.
+                #rule_gterms = {0}.
+                #universal = #t + #rule_gterms.
+                
+                predicates
+                p(#universal).
+                q(#universal, #universal).
+                
+                rules
+                p(0).
+                q(V, V + 10) :- #t(V).
         
 ########## ########## ########## ########## ########## ########## ########## ##########
         
