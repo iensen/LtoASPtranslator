@@ -1,0 +1,24 @@
+L-ASP TRANSLATOR: ISSUES
+
+Errors:
+    #rule_gterms:
+        From L rules, the translator grounds then collects terms 
+        to define the ASP sort #rule_gterms. 
+        But the translator misses variables (which are possibly subterms of
+        functional or arithmetic terms).
+    Empty type:
+        Currently unsupported.
+    Negative integers:
+        Terms which represent negative integers are currently unsupported in Sparc.
+        
+Notes:
+    Closed-World Assumption:
+        CWA for each predicate. May change.
+        
+Improvements:
+    Selective grounding:
+        L quantified terms [every/some typeName] are transformed into ASP ground terms.
+        But L universally/existentially quantified terms in heads/sentences should 
+        be transformed into ASP variables, which are quantified implicitly. 
+        Doing so will reduce the needed time and space, especially when 
+        putting transformed rules in conjunctive/disjunctive normal form.
