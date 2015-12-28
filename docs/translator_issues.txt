@@ -1,19 +1,32 @@
 L-ASP TRANSLATOR: ISSUES
 
+
+Distribution
+    Making the L solver an Eclipse plug-in fragment to integrate with the L editor.
+
 Errors:
     #rule_gterms:
         From L rules, the translator grounds then collects terms 
         to define the ASP sort #rule_gterms. 
         But the translator misses variables (which are possibly subterms of
         functional or arithmetic terms).
-    Empty type:
-        Currently unsupported.
+
+        
+########## ########## ########## ########## ########## ########## ########## ##########
+        
+Sparc-related matters:
+    Empty types:
+        Empty sorts are currently unsupported in Sparc. 
+        Tricky to translate L programs with empty types into 
+        ASP programs without empty sorts.
     Negative integers:
-        Terms which represent negative integers are currently unsupported in Sparc.
+        Terms that represent negative integers are currently unsupported in Sparc.
         
 Notes:
     Closed-World Assumption:
         CWA for each predicate. May change.
+    Negation:
+        L negation is ASP strong negation.
         
 Improvements:
     Selective grounding:
