@@ -30,15 +30,20 @@ def rewrite(D):
     D = arithmetizer.eval(D)
     
     tdecls = D['tdecls']
-    rules = D['rules']
-    
     global g_tdecls
     g_tdecls = grounder.ground_tdecls(tdecls)
     # From L to ASP, only set contructs are grounded;
     # other set expressions are kept as are, for readability
     
+    rules = D['rules']
     rules = qt_legacy_to_tvar(rules)
     g_rules = grounder.ground_rules(rules, g_tdecls)
+    
+    # To define ASP sort #ints:
+    ints = 'range', ('numeral', '0'), ('numeral', '100') 
+        # Covers evaluated arithmetic terms
+    ints = 'tdecl', ('identifier', 'ints'), ints
+    tdecls = ('tdecls',) + (ints ,) + tdecls[1:]
 
     rewritten = {'sdefs': rewrite_tdecls(tdecls), 'rules': rewrite_rules(g_rules)}
     return rewritten

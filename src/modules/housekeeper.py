@@ -118,6 +118,9 @@ Output: trees
 tuple_to_list: tuple -> list
 '''
 def tuple_to_list(T):
+    if T == ():
+        return []
+        
     if T[0] in lexemes:
         return T
     else: # non-terminal label

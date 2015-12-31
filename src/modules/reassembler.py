@@ -7,6 +7,9 @@ This module:
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 
+from . import extractor
+from . import rewriter
+
 from . import grounder
 from . import housekeeper
 
@@ -30,6 +33,7 @@ reassemble: dict -> dict
 def reassemble(D):
     rules = D['rules']
     found_predicates = find_predicates(rules) # set(tuple(str, int))
+    
     introduced_pdecls = introduce_pdecls(found_predicates)
     
     gottenCWAs = getCWAs(found_predicates) # set
@@ -64,15 +68,25 @@ def combine_sdefs(T):
     tr = 'sdefs',
     for t in T['sdefs'][1:]:
         tr += t,
-    types = add_sdef_types(T['sdefs'])
-    if types != ():
-        tr += types,
-    rule_gterms = add_sdef_rule_gterms(extract_rule_gterms(T['rules']))
-    if rule_gterms != ():
-        tr += rule_gterms,
-    universal = add_sdef_universal(T)
-    if universal != ():
-        tr += universal,
+        
+    global added_sdef_types
+    added_sdef_types = add_sdef_types(T['sdefs'])
+    
+    if added_sdef_types != ():
+        tr += added_sdef_types,
+
+    sort_sets = rewriter.g_tdecls
+    extracted_rule_gterms = extractor.extract_rule_gterms(T['rules'], sort_sets) # set
+    
+    global added_sdef_rule_gterms
+    added_sdef_rule_gterms = add_sdef_rule_gterms(extracted_rule_gterms)
+    
+    if added_sdef_rule_gterms != ():
+        tr += added_sdef_rule_gterms,
+        
+    added_sdef_universal = add_sdef_universal()
+    if added_sdef_universal != ():
+        tr += added_sdef_universal,
     return tr
     
 ########## ########## ########## ########## ########## ########## ########## ##########
@@ -133,18 +147,16 @@ Output: the parsed ASP sort definition of #universal:
     
 add_sdef_universal: dict -> list
 '''
-def add_sdef_universal(T):
-    types = add_sdef_types(T['sdefs'])
-    rule_gterms = add_sdef_rule_gterms(extract_rule_gterms(T['rules']))
-    pair = (types, rule_gterms)
+def add_sdef_universal():
+    added_sdefs = (added_sdef_types, added_sdef_rule_gterms)
     tr = ()
-    for s in pair:
-        if s != ():
-            tr += s[1],
+    for added_sdef in added_sdefs:
+        if added_sdef != ():
+            tr += added_sdef[1],
     if tr != ():
         if len(tr) == 1:
             tr = tr[0]
-        else:
+        else: # == 2
             tr = ('union',) + tr
         tr = 'sdef', ('sname', ('identifier', 'universal')), tr
     return tr
@@ -185,35 +197,6 @@ def introduce_pdecls(T):
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
-extract_rule_gterms: extract ground terms from rules
-
-Input: tuple parsed ASP rules:
-('rules', ('fact', ('head',..., ('terms', ('bt', ('const',...)),...))),...)
-
-Output: a set of tuple parsed ASP rule ground terms:
-{('const',...), ('num',...), ('func',...),...}
-
-extract_rule_gterms: tuple -> set
-'''
-def extract_rule_gterms(T):
-    if T[0] in {'const', 'numeral'}:
-        return {T}
-    elif T[0] in housekeeper.lexemes:
-        return set()
-    elif T[0] == 'func':
-        gr = grounder.bfunc_is_ground(T)
-        return  {T} if gr else \
-                set()
-    else:
-        Set = set()
-        for t in T[1:]:
-            Set |= extract_rule_gterms(t)
-        return Set
-
-########## ########## ########## ########## ########## ########## ########## ##########
-########## ########## ########## ########## ########## ########## ########## ##########
-
-'''
 getCWAs: set(tuple(str, int)) -> set(tuple)
 '''
 def getCWAs(S):
@@ -227,7 +210,7 @@ def getCWAs(S):
         if arity > 0:
             terms = 'terms',
             for i in range(arity):
-                vname = 'AutoVar' + str(i)
+                vname = 'CWA_Var' + str(i)
                 vname = 'variable', vname
                 
                 var = 'var', vname
@@ -246,7 +229,7 @@ def getCWAs(S):
             body = 'conj', body, satom
         body = 'body', body
         
-        CWA = 'CWA', head, body
+        CWA = 'rule', head, body
         CWAs |= {CWA}
     return CWAs
     

@@ -25,22 +25,19 @@ def unparse(T):
         if t[0] == 'sdefs':
             sdefs = unparse_sdefs(t)
             if sdefs != '':
-                prog += comment_line + '\nsorts\n' + comment_line + \
-                        '\n\n' + sdefs
+                prog += comment + 'sorts\n\n' + sdefs
         elif t[0] == 'pdecls':
             pdecls = unparse_pdecls(t)
             if pdecls != '':
-                prog += comment_line + '\npredicates\n' + comment_line + '\n\n' + pdecls
+                prog += comment + 'predicates\n\n' + pdecls
         elif t[0] == 'rules':
             rules = unparse_rules(t)
             if rules != '':
-                prog += '\n' + comment_line + '\nrules\n' + comment_line + \
-                        '\n\n' + rules
+                prog += comment + 'rules\n\n' + rules
         else: # 'display'
             display = unparse_display(t)
             if display != '':
-                prog += '\n' + comment_line + '\ndisplay\n' + comment_line + \
-                        '\n\n' + display
+                prog += comment + 'display\n\n' + display
     return prog
 
 ########## ########## ########## ########## ########## ########## ########## ##########
@@ -182,9 +179,6 @@ def unparse_rules(T):
         return unparse_rules(T[1]) + '.\n\n'
     elif T[0] == 'rule':
         return unparse_rules(T[1]) + ' :-\n\t' + unparse_rules(T[2]) + '.\n\n'
-    elif T[0] == 'CWA':
-        return  '% Closed-World Assumption:\n' + \
-                unparse_rules(T[1]) + ' :-\n\t' + unparse_rules(T[2]) + '.\n\n'
     else:
         st = ''
         for t in T[1:]:
@@ -205,5 +199,5 @@ def unparse_display(T):
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 
-comment_line = '\
-%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%'
+comment = '\n%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% \
+%%%%%%%%%% %%%%%%%%%%\n'

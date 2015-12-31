@@ -121,7 +121,7 @@ def ground_bterm(T, D):
         return {T}
 
 '''
-ground_bfunc: tuple * dict(str: set(tuple)) -> set(tuple)
+ground_bfunc: tuple * dict(vname: set(tuple)) -> set(tuple)
 '''
 def ground_bfunc(T, D):
     g_bfuncs = set()
@@ -173,6 +173,14 @@ def bfunc_is_ground(T):
             return False
     return True
 
+########## ########## ########## ########## ########## ########## ########## ##########
+########## ########## ########## ########## ########## ########## ########## ##########
+########## ########## ########## ########## ########## ########## ########## ##########
+'''
+MISNOMERS:
+The functions below actually DEQUANTIFY instead of GROUND.
+They make terms become BASIC TERMS instead of GROUND TERMS.
+'''
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########

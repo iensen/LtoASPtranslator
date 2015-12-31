@@ -5,21 +5,23 @@ Distribution
     Making the L solver an Eclipse plug-in fragment to integrate with the L editor.
 
 Errors:
+    Arithmetic set constructs
+
     #rule_gterms:
         From L rules, the translator grounds then collects terms 
         to define the ASP sort #rule_gterms. 
         But the translator misses variables (which are possibly subterms of
-        functional or arithmetic terms).
+        functional terms).
         Example:
             L:
                 p(0). /* Term "0" will be collected to #rule_gterms */
                 
-                type t = {1}.
-                q(t V, V + 10). /* Term "V + 10" == {11} will be missed */
+                type t = {1, 2}.
+                q(t V, V + 10). /* Term "V + 10" == {11, 12} will be missed */
             ASP:
                 sorts
-                #t = {1}.
-                #rule_gterms = {0}.
+                #t = {1, 2}.
+                #rule_gterms = {0}. % Missed {11, 12}
                 #universal = #t + #rule_gterms.
                 
                 predicates
@@ -31,7 +33,7 @@ Errors:
                 q(V, V + 10) :- #t(V).
         
 ########## ########## ########## ########## ########## ########## ########## ##########
-        
+
 Sparc-related matters:
     Empty types:
         Empty sorts are currently unsupported in Sparc. 
@@ -45,6 +47,10 @@ Notes:
         CWA for each predicate. May change.
     Negation:
         L negation is ASP strong negation.
+        
+        Currently forbid negation of:
+            Sentences: not p / p and q / p or q
+            Quantified atoms: p(every t) / q(some t)
         
 Improvements:
     Selective grounding:
