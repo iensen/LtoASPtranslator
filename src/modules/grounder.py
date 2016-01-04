@@ -5,6 +5,8 @@ conjunctions/disjuctions
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 
+from . import arithmetizer
+
 from . import housekeeper
 
 ########## ########## ########## ########## ########## ########## ########## ##########
@@ -108,10 +110,12 @@ def ground1_bterms(T, D):
             return next_btermss
 
 '''
-ground_bterm: tuple * dict -> set(tuple)
+ground_bterm: tuple * dict(vname: set(tuple)) -> set(tuple)
 '''
 def ground_bterm(T, D):
-    if T[0] == 'func':
+    if T[0] == 'ar_term':
+        return arithmetizer.eval_ar_term(T, D)
+    elif T[0] == 'func':
         return ground_bfunc(T, D)
     elif T[0] == 'var':
         vname = T[1][1]
@@ -149,10 +153,10 @@ def bterms_is_ground(T):
 bterm_is_ground: tuple -> bool
 '''
 def bterm_is_ground(T):
-    if T[0] == 'var':
-        return False
-    elif T[0] == 'func':
+    if T[0] == 'func':
         return bfunc_is_ground(T)
+    elif T[0] in {'var', 'ar_term'}:
+        return False
     else: # in housekeeper.basic_terms
         return True
 

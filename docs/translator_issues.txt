@@ -5,32 +5,13 @@ Distribution
     Making the L solver an Eclipse plug-in fragment to integrate with the L editor.
 
 Errors:
-    Arithmetic set constructs
+    Non-ground arithmetic set constructs:
+        type t3 = V1 + V2 where V1 in t1, V2 in t2
 
     #rule_gterms:
         From L rules, the translator grounds then collects terms 
-        to define the ASP sort #rule_gterms. 
-        But the translator misses variables (which are possibly subterms of
-        functional terms).
-        Example:
-            L:
-                p(0). /* Term "0" will be collected to #rule_gterms */
-                
-                type t = {1, 2}.
-                q(t V, V + 10). /* Term "V + 10" == {11, 12} will be missed */
-            ASP:
-                sorts
-                #t = {1, 2}.
-                #rule_gterms = {0}. % Missed {11, 12}
-                #universal = #t + #rule_gterms.
-                
-                predicates
-                p(#universal).
-                q(#universal, #universal).
-                
-                rules
-                p(0).
-                q(V, V + 10) :- #t(V).
+        to define the ASP sort #rule_gterms.
+        But the translator misses functional terms with non-ground arithmetic subterms.
         
 ########## ########## ########## ########## ########## ########## ########## ##########
 

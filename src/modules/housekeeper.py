@@ -13,7 +13,7 @@ ar_ops = infixes1 | infixes2
 comp_ops = {'eq', 'noteq', 'less', 'lessoreq', 'greater', 'greateroreq'}
 lexemes = ar_ops | comp_ops | {'identifier', 'numeral', 'variable', 'every', 'some'}
 
-ground_terms = {    'const',
+ground_terms = {    'const', 'gar_term',
                     'ar_term',  # possibly non-ground
                     'func'}     # possibly non-basic
 basic_terms = ground_terms | {'var', 'tvar'}

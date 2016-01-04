@@ -1,5 +1,4 @@
 program(S) ::= statements(S)
-
 statements(stmts S) ::= statement(S)
 statements(stmts S cut_root(Ss)) ::= statement(S) statements(Ss)
 
@@ -7,24 +6,22 @@ statement(C) ::= const_decl(C)
 statement(T) ::= type_decl(T)
 statement(R) ::= rule(R)
 
-const_decl(cdecl C C1) ::= const identifier(C) eq identifier(C1) dot
-const_decl(cdecl C T) ::= const identifier(C) eq ground_arithmetic_term(T) dot
-const_decl(cdecl C N) ::= const identifier(C) eq number(N) dot
-
 number(N) ::= numeral(N)
 number(neg_num N) ::= minus numeral(N)
 
+const_decl(cdecl C C1) ::= const identifier(C) eq identifier(C1) dot
+const_decl(cdecl C N) ::= const identifier(C) eq number(N) dot
+const_decl(cdecl C T) ::= const identifier(C) eq ground_arithmetic_term(T) dot
+
 type_decl(tdecl I E) ::= type identifier(I) eq set_expr(E) dot
 set_expr(S) ::= ST0(S)
-
 ST0(S) ::= ST1(S)
 ST0(union S1 S2) ::= ST0(S1) plus ST1(S2)
-
 ST1(S) ::= ST2(S)
 ST1(inters S1 S2) ::= ST1(S1) mult ST2(S2)
 ST1(diff S1 S2) ::= ST1(S1) backslash ST2(S2)
-
 ST2(S) ::= lparen ST0(S) rparen
+
 ST2(I) ::= identifier(I)
 ST2(S) ::= set(S)
 ST2(R) ::= range(R)
@@ -34,16 +31,13 @@ set(empty) ::= lcurparen rcurparen
 set(set Ts) ::= lcurparen ground_terms(Ts) rcurparen
 
 range(range L R) ::= lcurparen limit(L) dot dot limit(R) rcurparen
-
 limit(I) ::= identifier(I)
 limit(N) ::= number(N)
 limit(A) ::= ground_arithmetic_term(A)
 
 set_constr(sconstr T Vs) ::= basic_term(T) where var_ts(Vs)
-
 var_ts(var_ts V) ::= var_t(V)
 var_ts(var_ts V cut_root(Vs)) ::= var_t(V) comma var_ts(Vs)
-
 var_t(var_t V T) ::= variable(V) in identifier(T)
 
 rule(rule H) ::= head(H) dot
@@ -56,23 +50,12 @@ head(S) ::= p_sentence(S)
 maybe_lit(mlit A) ::= maybe basic_predicate_atom(A)
 
 card_constr(cconstr L A R) ::= bound(L) lessoreq bar lcurparen basic_predicate_atom(A) rcurparen bar lessoreq bound(R)
-
 bound(I) ::= identifier(I)
 bound(N) ::= number(N)
 bound(A) ::= ground_arithmetic_term(A)
 
 and_s(and) ::= comma(A)
 and_s(and) ::= and(A)
-
-p_s0(A) ::= predicate_atom(A)
-p_s0(S) ::= lparen p_s3(S) rparen
-p_s1(A) ::= p_s0(A)
-p_s1(neg_class A) ::= not p_s0(A)
-p_s2(L) ::= p_s1(L)
-p_s2(conj L1 L2) ::= p_s2(L1) and_s p_s1(L2)
-p_s3(T) ::= p_s2(T)
-p_s3(disj T1 T2) ::= p_s3(T1) or p_s2(T2)
-p_sentence(psent S) ::= p_s3(S)
 
 s0(A) ::= atom(A)
 s0(S) ::= lparen s3(S) rparen
@@ -83,6 +66,16 @@ s2(conj L1 L2) ::= s2(L1) and_s s1(L2)
 s3(T) ::= s2(T)
 s3(disj T1 T2) ::= s3(T1) or s2(T2)
 sentence(sent S) ::= s3(S)
+
+p_s0(A) ::= predicate_atom(A)
+p_s0(S) ::= lparen p_s3(S) rparen
+p_s1(A) ::= p_s0(A)
+p_s1(neg_class A) ::= not p_s0(A)
+p_s2(L) ::= p_s1(L)
+p_s2(conj L1 L2) ::= p_s2(L1) and_s p_s1(L2)
+p_s3(T) ::= p_s2(T)
+p_s3(disj T1 T2) ::= p_s3(T1) or p_s2(T2)
+p_sentence(psent S) ::= p_s3(S)
 
 atom(P) ::= predicate_atom(P)
 atom(B) ::= built_in_atom(B)
@@ -121,13 +114,14 @@ functional_term(func I Args) ::= identifier(I) lparen terms(Args) rparen
 basic_functional_term(func I Args) ::= identifier(I) lparen basic_terms(Args) rparen
 ground_functional_term(func I Args) ::= identifier(I) lparen ground_terms(Args) rparen
 
+tvar(tvar T V) ::= identifier(T) variable(V)
+
 basic_term(F) ::= basic_functional_term(F)
 basic_term(T) ::= arithmetic_term(T)
 basic_term(N) ::= number(N)
 basic_term(const C) ::= identifier(C)
 basic_term(var V) ::= variable(V)
 basic_term(T) ::= tvar(T)
-tvar(tvar T V) ::= identifier(T) variable(V)
 
 ground_term(F) ::= ground_functional_term(F)
 ground_term(A) ::= ground_arithmetic_term(A)
@@ -153,6 +147,7 @@ T0(sum T1 I T2) ::= T0(T1) infix_1(I) T1(T2)
 T1(T) ::= T2(T)
 T1(product T1 I T2) ::= T1 infix_2(I) T2
 T2(T) ::= lparen T0(T) rparen
+
 T2(I) ::= identifier(I)
 T2(N) ::= number(N)
 T2(V) ::= variable(V)
@@ -163,6 +158,7 @@ T0_g(sum T1 I T2) ::= T0_g(T1) infix_1(I) T1_g(T2)
 T1_g(T) ::= T2_g(T)
 T1_g(product T1 I T2) ::= T1_g(T1) infix_2(I) T2_g(T2)
 T2_g(T) ::= lparen T0_g(T) rparen
+
 T2_g(I) ::= identifier(I)
 T2_g(N) ::= number(N)
 

@@ -27,11 +27,11 @@ rewrite: dict -> dict
 def rewrite(D):
     D = arithmetizer.demodularize(D)
     D = arithmetizer.replace(D)
-    D = arithmetizer.eval(D)
+    D = arithmetizer.eval_gar(D)
     
     tdecls = D['tdecls']
-    global g_tdecls
-    g_tdecls = grounder.ground_tdecls(tdecls)
+    global g_tdecls 
+    g_tdecls = grounder.ground_tdecls(tdecls) # dict(str: set(tuple))
     # From L to ASP, only set contructs are grounded;
     # other set expressions are kept as are, for readability
     
@@ -87,9 +87,6 @@ rewrite_tdecls: list -> list
 def rewrite_tdecls(T):
     if T[0] in housekeeper.lexemes:
         return T
-    elif T[0] == 'sconstr':
-        Tuple = grounder.sconstr_to_set(T, g_tdecls)
-        return Tuple
     elif T[0] in housekeeper.set_ops:
         tr = T[:1]
         for t in T[1:]:
@@ -100,12 +97,17 @@ def rewrite_tdecls(T):
         return tr
     elif T[0] == 'tdecl':
         tr = 'sdef',
-        sname = 'sname', rewrite_tdecls(T[1])
-        
-        set_expr = rewrite_tdecls(T[2])
-        if T[2][0] == 'identifier':
+        sname = 'sname', T[1]
+        set_expr = T[2]
+        if set_expr[0] == 'identifier':
             set_expr = 'sname', set_expr
-        
+        elif set_expr[0] == 'sconstr':
+            tname = T[1][1]
+            gterms = g_tdecls[tname] # set(tuple)
+            set_expr = ('gterms',) + tuple(gterms)
+            set_expr = 'set', set_expr
+        else:
+            set_expr = rewrite_tdecls(set_expr)
         tr += sname, set_expr
         return tr
     else:
