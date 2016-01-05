@@ -5,13 +5,14 @@ Distribution
     Making the L solver an Eclipse plug-in fragment to integrate with the L editor.
 
 Errors:
-    Non-ground arithmetic set constructs:
-        type t3 = V1 + V2 where V1 in t1, V2 in t2
-
-    #rule_gterms:
-        From L rules, the translator grounds then collects terms 
-        to define the ASP sort #rule_gterms.
-        But the translator misses functional terms with non-ground arithmetic subterms.
+    Grounder:
+        type t2 = f(V, V) where V in t1.
+        Non-ground arithmetic set constructs:
+            type t3 = V1 + V2 where V1 in t1, V2 in t2.
+        #rule_gterms:
+            From L rules, the translator grounds then collects terms 
+            to define the ASP sort #rule_gterms.
+            But the translator misses functional terms with non-ground arithmetic subterms.
         
 ########## ########## ########## ########## ########## ########## ########## ##########
 
@@ -28,7 +29,6 @@ Notes:
         CWA for each predicate. May change.
     Negation:
         L negation is ASP strong negation.
-        
         Currently forbid negation of:
             Sentences: not p / p and q / p or q
             Quantified atoms: p(every t) / q(some t)

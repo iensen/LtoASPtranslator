@@ -1,3 +1,5 @@
+/* Program k-connectivity from page 16 of L spec */
+
 type node = {1..n}.
 
 const n = 5.
@@ -8,15 +10,15 @@ edge(node X, node Y) if X%n = (Y + 2)%n.
 maybe removed(node N).
 
 reachable(node X, X) if not removed(X).
-reachable(node X,node Y) if edge(X,Y), not removed(X), not removed(Y).
-reachable(node X,node Y) if reachable(X, node Z), 
-                            reachable(Z,Y),
+reachable(node X, node Y) if edge(X, Y), not removed(X), not removed(Y).
+reachable(node X, node Y) if reachable(X, node Z), 
+                            reachable(Z, Y),
                             not removed(X),
                             not removed(Y),
                             not removed(Z).
 
 
-disconnected if not reachable( node X,  node Y),
+disconnected if not reachable(node X, node Y),
                 not removed(X),
                 not removed(Y).
 
