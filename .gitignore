@@ -1,3 +1,11 @@
+# Vu Phan's temporary stuff
+
+Lsolver
+misc
+src/tmp
+
+########## ########## ########## ########## ########## ########## ########## ##########
+
 *.aux
 *.glo
 *.idx
@@ -62,10 +70,3 @@ com_crashlytics_export_strings.xml
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-
-# ########## ########## ########## ########## ########## ########## ########## ##########
-# Vu's temporary stuff
-# ########## ########## ########## ########## ########## ########## ########## ##########
-Lsolver
-misc
-src/tmp

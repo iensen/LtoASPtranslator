@@ -5,6 +5,8 @@ Distribution
     Making the L solver an Eclipse plug-in fragment to integrate with the L editor.
 
 Errors:
+    Zip download of genparser
+
     Grounder:
         type t2 = f(V, V) where V in t1.
         Non-ground arithmetic set constructs:
