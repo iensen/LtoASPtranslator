@@ -1,4 +1,4 @@
-/* Program k-connectivity from page 16 of L spec */
+/* Program "k-connectivity" from page 16 of L spec */
 
 type node = {1..n}.
 

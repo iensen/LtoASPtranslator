@@ -1,21 +1,31 @@
 L-ASP TRANSLATOR: ISSUES
 
 
-Distribution
-    Making the L solver an Eclipse plug-in fragment to integrate with the L editor.
-
-Errors:
-    Zip download of genparser
-
-    Grounder:
-        type t2 = f(V, V) where V in t1.
+ERRORS:
+    Grounding:
+        A recurrence of a variable is treated as another variable:
+            L:
+                type t1 = {1, 2}.
+                type t2 = f(V, V) where V in t1.
+            ASP:
+                #t1 = {1, 2}.
+                #t2 = {f(1, 2), f(2, 1), f(1, 1), f(2, 2)}.
+                    % Wrong. Should be {f(1, 1), f(2, 2)}.
+    Arithmetic:
         Non-ground arithmetic set constructs:
             type t3 = V1 + V2 where V1 in t1, V2 in t2.
+                /* Translated Sparc sort #t3 has redundant terms. */
         #rule_gterms:
             From L rules, the translator grounds then collects terms 
             to define the ASP sort #rule_gterms.
-            But the translator misses functional terms with non-ground arithmetic subterms.
-        
+            But the translator misses functional terms with 
+            non-ground arithmetic subterms:
+                p(f(t V + 1)).
+                    /* The terms {f(V + 1): V in t} are not collected to #rule_gterms. */
+
+Distribution:
+    Making the L solver an Eclipse plug-in fragment to integrate with the L editor.
+
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 Sparc-related matters:

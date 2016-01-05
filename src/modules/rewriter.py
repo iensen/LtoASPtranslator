@@ -34,16 +34,16 @@ def rewrite(D):
     g_tdecls = grounder.ground_tdecls(tdecls) # dict(str: set(tuple))
     # From L to ASP, only set contructs are grounded;
     # other set expressions are kept as are, for readability
-    
+
     rules = D['rules']
     rules = qt_legacy_to_tvar(rules)
     g_rules = grounder.ground_rules(rules, g_tdecls)
     
-    # To define ASP sort #ints:
-    ints = 'range', ('numeral', '0'), ('numeral', '100') 
-        # Covers evaluated arithmetic terms
-    ints = 'tdecl', ('identifier', 'ints'), ints
-    tdecls = ('tdecls',) + (ints ,) + tdecls[1:]
+    # # To define ASP sort #ints:
+    # ints = 'range', ('numeral', '0'), ('numeral', '100')
+        # # Covers evaluated arithmetic terms
+    # ints = 'tdecl', ('identifier', 'ints'), ints
+    # tdecls = ('tdecls',) + (ints ,) + tdecls[1:]
 
     rewritten = {'sdefs': rewrite_tdecls(tdecls), 'rules': rewrite_rules(g_rules)}
     return rewritten
@@ -101,7 +101,7 @@ def rewrite_tdecls(T):
         set_expr = T[2]
         if set_expr[0] == 'identifier':
             set_expr = 'sname', set_expr
-        elif set_expr[0] == 'sconstr':
+        elif sconstr_in_set_expr(set_expr):
             tname = T[1][1]
             gterms = g_tdecls[tname] # set(tuple)
             set_expr = ('gterms',) + tuple(gterms)
@@ -116,6 +116,20 @@ def rewrite_tdecls(T):
         for t in T[1:]:
             tr += rewrite_tdecls(t),
         return tr
+        
+'''
+sconstr_in_set_expr: tuple -> bool
+'''
+def sconstr_in_set_expr(T):
+    if T[0] in housekeeper.lexemes:
+        return False
+    elif T[0] == 'sconstr':
+        return True
+    else:
+        for t in T[1:]:
+            if sconstr_in_set_expr(t):
+                return True
+        return False
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########

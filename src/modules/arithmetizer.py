@@ -78,57 +78,57 @@ def eval_gar_term(T, D):
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
 
-'''
-Evaluate (non-ground) arithmetic term
+# '''
+# Evaluate (non-ground) arithmetic term
 
-eval_ar_term: tuple * dict(vname: set(tuple)) -> set(tuple)
-'''
-def eval_ar_term(T, D):
-    vars = housekeeper.get_vars(T) # Get variable subterms of arithmetic term
-    var_sets = {} 
-    for var in vars:
-        vname = var[1]
-        nums = D[vname]
-        ints = set()
-        for num in nums:
-            ints |= {int(num[1])}
-        var_sets[vname] = ints # dict(str: set(int))
-    s_tuples = substitute(T, var_sets) # set(tuple)
-    e_tuples = set()
-    for s_tuple in s_tuples:
-        e_tuples |= {eval_gar_term(s_tuple, {})}
-    return e_tuples
+# eval_ar_term: tuple * dict(vname: set(tuple)) -> set(tuple)
+# '''
+# def eval_ar_term(T, D):
+    # vars = housekeeper.get_vars(T) # Get variable subterms of arithmetic term
+    # var_sets = {} 
+    # for var in vars:
+        # vname = var[1]
+        # nums = D[vname]
+        # ints = set()
+        # for num in nums:
+            # ints |= {int(num[1])}
+        # var_sets[vname] = ints # dict(str: set(int))
+    # s_tuples = substitute(T, var_sets) # set(tuple)
+    # e_tuples = set()
+    # for s_tuple in s_tuples:
+        # e_tuples |= {eval_gar_term(s_tuple, {})}
+    # return e_tuples
     
 ########## ########## ########## ########## ########## ########## ########## ##########
 
-'''
-Substitute variables in a tree with their numeric values
+# '''
+# Substitute variables in a tree with their numeric values
 
-substitute: tuple * dict(vname: set(int)) -> set(tuple)
-'''
-def substitute(T, D):
-    tuples = set()
-    for vname in D:
-        var = 'variable', vname
-        for num in D[vname]:
-            num = 'numeral', str(num)
-            tuples |= {substitute1(T, var, num)}
-    return tuples
+# substitute: tuple * dict(vname: set(int)) -> set(tuple)
+# '''
+# def substitute(T, D):
+    # tuples = set()
+    # for vname in D:
+        # var = 'variable', vname
+        # for num in D[vname]:
+            # num = 'numeral', str(num)
+            # tuples |= {substitute1(T, var, num)}
+    # return tuples
 
-'''
-substitute1: tuple * tuple1 * tuple2 -> tuple
-'''
-def substitute1(T, t1, t2):
-    if T == t1:
-        T = t2
-        return substitute1(T, t1, t2)
-    elif T[0] in housekeeper.lexemes:
-        return T
-    else:
-        tr = ('gar_term',) if T[0] == 'ar_term' else T[:1]
-        for t in T[1:]:
-            tr += substitute1(t, t1, t2),
-        return tr
+# '''
+# substitute1: tuple * tuple1 * tuple2 -> tuple
+# '''
+# def substitute1(T, t1, t2):
+    # if T == t1:
+        # T = t2
+        # return substitute1(T, t1, t2)
+    # elif T[0] in housekeeper.lexemes:
+        # return T
+    # else:
+        # tr = ('gar_term',) if T[0] == 'ar_term' else T[:1]
+        # for t in T[1:]:
+            # tr += substitute1(t, t1, t2),
+        # return tr
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########

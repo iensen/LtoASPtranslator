@@ -1,3 +1,5 @@
+/* Transcribed to L from Sparc */
+
 /*%%%%%%%%%%%%%%
 %  ASP Brain model
 %  by Richard Watson
@@ -1102,5 +1104,9 @@ maybe bad_node(node N).
 :- not bad.
 */
 
-/* L RULE : */
+/* L RULE :
 1<=|{bad}|<=1.
+*/
+
+/* Semantic error: When the above L rule is commented, 
+the program is still unsatisfiable */
