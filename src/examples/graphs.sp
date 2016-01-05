@@ -1,6 +1,6 @@
+
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 sorts
-%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
 #node = 
 	1..5.
@@ -9,45 +9,40 @@ sorts
 	#node.
 
 #rule_gterms = 
-	{2, 0, 5, 1}.
+	{5, 2, 0, 1}.
 
 #universal = 
 	#types + 
 	#rule_gterms.
 
+
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 predicates
-%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
-disconnected().
-removed(#universal).
 edge(#universal, #universal).
+removed(#universal).
 reachable(#universal, #universal).
+disconnected().
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 rules
-%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
-% Closed-World Assumption:
--edge(AutoVar0, AutoVar1) :-
-	not edge(AutoVar0, AutoVar1),
-	#universal(AutoVar0),
-	#universal(AutoVar1).
+-removed(CWA_Var0) :-
+	not removed(CWA_Var0),
+	#universal(CWA_Var0).
 
-% Closed-World Assumption:
--reachable(AutoVar0, AutoVar1) :-
-	not reachable(AutoVar0, AutoVar1),
-	#universal(AutoVar0),
-	#universal(AutoVar1).
-
-% Closed-World Assumption:
 -disconnected :-
 	not disconnected.
 
-% Closed-World Assumption:
--removed(AutoVar0) :-
-	not removed(AutoVar0),
-	#universal(AutoVar0).
+-edge(CWA_Var0, CWA_Var1) :-
+	not edge(CWA_Var0, CWA_Var1),
+	#universal(CWA_Var0),
+	#universal(CWA_Var1).
+
+-reachable(CWA_Var0, CWA_Var1) :-
+	not reachable(CWA_Var0, CWA_Var1),
+	#universal(CWA_Var0),
+	#universal(CWA_Var1).
 
 :-	0 > #count{0, N: removed(N), #node(N)}.
 
@@ -102,10 +97,9 @@ disconnected :-
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 display
-%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
-disconnected.
-removed.
 edge.
+removed.
 reachable.
+disconnected.
 

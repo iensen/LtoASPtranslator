@@ -1,6 +1,6 @@
+
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 sorts
-%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
 #node = 
 	0..7.
@@ -9,8 +9,7 @@ sorts
 	{left, right}.
 
 #data = 
-	{good} + 
-	{bad(1), bad(0), bad(3), bad(4), bad(6), bad(7), bad(2), bad(5)}.
+	{bad(3), bad(4), bad(7), bad(0), bad(5), bad(1), good, bad(2), bad(6)}.
 
 #hopc = 
 	0..10.
@@ -26,237 +25,206 @@ sorts
 	#case_num.
 
 #rule_gterms = 
-	{1, bad(0), 2, left, bad(4), bad(6), good, right, bad(2), bad(1), 0, 8, 8, bad(3), 3, bad(7), bad(5)}.
+	{1, bad(3), bad(4), bad(3), 8, 2, bad(0), bad(0), bad(1), left, good, bad(6), 3, bad(7), bad(6), right, bad(1), bad(7), 6, bad(5), bad(4), bad(5), 5, bad(2), 0, 8, 7, 4, bad(2)}.
 
 #universal = 
 	#types + 
 	#rule_gterms.
 
+
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 predicates
-%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
-not_discordant(#universal, #universal, #universal, #universal).
-inline_accept(#universal, #universal, #universal).
-hop_count(#universal, #universal, #universal).
-sent_to(#universal, #universal, #universal).
-id(#universal, #universal, #universal).
-link(#universal, #universal, #universal).
-case(#universal, #universal, #universal).
-direct_link(#universal, #universal, #universal).
-integrity(#universal, #universal).
-frame_sent(#universal, #universal).
-bad_node(#universal).
 partner(#universal, #universal, #universal).
-skip_link(#universal, #universal, #universal).
-inline_passed(#universal).
 adjusted_hop_sum(#universal, #universal, #universal, #universal).
-bad_accepted().
-accepted(#universal, #universal).
-is_node(#universal).
-discordant(#universal, #universal, #universal, #universal).
-recon_case_met(#universal, #universal, #universal).
 v_hop(#universal).
-omit(#universal, #universal).
+sent_to(#universal, #universal, #universal).
 hop_add(#universal, #universal, #universal).
+good_not_accepted().
+bad_node(#universal).
 pair_cong(#universal, #universal).
 recon_qualify_hop(#universal, #universal, #universal).
-not_omit(#universal, #universal).
-good_not_accepted().
-sending(#universal).
+skip_link(#universal, #universal, #universal).
+is_node(#universal).
+link(#universal, #universal, #universal).
+recon_case_met(#universal, #universal, #universal).
+bad_accepted().
 recon_accept(#universal, #universal).
+hop_count(#universal, #universal, #universal).
+inline_accept(#universal, #universal, #universal).
 bad().
+case(#universal, #universal, #universal).
+inline_passed(#universal).
+not_discordant(#universal, #universal, #universal, #universal).
+omit(#universal, #universal).
+direct_link(#universal, #universal, #universal).
+frame_sent(#universal, #universal).
+integrity(#universal, #universal).
+sending(#universal).
+id(#universal, #universal, #universal).
+discordant(#universal, #universal, #universal, #universal).
+not_omit(#universal, #universal).
+accepted(#universal, #universal).
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 rules
-%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
-% Closed-World Assumption:
--link(AutoVar0, AutoVar1, AutoVar2) :-
-	not link(AutoVar0, AutoVar1, AutoVar2),
-	#universal(AutoVar0),
-	#universal(AutoVar1),
-	#universal(AutoVar2).
+-link(CWA_Var0, CWA_Var1, CWA_Var2) :-
+	not link(CWA_Var0, CWA_Var1, CWA_Var2),
+	#universal(CWA_Var0),
+	#universal(CWA_Var1),
+	#universal(CWA_Var2).
 
-% Closed-World Assumption:
--good_not_accepted :-
-	not good_not_accepted.
+-id(CWA_Var0, CWA_Var1, CWA_Var2) :-
+	not id(CWA_Var0, CWA_Var1, CWA_Var2),
+	#universal(CWA_Var0),
+	#universal(CWA_Var1),
+	#universal(CWA_Var2).
 
-% Closed-World Assumption:
--hop_count(AutoVar0, AutoVar1, AutoVar2) :-
-	not hop_count(AutoVar0, AutoVar1, AutoVar2),
-	#universal(AutoVar0),
-	#universal(AutoVar1),
-	#universal(AutoVar2).
+-bad_node(CWA_Var0) :-
+	not bad_node(CWA_Var0),
+	#universal(CWA_Var0).
 
-% Closed-World Assumption:
--frame_sent(AutoVar0, AutoVar1) :-
-	not frame_sent(AutoVar0, AutoVar1),
-	#universal(AutoVar0),
-	#universal(AutoVar1).
+-inline_passed(CWA_Var0) :-
+	not inline_passed(CWA_Var0),
+	#universal(CWA_Var0).
 
-% Closed-World Assumption:
--pair_cong(AutoVar0, AutoVar1) :-
-	not pair_cong(AutoVar0, AutoVar1),
-	#universal(AutoVar0),
-	#universal(AutoVar1).
+-frame_sent(CWA_Var0, CWA_Var1) :-
+	not frame_sent(CWA_Var0, CWA_Var1),
+	#universal(CWA_Var0),
+	#universal(CWA_Var1).
 
-% Closed-World Assumption:
--not_omit(AutoVar0, AutoVar1) :-
-	not not_omit(AutoVar0, AutoVar1),
-	#universal(AutoVar0),
-	#universal(AutoVar1).
+-v_hop(CWA_Var0) :-
+	not v_hop(CWA_Var0),
+	#universal(CWA_Var0).
 
-% Closed-World Assumption:
--recon_accept(AutoVar0, AutoVar1) :-
-	not recon_accept(AutoVar0, AutoVar1),
-	#universal(AutoVar0),
-	#universal(AutoVar1).
+-skip_link(CWA_Var0, CWA_Var1, CWA_Var2) :-
+	not skip_link(CWA_Var0, CWA_Var1, CWA_Var2),
+	#universal(CWA_Var0),
+	#universal(CWA_Var1),
+	#universal(CWA_Var2).
 
-% Closed-World Assumption:
--recon_case_met(AutoVar0, AutoVar1, AutoVar2) :-
-	not recon_case_met(AutoVar0, AutoVar1, AutoVar2),
-	#universal(AutoVar0),
-	#universal(AutoVar1),
-	#universal(AutoVar2).
+-adjusted_hop_sum(CWA_Var0, CWA_Var1, CWA_Var2, CWA_Var3) :-
+	not adjusted_hop_sum(CWA_Var0, CWA_Var1, CWA_Var2, CWA_Var3),
+	#universal(CWA_Var0),
+	#universal(CWA_Var1),
+	#universal(CWA_Var2),
+	#universal(CWA_Var3).
 
-% Closed-World Assumption:
--v_hop(AutoVar0) :-
-	not v_hop(AutoVar0),
-	#universal(AutoVar0).
-
-% Closed-World Assumption:
--inline_accept(AutoVar0, AutoVar1, AutoVar2) :-
-	not inline_accept(AutoVar0, AutoVar1, AutoVar2),
-	#universal(AutoVar0),
-	#universal(AutoVar1),
-	#universal(AutoVar2).
-
-% Closed-World Assumption:
--bad_node(AutoVar0) :-
-	not bad_node(AutoVar0),
-	#universal(AutoVar0).
-
-% Closed-World Assumption:
--omit(AutoVar0, AutoVar1) :-
-	not omit(AutoVar0, AutoVar1),
-	#universal(AutoVar0),
-	#universal(AutoVar1).
-
-% Closed-World Assumption:
 -bad_accepted :-
 	not bad_accepted.
 
-% Closed-World Assumption:
--integrity(AutoVar0, AutoVar1) :-
-	not integrity(AutoVar0, AutoVar1),
-	#universal(AutoVar0),
-	#universal(AutoVar1).
+-not_omit(CWA_Var0, CWA_Var1) :-
+	not not_omit(CWA_Var0, CWA_Var1),
+	#universal(CWA_Var0),
+	#universal(CWA_Var1).
 
-% Closed-World Assumption:
--adjusted_hop_sum(AutoVar0, AutoVar1, AutoVar2, AutoVar3) :-
-	not adjusted_hop_sum(AutoVar0, AutoVar1, AutoVar2, AutoVar3),
-	#universal(AutoVar0),
-	#universal(AutoVar1),
-	#universal(AutoVar2),
-	#universal(AutoVar3).
+-recon_case_met(CWA_Var0, CWA_Var1, CWA_Var2) :-
+	not recon_case_met(CWA_Var0, CWA_Var1, CWA_Var2),
+	#universal(CWA_Var0),
+	#universal(CWA_Var1),
+	#universal(CWA_Var2).
 
-% Closed-World Assumption:
--sending(AutoVar0) :-
-	not sending(AutoVar0),
-	#universal(AutoVar0).
-
-% Closed-World Assumption:
--id(AutoVar0, AutoVar1, AutoVar2) :-
-	not id(AutoVar0, AutoVar1, AutoVar2),
-	#universal(AutoVar0),
-	#universal(AutoVar1),
-	#universal(AutoVar2).
-
-% Closed-World Assumption:
--recon_qualify_hop(AutoVar0, AutoVar1, AutoVar2) :-
-	not recon_qualify_hop(AutoVar0, AutoVar1, AutoVar2),
-	#universal(AutoVar0),
-	#universal(AutoVar1),
-	#universal(AutoVar2).
-
-% Closed-World Assumption:
--hop_add(AutoVar0, AutoVar1, AutoVar2) :-
-	not hop_add(AutoVar0, AutoVar1, AutoVar2),
-	#universal(AutoVar0),
-	#universal(AutoVar1),
-	#universal(AutoVar2).
-
-% Closed-World Assumption:
--discordant(AutoVar0, AutoVar1, AutoVar2, AutoVar3) :-
-	not discordant(AutoVar0, AutoVar1, AutoVar2, AutoVar3),
-	#universal(AutoVar0),
-	#universal(AutoVar1),
-	#universal(AutoVar2),
-	#universal(AutoVar3).
-
-% Closed-World Assumption:
--accepted(AutoVar0, AutoVar1) :-
-	not accepted(AutoVar0, AutoVar1),
-	#universal(AutoVar0),
-	#universal(AutoVar1).
-
-% Closed-World Assumption:
--not_discordant(AutoVar0, AutoVar1, AutoVar2, AutoVar3) :-
-	not not_discordant(AutoVar0, AutoVar1, AutoVar2, AutoVar3),
-	#universal(AutoVar0),
-	#universal(AutoVar1),
-	#universal(AutoVar2),
-	#universal(AutoVar3).
-
-% Closed-World Assumption:
--sent_to(AutoVar0, AutoVar1, AutoVar2) :-
-	not sent_to(AutoVar0, AutoVar1, AutoVar2),
-	#universal(AutoVar0),
-	#universal(AutoVar1),
-	#universal(AutoVar2).
-
-% Closed-World Assumption:
--case(AutoVar0, AutoVar1, AutoVar2) :-
-	not case(AutoVar0, AutoVar1, AutoVar2),
-	#universal(AutoVar0),
-	#universal(AutoVar1),
-	#universal(AutoVar2).
-
-% Closed-World Assumption:
--direct_link(AutoVar0, AutoVar1, AutoVar2) :-
-	not direct_link(AutoVar0, AutoVar1, AutoVar2),
-	#universal(AutoVar0),
-	#universal(AutoVar1),
-	#universal(AutoVar2).
-
-% Closed-World Assumption:
--partner(AutoVar0, AutoVar1, AutoVar2) :-
-	not partner(AutoVar0, AutoVar1, AutoVar2),
-	#universal(AutoVar0),
-	#universal(AutoVar1),
-	#universal(AutoVar2).
-
-% Closed-World Assumption:
--inline_passed(AutoVar0) :-
-	not inline_passed(AutoVar0),
-	#universal(AutoVar0).
-
-% Closed-World Assumption:
--is_node(AutoVar0) :-
-	not is_node(AutoVar0),
-	#universal(AutoVar0).
-
-% Closed-World Assumption:
 -bad :-
 	not bad.
 
-% Closed-World Assumption:
--skip_link(AutoVar0, AutoVar1, AutoVar2) :-
-	not skip_link(AutoVar0, AutoVar1, AutoVar2),
-	#universal(AutoVar0),
-	#universal(AutoVar1),
-	#universal(AutoVar2).
+-omit(CWA_Var0, CWA_Var1) :-
+	not omit(CWA_Var0, CWA_Var1),
+	#universal(CWA_Var0),
+	#universal(CWA_Var1).
+
+-sending(CWA_Var0) :-
+	not sending(CWA_Var0),
+	#universal(CWA_Var0).
+
+-accepted(CWA_Var0, CWA_Var1) :-
+	not accepted(CWA_Var0, CWA_Var1),
+	#universal(CWA_Var0),
+	#universal(CWA_Var1).
+
+-good_not_accepted :-
+	not good_not_accepted.
+
+-hop_count(CWA_Var0, CWA_Var1, CWA_Var2) :-
+	not hop_count(CWA_Var0, CWA_Var1, CWA_Var2),
+	#universal(CWA_Var0),
+	#universal(CWA_Var1),
+	#universal(CWA_Var2).
+
+-inline_accept(CWA_Var0, CWA_Var1, CWA_Var2) :-
+	not inline_accept(CWA_Var0, CWA_Var1, CWA_Var2),
+	#universal(CWA_Var0),
+	#universal(CWA_Var1),
+	#universal(CWA_Var2).
+
+-not_discordant(CWA_Var0, CWA_Var1, CWA_Var2, CWA_Var3) :-
+	not not_discordant(CWA_Var0, CWA_Var1, CWA_Var2, CWA_Var3),
+	#universal(CWA_Var0),
+	#universal(CWA_Var1),
+	#universal(CWA_Var2),
+	#universal(CWA_Var3).
+
+-discordant(CWA_Var0, CWA_Var1, CWA_Var2, CWA_Var3) :-
+	not discordant(CWA_Var0, CWA_Var1, CWA_Var2, CWA_Var3),
+	#universal(CWA_Var0),
+	#universal(CWA_Var1),
+	#universal(CWA_Var2),
+	#universal(CWA_Var3).
+
+-sent_to(CWA_Var0, CWA_Var1, CWA_Var2) :-
+	not sent_to(CWA_Var0, CWA_Var1, CWA_Var2),
+	#universal(CWA_Var0),
+	#universal(CWA_Var1),
+	#universal(CWA_Var2).
+
+-integrity(CWA_Var0, CWA_Var1) :-
+	not integrity(CWA_Var0, CWA_Var1),
+	#universal(CWA_Var0),
+	#universal(CWA_Var1).
+
+-partner(CWA_Var0, CWA_Var1, CWA_Var2) :-
+	not partner(CWA_Var0, CWA_Var1, CWA_Var2),
+	#universal(CWA_Var0),
+	#universal(CWA_Var1),
+	#universal(CWA_Var2).
+
+-recon_qualify_hop(CWA_Var0, CWA_Var1, CWA_Var2) :-
+	not recon_qualify_hop(CWA_Var0, CWA_Var1, CWA_Var2),
+	#universal(CWA_Var0),
+	#universal(CWA_Var1),
+	#universal(CWA_Var2).
+
+-direct_link(CWA_Var0, CWA_Var1, CWA_Var2) :-
+	not direct_link(CWA_Var0, CWA_Var1, CWA_Var2),
+	#universal(CWA_Var0),
+	#universal(CWA_Var1),
+	#universal(CWA_Var2).
+
+-is_node(CWA_Var0) :-
+	not is_node(CWA_Var0),
+	#universal(CWA_Var0).
+
+-case(CWA_Var0, CWA_Var1, CWA_Var2) :-
+	not case(CWA_Var0, CWA_Var1, CWA_Var2),
+	#universal(CWA_Var0),
+	#universal(CWA_Var1),
+	#universal(CWA_Var2).
+
+-recon_accept(CWA_Var0, CWA_Var1) :-
+	not recon_accept(CWA_Var0, CWA_Var1),
+	#universal(CWA_Var0),
+	#universal(CWA_Var1).
+
+-hop_add(CWA_Var0, CWA_Var1, CWA_Var2) :-
+	not hop_add(CWA_Var0, CWA_Var1, CWA_Var2),
+	#universal(CWA_Var0),
+	#universal(CWA_Var1),
+	#universal(CWA_Var2).
+
+-pair_cong(CWA_Var0, CWA_Var1) :-
+	not pair_cong(CWA_Var0, CWA_Var1),
+	#universal(CWA_Var0),
+	#universal(CWA_Var1).
 
 is_node(N) :-
 	#node(N).
@@ -282,37 +250,12 @@ not_discordant(N1, N2, left, H) :-
 	((N1 + 8) - N2) = H.
 
 frame_sent(N1, N2) :-
-	sent_to(N1, N2, bad(1)),
-	#node(N1),
-	#node(N2).
-
-frame_sent(N1, N2) :-
 	sent_to(N1, N2, bad(7)),
 	#node(N1),
 	#node(N2).
 
 frame_sent(N1, N2) :-
-	sent_to(N1, N2, good),
-	#node(N1),
-	#node(N2).
-
-frame_sent(N1, N2) :-
 	sent_to(N1, N2, bad(2)),
-	#node(N1),
-	#node(N2).
-
-frame_sent(N1, N2) :-
-	sent_to(N1, N2, bad(4)),
-	#node(N1),
-	#node(N2).
-
-frame_sent(N1, N2) :-
-	sent_to(N1, N2, bad(3)),
-	#node(N1),
-	#node(N2).
-
-frame_sent(N1, N2) :-
-	sent_to(N1, N2, bad(6)),
 	#node(N1),
 	#node(N2).
 
@@ -323,6 +266,31 @@ frame_sent(N1, N2) :-
 
 frame_sent(N1, N2) :-
 	sent_to(N1, N2, bad(5)),
+	#node(N1),
+	#node(N2).
+
+frame_sent(N1, N2) :-
+	sent_to(N1, N2, bad(4)),
+	#node(N1),
+	#node(N2).
+
+frame_sent(N1, N2) :-
+	sent_to(N1, N2, bad(1)),
+	#node(N1),
+	#node(N2).
+
+frame_sent(N1, N2) :-
+	sent_to(N1, N2, good),
+	#node(N1),
+	#node(N2).
+
+frame_sent(N1, N2) :-
+	sent_to(N1, N2, bad(3)),
+	#node(N1),
+	#node(N2).
+
+frame_sent(N1, N2) :-
+	sent_to(N1, N2, bad(6)),
 	#node(N1),
 	#node(N2).
 
@@ -778,9 +746,9 @@ omit(N1, N2) |
 	#node(N1),
 	#node(N2).
 
-:-	0 > #count{0, N1, N2: omit(N1, N2)}.
+:-	0 > #count{0, N2, N1: omit(N1, N2)}.
 
-:-	1 < #count{0, N1, N2: omit(N1, N2)}.
+:-	1 < #count{0, N2, N1: omit(N1, N2)}.
 
 sent_to(N1, N2, good) |
 sent_to(N1, N2, bad(N1)) :-
@@ -979,22 +947,22 @@ recon_case_met(N1, N2, N3) :-
 	#hopc(H).
 
 accepted(N, Data) :-
-	inline_accept(N, Data, right),
-	#node(N),
-	#data(Data).
-
-accepted(N, Data) :-
 	inline_accept(N, Data, left),
 	#node(N),
 	#data(Data).
 
 accepted(N, Data) :-
-	recon_accept(N, left),
+	inline_accept(N, Data, right),
 	#node(N),
 	#data(Data).
 
 accepted(N, Data) :-
 	recon_accept(N, right),
+	#node(N),
+	#data(Data).
+
+accepted(N, Data) :-
+	recon_accept(N, left),
 	#node(N),
 	#data(Data).
 
@@ -1021,43 +989,38 @@ bad_node(N) |
 
 :-	2 < #count{0, N: bad_node(N), #node(N)}.
 
-:-	1 > #count{0: bad}.
-
-:-	1 < #count{0: bad}.
-
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 display
-%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
-not_discordant.
-inline_accept.
-hop_count.
-sent_to.
-id.
-link.
-case.
-direct_link.
-integrity.
-frame_sent.
-bad_node.
 partner.
-skip_link.
-inline_passed.
 adjusted_hop_sum.
-bad_accepted.
-accepted.
-is_node.
-discordant.
-recon_case_met.
 v_hop.
-omit.
+sent_to.
 hop_add.
+good_not_accepted.
+bad_node.
 pair_cong.
 recon_qualify_hop.
-not_omit.
-good_not_accepted.
-sending.
+skip_link.
+is_node.
+link.
+recon_case_met.
+bad_accepted.
 recon_accept.
+hop_count.
+inline_accept.
 bad.
+case.
+inline_passed.
+not_discordant.
+omit.
+direct_link.
+frame_sent.
+integrity.
+sending.
+id.
+discordant.
+not_omit.
+accepted.
 

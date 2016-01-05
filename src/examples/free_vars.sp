@@ -1,6 +1,6 @@
+
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 sorts
-%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
 #type1 = 
 	{1, 2, 5}.
@@ -13,40 +13,36 @@ sorts
 	#type2.
 
 #rule_gterms = 
-	{0, 1, 7, 2}.
+	{7, 0, 2, 1}.
 
 #universal = 
 	#types + 
 	#rule_gterms.
 
+
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 predicates
-%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
-t(#universal, #universal).
-p(#universal, #universal).
 q(#universal).
+p(#universal, #universal).
+t(#universal, #universal).
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 rules
-%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
-% Closed-World Assumption:
--t(AutoVar0, AutoVar1) :-
-	not t(AutoVar0, AutoVar1),
-	#universal(AutoVar0),
-	#universal(AutoVar1).
+-p(CWA_Var0, CWA_Var1) :-
+	not p(CWA_Var0, CWA_Var1),
+	#universal(CWA_Var0),
+	#universal(CWA_Var1).
 
-% Closed-World Assumption:
--q(AutoVar0) :-
-	not q(AutoVar0),
-	#universal(AutoVar0).
+-q(CWA_Var0) :-
+	not q(CWA_Var0),
+	#universal(CWA_Var0).
 
-% Closed-World Assumption:
--p(AutoVar0, AutoVar1) :-
-	not p(AutoVar0, AutoVar1),
-	#universal(AutoVar0),
-	#universal(AutoVar1).
+-t(CWA_Var0, CWA_Var1) :-
+	not t(CWA_Var0, CWA_Var1),
+	#universal(CWA_Var0),
+	#universal(CWA_Var1).
 
 p(X, Y) :-
 	(X + Y) = 7,
@@ -66,9 +62,8 @@ q(X) |
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 display
-%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
-t.
-p.
 q.
+p.
+t.
 
