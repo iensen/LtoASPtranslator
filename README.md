@@ -6,8 +6,6 @@ https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.sp
 https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.txt
 [.exe]: 
 https://github.com/iensen/LtoASPtranslator/blob/master/Lsolver.zip?raw=true
-[.py]: 
-https://github.com/iensen/LtoASPtranslator/archive/master.zip
 [L]: 
 https://github.com/iensen/LtoASPtranslator/blob/master/Lspec/Lspec.pdf
 [parser]: 
@@ -34,7 +32,7 @@ http://sourceforge.net/projects/potassco/files/guide/2.0/guide-2.0.pdf
 ## [L SOLVER STANDALONE][.exe]
 For Windows
 
-## [L SOLVER SOURCE CODE][.py]
+## L SOLVER SOURCE CODE
 - Python 3.4 or higher
 - Command-line syntax
   - Change current directory to `src`  
