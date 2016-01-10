@@ -104,12 +104,22 @@ student_meets_criterion(every student, inferior).
 /* Default rank's criterion is met by all students */
 
     
-not student_rank(student S, rank R2) if
-    not student_meets_criterion(S, rank R2) or
-    student_meets_criterion(S, rank R1) and higher_rank(R1, R2).
-/* A student isn't in a rank if either:
+/* The rule below means: a student isn't in a rank if either:
     she doesn't meet the criterion for that rank, or
     she already meets the criterion for a higher rank */
+    
+not student_rank(student S, rank R2) if
+    not student_meets_criterion(S, R2) or
+    student_meets_criterion(S, rank R1) and higher_rank(R1, R2).
+
+/* 
+The rule above can be better written as:
+    not student_rank(student S, rank R2) if
+        not student_meets_criterion(S, R2) or
+        student_meets_criterion_for_higher_rank(S, some rank, R2).
+    student_meets_criterion_for_higher_rank(student S, rank R1, rank R2) if
+        student_meets_criterion(S, R1) and higher_rank(R1, R2).
+*/
     
     
 student_dropped(gray).
