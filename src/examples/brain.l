@@ -121,16 +121,16 @@ v_hop(hopc N).
 */	
 
 /* L Rules */
-not_discordant(node N1,N2,right,H) if 
+not_discordant(node N1, node N2, right, hopc H) if 
 			N2 > N1 and
 			N2-N1 = H.
-not_discordant(N1,N2,right,H) if 
+not_discordant(node N1, node N2, right, hopc H) if 
 			N2 < N1 and
 			N2+n-N1 = H.
-not_discordant(N1,N2,left,H) if 
+not_discordant(node N1, node N2, left, hopc H) if 
 			N2 < N1 and
 			N1-N2 = H.
-not_discordant(N1,N2,left,H) if 
+not_discordant(node N1, node N2, left, hopc H) if 
 			N2 > N1 and
 			N1+n-N2 = H.	
 
@@ -263,7 +263,7 @@ id(N1,N2,N1) :-
 
 */
 
-id(node N1, node N2, node N1) if
+id(node N1, node N2, N1) if
        sending(N1) and
        not bad_node(N1) and
        link(N1,N2, some direction).
@@ -394,8 +394,6 @@ sent_to(N2,N3,Data) :-
        C != 2,
        skip_link(N1,N2,Dir),
        link(N2,N3,Dir).      
-
-
 */
 /* L Rules:*/
 
@@ -436,7 +434,7 @@ case(3,node N1, direction Dir) if
 sent_to(node N2, node N3 , data Data) if
        sent_to(some node N1,N2,Data) and 
        not bad_node(N2) and 
-       case(C,N2,some direction Dir) and 
+       case(case_num C,N2,some direction Dir) and 
        C != 2 and 
        skip_link(N1,N2,Dir) and 
        link(N2,N3,Dir).
@@ -476,7 +474,7 @@ id(N2,N3,ID) :-
 id(node N2, node N3, node ID) if
        id(some node N1,N2,ID) and
        not bad_node(N2) and 
-       case(C,N2,some direction Dir) and
+       case(case_num C,N2,some direction Dir) and
        C !=  2 and 
        skip_link(N1,N2,Dir) and
        link(N2,N3,Dir).       
@@ -505,7 +503,6 @@ id(node N2, node N3, node ID) if
 
 
 /*
-       
 % in cases 1 & 3 the partner received on the skip link is forwarded.
 ASP RULE:
 partner(N2,N3,ID) :-
@@ -520,7 +517,7 @@ partner(N2,N3,ID) :-
 partner(node N2,node N3, node ID) if
        partner(some node N1,N2,ID) and
        not bad_node(N2) and
-       case(C,N2, some direction Dir) and
+       case(case_num C,N2, some direction Dir) and
        C != 2 and
        skip_link(N1,N2,Dir) and
        link(N2,N3,Dir).
@@ -539,14 +536,13 @@ partner(N2,N3,ID) :-
 
 /* L rule: */
 
-partner(N2,N3,ID) if
-       partner(N1,N2,ID) and
+partner(node N2,node N3,node ID) if
+       partner(some node N1,N2,ID) and
        not bad_node(N2) and
-       case(2,N2,Dir) and
+       case(2,N2,some direction Dir) and
        direct_link(N1,N2,Dir) and
        link(N2,N3,Dir).
 /*
-
 % in cases 1 & 3 the hop count recieved on the skip link incremented by 2 and 
 % forwarded.
 ASP RULE:
@@ -557,11 +553,11 @@ hop_count(N2,N3,Count+2) :-
        C != 2,
        skip_link(N1,N2,Dir),
        link(N2,N3,Dir).
-  */
+*/
 
 /* L RULE: */
-hop_count(node N2, node N3, hopc Count) if
-       hop_count(N1,some node N2,Count-2) and
+hop_count(node N2, node N3, hopc Count + 2) if
+       hop_count(some node N1,N2,Count) and
        not bad_node(N2) and
        case(some case_num C,N2,some direction Dir) and
        C != 2 and 
@@ -581,8 +577,8 @@ hop_count(N2,N3,Count+1) :-
 */
 
 /* L rule :*/
-hop_count(node N2, node N3,hopc Count) if
-       hop_count(some node N1,N2,Count-1) and
+hop_count(node N2, node N3,hopc Count + 1) if
+       hop_count(some node N1,N2,Count) and
        not bad_node(N2) and 
        case(2,N2,some direction Dir) and 
        direct_link(N1,N2,Dir) and 
@@ -611,7 +607,7 @@ pair_cong(N3,N4) :-
 pair_cong(node N3, node N4) if
         not bad_node(N3) and
 		skip_link(some node N1,N3, some direction Dir) and
-		direct_link(N2,N3,Dir) and
+		direct_link(some node N2,N3,Dir) and
 		case(1,N3,Dir) and
 		hop_count(N1,N3,0) and
 		hop_count(N2,N3,0) and		
@@ -621,7 +617,6 @@ pair_cong(node N3, node N4) if
 		integrity(N2,N3) and
 		link(N3,N4,Dir).
 /*
-		
 % in case 1 the pair congruency is forwarded as true if the hop count on the 
 % skip link is 0, hop count on direct link is non-zero, data on both links is  
 % the same, integrity is true on both links, and pair congruency on direct 
@@ -679,7 +674,7 @@ pair_cong(node N3, node N4) if
 		hop_count(N1,N3,0) and 
 		hop_count(N2,N3, some hopc Num) and
 		Num < 0 and		
-		sent_to(N1,N3,Data) and
+		sent_to(N1,N3,some data Data) and
 		sent_to(N2,N3,Data) and
 		integrity(N1,N3) and 
 		integrity(N2,N3) and 
@@ -758,7 +753,7 @@ integrity(node N3, node N4) if
 		case(1,N3,Dir) and
 		integrity(N1,N3) and
 		integrity(N2,N3) and		
-		sent_to(N1,N3,Data) and
+		sent_to(N1,N3,some data Data) and
 		sent_to(N2,N3,Data) and
 		link(N3,N4,Dir).
 
@@ -776,7 +771,7 @@ integrity(node N3, node N4) if
 
 /* L rules */
 maybe omit(node N1, node N2) if bad_node(N1) and link(N1, N2, some direction).
-0<=|{omit(N1,N2)}|<=1.
+0<=|{omit(node N1,node N2)}|<=1.
  
 /*             
 % a bad node may send good data or bad data if it is sending (any bad data
@@ -889,7 +884,7 @@ inline_accept(node N3, data Data, direction Dir) if
 		direct_link(some node N2,N3,Dir) and
 		integrity(N1,N3) and
 		integrity(N2,N3) and		
-		sent_to(N1,N3,some data Data) and
+		sent_to(N1,N3,Data) and
 		sent_to(N2,N3,Data) and
 		id(N1,N3,some node N4) and
 		partner(N2,N3,N4) and
@@ -1101,12 +1096,9 @@ maybe bad_node(node N).
 
 
 /* ASP RULE: 
-:- not bad.
-*/
+:- not bad. */
 
 /* L RULE :
-1<=|{bad}|<=1.
-*/
-
+1<=|{bad}|<=1. */
 /* Semantic error: When the above L rule is commented, 
 the program is still unsatisfiable */

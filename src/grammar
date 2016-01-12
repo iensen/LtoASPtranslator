@@ -6,14 +6,23 @@ statement(C) ::= const_decl(C)
 statement(T) ::= type_decl(T)
 statement(R) ::= rule(R)
 
-number(N) ::= numeral(N)
-number(neg_num N) ::= minus numeral(N)
+number(num N) ::= num(N)
+num(N) ::= numeral(N)
+num(neg N) ::= minus numeral(N)
 
-const_decl(cdecl C C1) ::= const identifier(C) eq identifier(C1) dot
-const_decl(cdecl C N) ::= const identifier(C) eq number(N) dot
-const_decl(cdecl C T) ::= const identifier(C) eq ground_arithmetic_term(T) dot
+const_name(cname C) ::= id(C)
+type_name(tname T) ::= id(T)
+pred_name(pname P) ::= id(P)
+func_name(fname F) ::= id(F)
 
-type_decl(tdecl I E) ::= type identifier(I) eq set_expr(E) dot
+var(var V) ::= variable(V)
+tvar(tvar T V) ::= type_name(T) var(V)
+
+const_decl(cdecl C C1) ::= const const_name(C) eq const_name(C1) dot
+const_decl(cdecl C N) ::= const const_name(C) eq number(N) dot
+const_decl(cdecl C T) ::= const const_name(C) eq ground_arithmetic_term(T) dot
+
+type_decl(tdecl I E) ::= type type_name(I) eq set_expr(E) dot
 set_expr(S) ::= ST0(S)
 ST0(S) ::= ST1(S)
 ST0(union S1 S2) ::= ST0(S1) plus ST1(S2)
@@ -22,26 +31,26 @@ ST1(inters S1 S2) ::= ST1(S1) mult ST2(S2)
 ST1(diff S1 S2) ::= ST1(S1) backslash ST2(S2)
 ST2(S) ::= lparen ST0(S) rparen
 
-ST2(I) ::= identifier(I)
+ST2(I) ::= type_name(I)
 ST2(S) ::= set(S)
 ST2(R) ::= range(R)
 ST2(C) ::= set_constr(C)
 
-set(empty) ::= lcurparen rcurparen
+set(set) ::= lcurparen rcurparen
 set(set Ts) ::= lcurparen ground_terms(Ts) rcurparen
 
 range(range L R) ::= lcurparen limit(L) dot dot limit(R) rcurparen
-limit(I) ::= identifier(I)
+limit(I) ::= const_name(I)
 limit(N) ::= number(N)
 limit(A) ::= ground_arithmetic_term(A)
 
-set_constr(sconstr T Vs) ::= basic_term(T) where var_ts(Vs)
-var_ts(var_ts V) ::= var_t(V)
-var_ts(var_ts V cut_root(Vs)) ::= var_t(V) comma var_ts(Vs)
-var_t(var_t V T) ::= variable(V) in identifier(T)
+set_constr(sconstr T Vs) ::= basic_term(T) where varts(Vs)
+varts(varts V) ::= vart(V)
+varts(varts V cut_root(Vs)) ::= vart(V) comma varts(Vs)
+vart(vart V T) ::= var(V) in type_name(T)
 
-rule(rule H) ::= head(H) dot
-rule(rule H S) ::= head(H) if sentence(S) dot
+rule(fact H) ::= head(H) dot
+rule(fullRule H S) ::= head(H) if sentence(S) dot
 
 head(H) ::= maybe_lit(H)
 head(H) ::= card_constr(H)
@@ -50,120 +59,118 @@ head(S) ::= p_sentence(S)
 maybe_lit(mlit A) ::= maybe basic_predicate_atom(A)
 
 card_constr(cconstr L A R) ::= bound(L) lessoreq bar lcurparen basic_predicate_atom(A) rcurparen bar lessoreq bound(R)
-bound(I) ::= identifier(I)
+bound(I) ::= const_name(I)
 bound(N) ::= number(N)
 bound(A) ::= ground_arithmetic_term(A)
 
 and_s(and) ::= comma(A)
 and_s(and) ::= and(A)
 
-s0(A) ::= atom(A)
-s0(S) ::= lparen s3(S) rparen
-s1(A) ::= s0(A)
-s1(neg_class A) ::= not s0(A)
-s2(L) ::= s1(L)
-s2(conj L1 L2) ::= s2(L1) and_s s1(L2)
-s3(T) ::= s2(T)
-s3(disj T1 T2) ::= s3(T1) or s2(T2)
-sentence(sent S) ::= s3(S)
-
 p_s0(A) ::= predicate_atom(A)
 p_s0(S) ::= lparen p_s3(S) rparen
 p_s1(A) ::= p_s0(A)
-p_s1(neg_class A) ::= not p_s0(A)
+p_s1(strNeg A) ::= not p_s0(A)
 p_s2(L) ::= p_s1(L)
 p_s2(conj L1 L2) ::= p_s2(L1) and_s p_s1(L2)
 p_s3(T) ::= p_s2(T)
 p_s3(disj T1 T2) ::= p_s3(T1) or p_s2(T2)
 p_sentence(psent S) ::= p_s3(S)
 
+s0(A) ::= atom(A)
+s0(S) ::= lparen s3(S) rparen
+s1(A) ::= s0(A)
+s1(strNeg A) ::= not s0(A)
+s2(L) ::= s1(L)
+s2(conj L1 L2) ::= s2(L1) and_s s1(L2)
+s3(T) ::= s2(T)
+s3(disj T1 T2) ::= s3(T1) or s2(T2)
+sentence(sent S) ::= s3(S)
+
 atom(P) ::= predicate_atom(P)
 atom(B) ::= built_in_atom(B)
 
-predicate_atom(patom I) ::= identifier(I)
-predicate_atom(patom I Ts) ::= identifier(I) lparen terms(Ts) rparen
-basic_predicate_atom(patom I) ::= identifier(I)
-basic_predicate_atom(patom I Ts) ::= identifier(I) lparen basic_terms(Ts) rparen
+predicate_atom(patom I) ::= pred_name(I)
+predicate_atom(patom I Ts) ::= pred_name(I) lparen terms(Ts) rparen
+basic_predicate_atom(patom I) ::= pred_name(I)
+basic_predicate_atom(patom I Ts) ::= pred_name(I) lparen basic_terms(Ts) rparen
 
-built_in_atom(batom T1 O T2) ::= basic_term(T1) op(O) basic_term(T2)
-op(O) ::= less(O)
-op(O) ::= greater(O)
-op(O) ::= lessoreq(O)
-op(O) ::= greateroreq(O)
-op(O) ::= noteq(O)
-op(O) ::= eq(O)
+built_in_atom(batom T1 O T2) ::= basic_term(T1) compOp(O) basic_term(T2)
+compOp(O) ::= less(O)
+compOp(O) ::= greater(O)
+compOp(O) ::= lessoreq(O)
+compOp(O) ::= greateroreq(O)
+compOp(O) ::= noteq(O)
+compOp(O) ::= eq(O)
 
 terms(terms T) ::= term(T)
 terms(terms T cut_root(Ts)) ::= term(T) comma terms(Ts)
-basic_terms(bterms T) ::= basic_term(T)
-basic_terms(bterms T cut_root(Ts)) ::= basic_term(T) comma basic_terms(Ts)
-ground_terms(gterms T) ::= ground_term(T)
-ground_terms(gterms T cut_root(Ts)) ::= ground_term(T) comma ground_terms(Ts)
+basic_terms(terms T) ::= basic_term(T)
+basic_terms(terms T cut_root(Ts)) ::= basic_term(T) comma basic_terms(Ts)
+ground_terms(terms T) ::= ground_term(T)
+ground_terms(terms T cut_root(Ts)) ::= ground_term(T) comma ground_terms(Ts)
 
 term(T) ::= quantified_term(T)
 term(F) ::= functional_term(F)
 term(T) ::= basic_term(T)
 
-quantified_term(qt_legacy Q I V) ::= quantifier(Q) identifier(I) variable(V)
-quantified_term(qt Q I) ::= quantifier(Q) identifier(I)
+quantified_term(qtLegacy Q I V) ::= quantifier(Q) type_name(I) var(V)
+quantified_term(qt Q I) ::= quantifier(Q) type_name(I)
 
 quantifier(E) ::= every(E)
 quantifier(A) ::= some(A)
 
-functional_term(func I Args) ::= identifier(I) lparen terms(Args) rparen
-basic_functional_term(func I Args) ::= identifier(I) lparen basic_terms(Args) rparen
-ground_functional_term(func I Args) ::= identifier(I) lparen ground_terms(Args) rparen
-
-tvar(tvar T V) ::= identifier(T) variable(V)
+functional_term(func I Args) ::= func_name(I) lparen terms(Args) rparen
+basic_functional_term(func I Args) ::= func_name(I) lparen basic_terms(Args) rparen
+ground_functional_term(func I Args) ::= func_name(I) lparen ground_terms(Args) rparen
 
 basic_term(F) ::= basic_functional_term(F)
 basic_term(T) ::= arithmetic_term(T)
 basic_term(N) ::= number(N)
-basic_term(const C) ::= identifier(C)
-basic_term(var V) ::= variable(V)
+basic_term(C) ::= const_name(C)
+basic_term(V) ::= var(V)
 basic_term(T) ::= tvar(T)
 
 ground_term(F) ::= ground_functional_term(F)
 ground_term(A) ::= ground_arithmetic_term(A)
 ground_term(N) ::= number(N)
-ground_term(const C) ::= identifier(C)
+ground_term(C) ::= const_name(C)
 
-arithmetic_term(ar_term M T) ::= minus(M) T0(T)
-arithmetic_term(ar_term M T) ::= minus(M) lparen T0(T) rparen
-arithmetic_term(ar_term T1 I T2) ::= lparen T0(T1) infix_1(I) T1(T2) rparen
-arithmetic_term(ar_term T1 I T2) ::= lparen T1(T1) infix_2(I) T2(T2) rparen
-arithmetic_term(ar_term T1 I T2) ::= T0(T1) infix_1(I) T1(T2)
-arithmetic_term(ar_term T1 I T2) ::= T1(T1) infix_2(I) T2(T2)
+arithmetic_term(ar M T) ::= minus(M) ar0(T)
+arithmetic_term(ar M T) ::= minus(M) lparen ar0(T) rparen
+arithmetic_term(ar T1 I T2) ::= lparen ar0(T1) arOp1(I) ar1(T2) rparen
+arithmetic_term(ar T1 I T2) ::= lparen ar1(T1) arOp2(I) ar2(T2) rparen
+arithmetic_term(ar T1 I T2) ::= ar0(T1) arOp1(I) ar1(T2)
+arithmetic_term(ar T1 I T2) ::= ar1(T1) arOp2(I) ar2(T2)
 
-ground_arithmetic_term(gar_term M T) ::= minus(M) T0_g(T)
-ground_arithmetic_term(gar_term M T) ::= minus(M) lparen T0_g(T) rparen
-ground_arithmetic_term(gar_term T1 I T2) ::= lparen T0_g(T1) infix_1(I) T1_g(T2) rparen
-ground_arithmetic_term(gar_term T1 I T2) ::= lparen T1_g(T1) infix_2(I) T2_g(T2) rparen
-ground_arithmetic_term(gar_term T1 I T2) ::= T0_g(T1) infix_1(I) T1_g(T2)
-ground_arithmetic_term(gar_term T1 I T2) ::= T1_g(T1) infix_2(I) T2_g(T2)
+ground_arithmetic_term(ar M T) ::= minus(M) g_ar0(T)
+ground_arithmetic_term(ar M T) ::= minus(M) lparen g_ar0(T) rparen
+ground_arithmetic_term(ar T1 I T2) ::= lparen g_ar0(T1) arOp1(I) g_ar1(T2) rparen
+ground_arithmetic_term(ar T1 I T2) ::= lparen g_ar1(T1) arOp2(I) g_ar2(T2) rparen
+ground_arithmetic_term(ar T1 I T2) ::= g_ar0(T1) arOp1(I) g_ar1(T2)
+ground_arithmetic_term(ar T1 I T2) ::= g_ar1(T1) arOp2(I) g_ar2(T2)
 
-T0(T) ::= T1(T)
-T0(sum T1 I T2) ::= T0(T1) infix_1(I) T1(T2)
-T1(T) ::= T2(T)
-T1(product T1 I T2) ::= T1 infix_2(I) T2
-T2(T) ::= lparen T0(T) rparen
+ar0(T) ::= ar1(T)
+ar0(sum T1 I T2) ::= ar0(T1) arOp1(I) ar1(T2)
+ar1(T) ::= ar2(T)
+ar1(prod T1 I T2) ::= ar1(T1) arOp2(I) ar2(T2)
+ar2(T) ::= lparen ar0(T) rparen
 
-T2(I) ::= identifier(I)
-T2(N) ::= number(N)
-T2(V) ::= variable(V)
-T2(T) ::= tvar(T)
+ar2(I) ::= const_name(I)
+ar2(N) ::= number(N)
+ar2(V) ::= var(V)
+ar2(T) ::= tvar(T)
 
-T0_g(T) ::= T1_g(T)
-T0_g(sum T1 I T2) ::= T0_g(T1) infix_1(I) T1_g(T2)
-T1_g(T) ::= T2_g(T)
-T1_g(product T1 I T2) ::= T1_g(T1) infix_2(I) T2_g(T2)
-T2_g(T) ::= lparen T0_g(T) rparen
+g_ar0(T) ::= g_ar1(T)
+g_ar0(sum T1 I T2) ::= g_ar0(T1) arOp1(I) g_ar1(T2)
+g_ar1(T) ::= g_ar2(T)
+g_ar1(prod T1 I T2) ::= g_ar1(T1) arOp2(I) g_ar2(T2)
+g_ar2(T) ::= lparen g_ar0(T) rparen
 
-T2_g(I) ::= identifier(I)
-T2_g(N) ::= number(N)
+g_ar2(I) ::= const_name(I)
+g_ar2(N) ::= number(N)
 
-infix_1(P) ::= plus(P)
-infix_1(M) ::= minus(M)
-infix_2(M) ::= mult(M)
-infix_2(D) ::= div(D)
-infix_2(M) ::= mod(M)
+arOp1(P) ::= plus(P)
+arOp1(M) ::= minus(M)
+arOp2(M) ::= mult(M)
+arOp2(D) ::= div(D)
+arOp2(M) ::= mod(M)

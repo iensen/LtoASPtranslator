@@ -70,12 +70,12 @@ For instance:
         
         % Use two integrity constraints instead:
             :- b1 > #count{0, V: p(V), t(V)}.
-            :- #count{0, V: p(V), t(V)} > b2.
+            :- b2 < #count{0, V: p(V), t(V)}.
     
 6. SPARC AGGREGATE: SCOPE OF VARIABLE
 For example:
     L cardinality constraint:
-        b <= |{q(t1 V1, t2 V2)}| <= b if p(V2).
+            b <= |{q(t1 V1, t2 V2)}| <= b if p(V2).
     SPARC:
         % V2 in aggregate becomes "contained":
             :- #count{0, q(V1, V2): q(V1, V2), t1(V1), t2(V2)} != b, p(V2).
