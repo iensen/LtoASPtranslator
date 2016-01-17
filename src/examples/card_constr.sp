@@ -1,67 +1,25 @@
 
-%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 sorts
 
-#t1 = 
-	1..2.
+#t1 = 1..2.
+#t2 = #t1.
+#t3 = #t2.
+#type_termS = #t1 + #t2 + #t3.
+#rule_termS = {2, 1}.
+#prog_termS = #type_termS + #rule_termS.
 
-#t2 = 
-	#t1.
-
-#t3 = 
-	#t2.
-
-#types = 
-	#t1 + 
-	#t2 + 
-	#t3.
-
-#rule_gterms = 
-	{0, 1}.
-
-#universal = 
-	#types + 
-	#rule_gterms.
-
-
-%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 predicates
 
-p2(#universal).
-p3(#universal).
-p1(#universal, #universal).
+p2(#prog_termS). p1(#prog_termS, #prog_termS). p3(#prog_termS). 
 
-%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 rules
 
--p2(CWA_Var0) :-
-	not p2(CWA_Var0),
-	#universal(CWA_Var0).
+:- 1 > #count{0, V1: p1(V1, V2), #t1(V1)}, p2(V2), p3(V3), #t2(V2), #t3(V3).
+:- 1 < #count{0, V1: p1(V1, V2), #t1(V1)}, p2(V2), p3(V3), #t2(V2), #t3(V3).
+-p2(CWA0) :- not p2(CWA0), #prog_termS(CWA0).
+-p1(CWA0, CWA1) :- not p1(CWA0, CWA1), #prog_termS(CWA0), #prog_termS(CWA1).
+-p3(CWA0) :- not p3(CWA0), #prog_termS(CWA0).
 
--p3(CWA_Var0) :-
-	not p3(CWA_Var0),
-	#universal(CWA_Var0).
-
--p1(CWA_Var0, CWA_Var1) :-
-	not p1(CWA_Var0, CWA_Var1),
-	#universal(CWA_Var0),
-	#universal(CWA_Var1).
-
-:-	1 > #count{0, V1: p1(V1, V2), #t1(V1), #t2(V2)},
-	p2(V2),
-	p3(V3),
-	#t3(V3).
-
-:-	1 < #count{0, V1: p1(V1, V2), #t1(V1), #t2(V2)},
-	p2(V2),
-	p3(V3),
-	#t3(V3).
-
-
-%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 display
 
-p2.
-p3.
-p1.
-
+p2. p1. p3. 

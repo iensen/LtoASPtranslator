@@ -113,7 +113,7 @@ not student_rank(student S, rank R2) if
     student_meets_criterion(S, rank R1) and higher_rank(R1, R2).
 
 /* 
-The rule above can be better written as:
+The rule above can also be written as:
     not student_rank(student S, rank R2) if
         not student_meets_criterion(S, R2) or
         student_meets_criterion_for_higher_rank(S, some rank, R2).
