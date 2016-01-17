@@ -22,6 +22,7 @@ After 2016/01/05 monthly report:
 - Output models (.txt)
 
 ## REFERENCES
+- [Issues]
 - [README][README]
 - Zip downloads (including examples):
   - [L solver standalone][exe] (Windows)
@@ -31,6 +32,7 @@ After 2016/01/05 monthly report:
 [ch5]:https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ch5.l
 [graphs]:https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/graphs.l
 [ranking]:https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.l
+[issues]:https://github.com/iensen/LtoASPtranslator/blob/master/docs/translator_issues.txt
 [README]:https://github.com/iensen/LtoASPtranslator/blob/master/README.md
 [exe]:https://github.com/iensen/LtoASPtranslator/blob/master/Lsolver.zip?raw=true
 [py]:https://github.com/iensen/LtoASPtranslator/blob/master/src.zip?raw=true
