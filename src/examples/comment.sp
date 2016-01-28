@@ -3,12 +3,12 @@ sorts
 
 #t = {1, 2, 3}.
 #type_termS = #t.
-#rule_termS = {2, 1, 3}.
+#rule_termS = {2, 3, 1}.
 #prog_termS = #type_termS + #rule_termS.
 
 predicates
 
-q(#prog_termS). p(#prog_termS). 
+p(#prog_termS). q(#prog_termS). 
 
 rules
 
@@ -18,4 +18,4 @@ p(X) :- q(X), #t(X).
 
 display
 
-q. p. 
+p. q. 
