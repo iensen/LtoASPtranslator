@@ -14,19 +14,19 @@ def unparse(T):
         if t[0] == 'sdefs':
             sdefs = unparse_sdefs(t)
             if sdefs != '':
-                prog += comment + 'sorts\n\n' + sdefs
+                prog +=  '\nsorts\n\n' + sdefs
         elif t[0] == 'pdecls':
             pdecls = unparse_pdecls(t)
             if pdecls != '':
-                prog += comment + 'predicates\n\n' + pdecls + '\n'
+                prog += '\npredicates\n\n' + pdecls + '\n'
         elif t[0] == 'rules':
             rules = unparse_rules(t)
             if rules != '':
-                prog += comment + 'rules\n\n' + rules
+                prog += '\nrules\n\n' + rules
         else: # 'display'
             display = unparse_display(t)
             if display != '':
-                prog += comment + 'display\n\n' + display
+                prog += '\ndisplay\n\n' + display
     return prog
 
 ########## ########## ########## ########## ########## ########## ########## ##########
@@ -112,22 +112,19 @@ Output: ASP rules:
 unparse_rules: list -> str
 '''
 def unparse_rules(T):
-    if T[0] in housekeeper.arOps:
-        return T[1]
-    elif T[0] in {'ar', 'sum', 'prod'}:
-        st =    '(' + unparse_rules(T[1]) + ' ' + unparse_rules(T[2]) + ' ' + \
-                unparse_rules(T[3]) + ')'
-        return st
-    elif T[0] in housekeeper.compOps:
+    if T[0] in housekeeper.arOps | housekeeper.compOps:
         return ' ' + T[1] + ' '
     elif T[0] in housekeeper.lexemes:
         return T[1]
+    elif T[0] in {'ar', 'sum', 'prod'}:
+        st = '(' + unparse_rules(T[1]) + unparse_rules(T[2]) + unparse_rules(T[3]) + ')'
+        return st
     elif T[0] in housekeeper.cut_root_commas:
         st = unparse_rules(T[1])
         for t in T[2:]:
             st += ', ' + unparse_rules(t)
         return st
-    elif T[0] == 'func':
+    elif T[0] in {'func', 'satom'}:
         return unparse_rules(T[1]) + '(' + unparse_rules(T[2]) + ')'
     elif T[0] == 'aggr_func':
         aggr_terms = T[1]
@@ -135,8 +132,6 @@ def unparse_rules(T):
         st =    '#count{' + unparse_rules(aggr_terms) + ': ' + \
                 unparse_rules(aggr_atoms) + '}'
         return st
-    elif T[0] == 'satom':
-        return unparse_rules(T[1]) + '(' + unparse_rules(T[2]) + ')'
     elif T[0] == 'patom':
         st = unparse_rules(T[1])
         if len(T) > 2:
@@ -168,14 +163,8 @@ def unparse_display: list -> str
 def unparse_display(T):
     if T[0] == 'id':
         return T[1] + '. '
-    else: # 'display'
+    else: 
         st = ''
         for t in T[1:]:
             st += unparse_display(t)
         return st
-
-########## ########## ########## ########## ########## ########## ########## ##########
-
-comment = '\n%%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% %%%%%%%%%% \
-%%%%%%%%%% %%%%%%%%%%\n'
-comment = '\n'

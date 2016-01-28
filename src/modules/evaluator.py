@@ -15,7 +15,7 @@ def get_evaluated_tupleS(T, tname_constSS):
 get_ground_tupleS: tuple * tname_constSS -> set
 '''
 def get_ground_tupleS(T, tname_constSS):
-    tvarS = housekeeper.get_tvarS(T)
+    tvarS = housekeeper.get_tvarS_from_tuple(T)
     if tvarS == set():
         return {T}
     else:
@@ -25,7 +25,7 @@ def get_ground_tupleS(T, tname_constSS):
         s = set()
         for const in constS:
             d = {tvar: const}
-            s |= {housekeeper.subst_stat(T, d)}
+            s |= {housekeeper.subbing_tuple(T, d)}
         S = set()
         for el in s:
             S |= get_ground_tupleS(el, tname_constSS)
@@ -52,13 +52,13 @@ expand_tdecl: tuple * tname_constSS -> tname_constSS
 def expand_tdecl(T, D):
     tname = T[1]
     set_expr = T[2]
-    S = eval_set_expr(set_expr, D)
+    S = get_constS_from_set_expr(set_expr, D)
     return {tname: S}
 
 '''
-eval_set_expr: tuple * tname_constSS -> set
+get_constS_from_set_expr: tuple * tname_constSS -> set
 '''
-def eval_set_expr(T, D):
+def get_constS_from_set_expr(T, D):
     if T[0] == 'sconstr':
         term = T[1]
         return get_evaluated_tupleS(term, D)
@@ -75,30 +75,30 @@ def eval_set_expr(T, D):
     elif T[0] == 'tname':
         return D[T]
     elif T[0] == 'union':
-        return eval_set_expr(T[1], D) | eval_set_expr(T[2], D)
+        return get_constS_from_set_expr(T[1], D) | get_constS_from_set_expr(T[2], D)
     elif T[0] == 'inters':
-        return eval_set_expr(T[1], D) & eval_set_expr(T[2], D)
+        return get_constS_from_set_expr(T[1], D) & get_constS_from_set_expr(T[2], D)
     else: # 'diff'
-        return eval_set_expr(T[1], D) - eval_set_expr(T[2], D)
+        return get_constS_from_set_expr(T[1], D) - get_constS_from_set_expr(T[2], D)
         
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
-get_evaluated_termS: tuple * tname_constSS -> set
+get_evaluated_termS_in_tuple: tuple * tname_constSS -> set
 '''
-def get_evaluated_termS(T, D):
+def get_evaluated_termS_in_tuple(T, D):
     if T[0] == 'terms':
         S = set()
         for term in T[1:]:
             S |= get_evaluated_tupleS(term, D)
             if term[0] == 'func':
                 subterms = term[2]
-                S |= get_evaluated_termS(subterms, D)
+                S |= get_evaluated_termS_in_tuple(subterms, D)
         return S
     elif T[0] in {'aggr'} | housekeeper.lexemes:
         return set()
     else:
         S = set()
         for t in T[1:]:
-            S |= get_evaluated_termS(t, D)
+            S |= get_evaluated_termS_in_tuple(t, D)
         return S

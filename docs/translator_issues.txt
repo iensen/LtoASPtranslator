@@ -9,7 +9,7 @@ Sparc-related matters:
         Tricky to translate L programs with empty types into 
         ASP programs without empty sorts.
     Negative integers:
-        Terms that represent negative integers are currently unsupported in Sparc.
+        Terms which are evaluated to negative integers are currently unsupported in Sparc.
         
 ########## ########## ########## ########## ########## ########## ########## ##########
 
@@ -19,5 +19,5 @@ Notes:
     Negation:
         L negation is ASP strong negation.
         Currently forbid negation of:
-            Sentences: not p / p and q / p or q.
+            Non-trivial sentences: not p / p and q / p or q.
             Quantified atoms: p(every t) / q(some t).

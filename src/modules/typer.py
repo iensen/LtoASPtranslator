@@ -36,13 +36,13 @@ def entype_tdecl(T):
         return tr
 
 '''
-entype_sconstr: scontr <->
+entype_sconstr: sconstr <->
 '''
-def entype_sconstr(scontr):
-    varts = scontr[2]
+def entype_sconstr(sconstr):
+    varts = sconstr[2]
     var_tnameS = get_var_tnameS_from_varts(varts)
-    term = scontr[1]
-    term = entype_vars_using_var_tnameS(term, var_tnameS)
+    term = sconstr[1]
+    term = entype_tuple_via_var_tnameS(term, var_tnameS)
     sconstr = ('sconstr', term)
     return sconstr
 
@@ -63,14 +63,14 @@ def get_var_tnameS_from_varts(varts):
 entype_rule: rule <->
 '''
 def entype_rule(rule):
-    var_tnameS = get_var_tnameS_from_tvar_tuple(rule)
-    rule = entype_vars_using_var_tnameS(rule, var_tnameS)
+    var_tnameS = get_var_tnameS_in_tuple(rule)
+    rule = entype_tuple_via_var_tnameS(rule, var_tnameS)
     return rule
 
 '''
-get_var_tnameS_from_tvar_tuple: tuple -> dict(tuple: tuple)
+get_var_tnameS_in_tuple: tuple -> dict(tuple: tuple)
 '''
-def get_var_tnameS_from_tvar_tuple(T):
+def get_var_tnameS_in_tuple(T):
     if T[0] == 'tvar':
         tname = T[1]
         var = T[2]
@@ -80,7 +80,7 @@ def get_var_tnameS_from_tvar_tuple(T):
     else:
         D = {}
         for t in T[1:]:
-            d = get_var_tnameS_from_tvar_tuple(t)
+            d = get_var_tnameS_in_tuple(t)
             D.update(d)
         return D
 
@@ -88,9 +88,9 @@ def get_var_tnameS_from_tvar_tuple(T):
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
-entype_vars_using_var_tnameS: tuple * dict(var: tname) -> tuple
+entype_tuple_via_var_tnameS: tuple * dict(var: tname) -> tuple
 '''
-def entype_vars_using_var_tnameS(T, var_tnameS):
+def entype_tuple_via_var_tnameS(T, var_tnameS):
     if T[0] in housekeeper.lexemes | {'tvar'}:
         return T
     elif T[0] == 'var':
@@ -100,7 +100,7 @@ def entype_vars_using_var_tnameS(T, var_tnameS):
     else:
         tr = T[:1]
         for t in T[1:]:
-            tr += (entype_vars_using_var_tnameS(t, var_tnameS),)
+            tr += (entype_tuple_via_var_tnameS(t, var_tnameS),)
         return tr
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
@@ -108,15 +108,17 @@ def entype_vars_using_var_tnameS(T, var_tnameS):
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
-detype_stmts: tuple -><
+detype_tuple: tuple -><
 '''
-def detype_stmts(T):
-    if T[0] in housekeeper.ruleForms:
-        return detype_rule(T)
+def detype_tuple(T):
+    if T[0] in housekeeper.lexemes | {'aggr'}:
+        return T
+    elif T[0] == 'tvar':
+        return T[2]
     elif T[0] == 'tname':
         return tname_to_sname(T)
-    elif T[0] in housekeeper.lexemes:
-        return T
+    elif T[0] in housekeeper.ruleForms:
+        return detype_rule(T)
     else:
         root = T[0]
         tr =    ('sdefs',)  if root == 'tdecls' else \
@@ -124,18 +126,18 @@ def detype_stmts(T):
                 ('snames',) if root == 'tnames' else \
                 T[:1]
         for t in T[1:]:
-            tr += (detype_stmts(t),)
+            tr += (detype_tuple(t),)
         return tr
-
-########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
 detype_rule: tuple -><
 '''
-def detype_rule(rule):
-    tvarS = housekeeper.get_tvarS(rule) # set
+def detype_rule(T):
+    tvarS = housekeeper.get_tvarS_from_tuple(T) # set
     satomS = get_satomS_using_tvarS(tvarS) # set
-    rule = detype_tvarS(rule)
+    rule = T[:1]
+    for t in T[1:]:
+        rule += detype_tuple(t),
     if satomS != set():
         if rule[0] == 'iconstr':
             body = rule[1][1]
@@ -158,20 +160,6 @@ def detype_rule(rule):
             rule = 'fullRule', rule[1], body
     return rule
 
-'''
-detype_tvarS: tuple <->
-'''
-def detype_tvarS(T):
-    if T[0] in housekeeper.lexemes | {'aggr'}:
-        return T
-    elif T[0] == 'tvar':
-        return T[2]
-    else:
-        tr = T[:1]
-        for t in T[1:]:
-            tr += (detype_tvarS(t),)
-        return tr
-        
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''

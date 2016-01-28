@@ -3,19 +3,19 @@ from . import evaluator
 
 from . import housekeeper
 '''
-dequant_rules: tuple * tname_constSS -> tuple
+dequantify_rules: tuple * tname_constSS -> tuple
 '''
-def dequant_rules(T, D):
+def dequantify_rules(T, D):
     if T[0] in housekeeper.ruleForms:
-        global quant_tvar_index
-        quant_tvar_index = 0
+        global tvar_index
+        tvar_index = 0
         head = T[1]
         if head[0] == 'psent':
-            head = dequant_psent(head, D)
+            head = dequantify_psent(head, D)
         tr = (T[0], head)
         if T[0] == 'fullRule':
             sent = T[2]
-            sent = dequant_sent(sent, D)
+            sent = dequantify_sent(sent, D)
             tr += (sent,)
         return tr
     elif T[0] in housekeeper.lexemes:
@@ -23,54 +23,54 @@ def dequant_rules(T, D):
     else:
         tr = T[:1]
         for t in T[1:]:
-            tr += dequant_rules(t, D),
+            tr += dequantify_rules(t, D),
         return tr
         
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
-dequant_psent: tuple * tname_constSS -> tuple
+dequantify_psent: tuple * tname_constSS -> tuple
 '''
-def dequant_psent(T, D):
+def dequantify_psent(T, D):
     if T[0] == 'patom':
-        return dequant_patom_in_psent(T, D)
+        return dequantify_patom_in_psent(T, D)
     elif T[0] in housekeeper.lexemes:
         return T
     else:
         tr = T[:1]
         for t in T[1:]:
-            tr += (dequant_psent(t, D),)
+            tr += (dequantify_psent(t, D),)
         return tr
 
 '''
-dequant_sent: tuple * tname_constSS -> tuple
+dequantify_sent: tuple * tname_constSS -> tuple
 '''
-def dequant_sent(T, D):
+def dequantify_sent(T, D):
     if T[0] == 'patom':
-        return dequant_patom_in_sent(T, D)
+        return dequantify_patom_in_sent(T, D)
     elif T[0] in housekeeper.lexemes:
         return T
     else:
         tr = T[:1]
         for t in T[1:]:
-            tr += (dequant_sent(t, D),)
+            tr += (dequantify_sent(t, D),)
         return tr
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
-dequant_patom_in_psent: tuple * tname_constSS -> tuple
+dequantify_patom_in_psent: tuple * tname_constSS -> tuple
 '''
-def dequant_patom_in_psent(T, tname_constSS):
+def dequantify_patom_in_psent(T, tname_constSS):
     everyS = get_everyS(T)
     someS = get_someS(T)
     if everyS == set() == someS:
         return T
     elif everyS != set(): # ?== someS
-        T = subst_qts_by_quant_tvarS(T, everyS, 'Every')
+        T = qt_to_tvar_R(T, everyS, 'Every')
         return T
     else: # someS != set() ?== everyS
-        S = get_deqed_patoms(T, tname_constSS, 'some')
+        S = get_dequantified_patoms(T, tname_constSS, 'some')
         patoms = tuple(S)
         tr = patoms[0]
         for patom in patoms[1:]:
@@ -78,63 +78,63 @@ def dequant_patom_in_psent(T, tname_constSS):
         return tr
             
 '''
-dequant_patom_in_sent: tuple * tname_constSS -> tuple
+dequantify_patom_in_sent: tuple * tname_constSS -> tuple
 '''
-def dequant_patom_in_sent(T, tname_constSS):
+def dequantify_patom_in_sent(T, tname_constSS):
     everyS = get_everyS(T)
     someS = get_someS(T)
     if everyS == set() == someS:
         return T
     elif everyS != set(): # ?== someS
-        S = get_deqed_patoms(T, tname_constSS, 'every')
+        S = get_dequantified_patoms(T, tname_constSS, 'every')
         patoms = tuple(S)
         tr = patoms[0]
         for patom in patoms[1:]:
             tr = ('conj', tr, patom)
         return tr
     else: # someS != set() ?== everyS
-        T = subst_qts_by_quant_tvarS(T, someS, 'Some')
+        T = qt_to_tvar_R(T, someS, 'Some')
         return T
         
 '''
-get_deqed_patoms: tuple * tname_constSS * str -> tuple
+get_dequantified_patoms: tuple * tname_constSS * str -> set
 '''
-def get_deqed_patoms(T, D, mode):
+def get_dequantified_patoms(T, D, mode):
     qtS = get_everyS(T) if mode == 'every' else get_someS(T)
     if qtS == set():
         return {T}
     else:
         qt = random.sample(qtS, 1)[0]
         tname = qt[2]
-        constS = D[tname]
+        constS = D[tname] # set
         s = set()
         for const in constS:
             d = {qt: const}
-            s |= {housekeeper.subst_stat(T, d)}
+            s |= {housekeeper.subbing_tuple(T, d)}
         S = set()
         for el in s:
-            S |= get_deqed_patoms(el, D, mode)
+            S |= get_dequantified_patoms(el, D, mode)
         return S
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
-subst_qts_by_quant_tvarS: tuple * set * str -> tuple
+qt_to_tvar_R: tuple * set * str -> tuple
 '''
-def subst_qts_by_quant_tvarS(T, qtS, variable):
+def qt_to_tvar_R(T, qtS, variable):
     if T in qtS:
         tname = T[2]
-        global quant_tvar_index
-        variable += str(quant_tvar_index)
+        global tvar_index
+        variable += str(tvar_index)
         var = ('var', ('variable', variable))
-        quant_tvar_index += 1
+        tvar_index += 1
         return ('tvar', tname, var)
     elif T[0] in housekeeper.lexemes:
         return T
     else:
         tr = T[:1]
         for t in T[1:]:
-            tr += (subst_qts_by_quant_tvarS(t, qtS, variable),)
+            tr += (qt_to_tvar_R(t, qtS, variable),)
         return tr
 
 ########## ########## ########## ########## ########## ########## ########## ##########

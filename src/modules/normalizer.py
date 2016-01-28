@@ -53,7 +53,7 @@ def normalize_rules(rules):
 normalize_using_mode: tuple * str -> tuple
 '''
 def normalize_using_mode(T, mode):
-    T = neg_batoms(T)
+    T = negate_batoms(T)
     global bad_conn_pushed_out
     bad_conn_pushed_out = True
     while bad_conn_pushed_out:
@@ -130,9 +130,9 @@ def push_in_OR(T):
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
-neg_batoms: tuple <->
+negate_batoms: tuple <->
 '''
-def neg_batoms(T):
+def negate_batoms(T):
     if T[0] == 'strNeg':
         if T[1][0] == 'batom':
             term1 = T[1][1]
@@ -147,5 +147,5 @@ def neg_batoms(T):
     else:
         tr = T[:1]
         for t in T[1:]:
-            tr += (neg_batoms(t),)
+            tr += (negate_batoms(t),)
         return tr

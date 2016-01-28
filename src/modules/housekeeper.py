@@ -10,8 +10,8 @@ ground_terms = {'cname', 'tname', 'pname', 'fname',
 basic_terms = ground_terms | {'tvar', 'var'}
 terms = basic_terms | {'qtLegacy', 'qt'}
 
-cut_root_commas = { 'terms',                                            # L
-                    'aggr_terms', 'aggr_atoms', 'snames'}  # ASP
+cut_root_commas = { 'terms', 
+                    'aggr_terms', 'aggr_atoms', 'snames'} # ASP
 
 setOps = {'union': ' + ', 'inters': ' * ', 'diff': ' - '} # {L_label: ASP_token}
 
@@ -20,23 +20,23 @@ ruleForms = {'iconstr', 'fact', 'fullRule'}
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
-is_ground: tuple -> bool
+tuple_is_ground: tuple -> bool
 '''
-def is_ground(T):
+def tuple_is_ground(T):
     if T[0] in {'var', 'tvar'}:
         return False
     elif T[0] in lexemes:
         return True
     else:
         for t in T[1:]:
-            if not is_ground(t):
+            if not tuple_is_ground(t):
                 return False
         return True
 
 '''
-get_tvarS: tuple -> set
+get_tvarS_from_tuple: tuple -> set
 '''
-def get_tvarS(T):
+def get_tvarS_from_tuple(T):
     if T[0] in lexemes | {'aggr'}:
         return set()
     elif T[0] == 'tvar':
@@ -44,13 +44,13 @@ def get_tvarS(T):
     else:
         S = set()
         for t in T[1:]:
-            S |= get_tvarS(t)
+            S |= get_tvarS_from_tuple(t)
         return S
         
 '''
-subst_stat: tuple * dict(tuple1: tuple2) -> tuple
+subbing_tuple: tuple * dict(tuple1: tuple2) -> tuple
 '''
-def subst_stat(T, D):
+def subbing_tuple(T, D):
     if T in D:
         return D[T]
     elif T[0] in lexemes:
@@ -58,57 +58,67 @@ def subst_stat(T, D):
     else:
         tr = T[:1]
         for t in T[1:]:
-            tr += (subst_stat(t, D),)
+            tr += (subbing_tuple(t, D),)
         return tr
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
-demodularize: tuple -> tuple
+demodularize_prog: dict -><
 '''
-def demodularize(T):
+def demodularize_prog(prog):
+    for k in prog:
+        prog[k] = demodularize_tuple(prog[k])
+    return prog
+
+'''
+demodularize_tuple: tuple -> tuple
+'''
+def demodularize_tuple(T):
     if T[0] in lexemes:
         return T
     elif T[0] in {'ar', 'sum', 'product'}:
-        a = demodularize(T[1])
-        b = demodularize(T[3])
-        if T[2][0] == 'mod':
-            if T[0] != 'ar':
-                T[0] = 'sum'
+        a = demodularize_tuple(T[1])
+        b = demodularize_tuple(T[3])
+        if T[2][0] == 'mod': # T[0] in {'ar', 'product'}
+            root = 'sum' if T[0] == 'product' else 'ar'
             div = 'product', a, ('div', '/'), b
             mult = 'product', b, ('mult', '*'), div
-            return T[0], a, ('minus', '-'), mult
+            return root, a, ('minus', '-'), mult
         else:
             return T[0], a, T[2], b
     else:
         tr = T[:1]
         for t in T[1:]:
-            tr += demodularize(t),
+            tr += demodularize_tuple(t),
         return tr
 
 '''
-subst_calculated_cnames: dict(str: tuple) <->
+subbing_calculated_cnames_in_prog: dict(str: tuple) <->
 '''
-def subst_calculated_cnames(P):
-    if len(P['cdecls']) > 1:
+def subbing_calculated_cnames_in_prog(P):
+    cdecls = P['cdecls']
+    tdecls = P['tdecls']
+    rules = P['rules']
+    if len(cdecls) > 1:
         global calculated_cnames
         calculated_cnames = {} # {tuple: int}
-        update_calculated_cnames(P['cdecls'])
+        update_calculated_cnames_via_cdecls(cdecls)
         for cname in calculated_cnames:
             Int = calculated_cnames[cname]
             calculated_cnames[cname] = int_to_num(Int) # {tuple: tuple}
-        P['tdecls'] = subst_stat(P['tdecls'], calculated_cnames)
-        P['tdecls'] = eval_tuple(P['tdecls'])
-        P['rules'] = subst_stat(P['rules'], calculated_cnames)
-        P['rules'] = eval_tuple(P['rules'])
-    del P['cdecls']
-    return P
+        tdecls = subbing_tuple(tdecls, calculated_cnames)
+        tdecls = eval_tuple(tdecls)
+        
+        rules = subbing_tuple(rules, calculated_cnames)
+        rules = eval_tuple(rules)
+    return {'tdecls': tdecls, 'rules': rules}
 
 '''
-update_calculated_cnames: tuple -> void
+update_calculated_cnames_via_cdecls: tuple -> void
 '''
-def update_calculated_cnames(T):
+def update_calculated_cnames_via_cdecls(T):
     for cdecl in T[1:]:
         cname = cdecl[1]
         Int = calc_ground_ar(cdecl[2])
@@ -123,7 +133,7 @@ eval_tuple: tuple <->
 '''
 def eval_tuple(T):
     if T[0] == 'ar':
-        if is_ground(T):
+        if tuple_is_ground(T):
             Int = calc_ground_ar(T)
             return int_to_num(Int)
         else:
@@ -181,6 +191,7 @@ Input: trees
 ['rules', ['fact', ['head',...,['patom', ('identifier', 'p0')]]],...]
 Output: tuple trees
 ('rules', ('fact', ('head',...,('patom', ('identifier', 'p0')))),...)
+
 list_to_tuple: list -> tuple
 '''
 def list_to_tuple(T):
@@ -189,7 +200,7 @@ def list_to_tuple(T):
         
     if T[0] in lexemes:
         return T
-    else: # list
+    else: 
         tr = (T[0],)
         for t in T[1:]:
             tr += (list_to_tuple(t),)
@@ -202,6 +213,7 @@ Input: tuple trees
 ('const', ('identifier', 'a'))
 Output: trees
 ['const', ('identifier', 'a')]
+
 tuple_to_list: tuple -> list
 '''
 def tuple_to_list(T):
@@ -228,6 +240,7 @@ Output: a dictionary parsed L program:
 list_to_dict: list -> dict
 '''
 def list_to_dict(T):
+    T = ['prog'] + T
     T = list_to_tuple(T)
     prog = {'cdecls': ('cdecls',), 'tdecls': ('tdecls',), 'rules': ('rules',)}
     for t in T[1:]:

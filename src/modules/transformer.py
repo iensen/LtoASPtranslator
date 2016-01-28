@@ -13,30 +13,28 @@ Output: an incomplete dictionary parsed ASP program:
 transform: list -> dict
 '''
 def transform(P):
-    P = ['prog'] + P
     P = housekeeper.list_to_dict(P)
-    for k in P:
-        P[k] = housekeeper.demodularize(P[k])
-    P = housekeeper.subst_calculated_cnames(P)
-    P['rules'] = qtLegacys_to_tvarS(P['rules'])
+    P = housekeeper.demodularize_prog(P)
+    P = housekeeper.subbing_calculated_cnames_in_prog(P)
+    P['rules'] = qtLegacy_to_tvar_R(P['rules'])
     P = typer.entype_prog(P)
     global expanded_tdecls
     expanded_tdecls = evaluator.expand_tdecls(P['tdecls'])
-    P['rules'] = dequantifier.dequant_rules(P['rules'], expanded_tdecls)
-    P['rules'] = aggr_rules(P['rules'])
+    P['rules'] = dequantifier.dequantify_rules(P['rules'], expanded_tdecls)
+    P['rules'] = unconstrain_rules(P['rules'])
     P['tdecls'] = rewrite_tdecls(P['tdecls'])
     P['rules'] = reform_rules(P['rules'])
     P['rules'] = normalizer.normalize_rules(P['rules'])
-    P['tdecls'] = combine_tdecls(P)
+    P['tdecls'] = combine_tdecls_in_prog(P)
     predS = get_predS(P['rules'])
-    pdecls = introduce_pdecls(predS)
-    pdecls = typer.detype_stmts(pdecls)
-    CWAS = get_CWAS(predS)
+    pdecls = introduce_pdecls_via_predS(predS)
+    pdecls = typer.detype_tuple(pdecls)
+    CWAS = get_CWAS_via_predS(predS)
     P['rules'] += tuple(CWAS)
     display = introduce_display(predS)
-    sdefs = typer.detype_stmts(P['tdecls'])
+    sdefs = typer.detype_tuple(P['tdecls'])
     del P['tdecls']
-    P['rules'] = typer.detype_stmts(P['rules'])
+    P['rules'] = typer.detype_tuple(P['rules'])
     P.update({'sdefs': sdefs, 'pdecls': pdecls, 'display': display})
     P = housekeeper.dict_to_list(P)
     return P
@@ -84,12 +82,12 @@ def sconstr_in_set_expr(T):
         
 ########## ########## ########## ########## ########## ########## ########## ##########
 '''
-qtLegacys_to_tvarS: From <every/some type Var> to <type Var>
+qtLegacy_to_tvar_R: From <every/some type Var> to <type Var>
 ASP-like convention in L: <every> in head, <some> in sentence
 
-qtLegacys_to_tvarS: tuple <->
+qtLegacy_to_tvar_R: tuple <->
 '''
-def qtLegacys_to_tvarS(T):
+def qtLegacy_to_tvar_R(T):
     if T[0] in housekeeper.lexemes:
         return T
     elif T[0] == 'qtLegacy':
@@ -100,7 +98,7 @@ def qtLegacys_to_tvarS(T):
     else:
         tr = T[0],
         for t in T[1:]:
-            tr += qtLegacys_to_tvarS(t),
+            tr += qtLegacy_to_tvar_R(t),
         return tr
 
 '''
@@ -136,31 +134,30 @@ def reform_head(T):
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
-aggr_rules: rules <->
+unconstrain_rules: rules <->
 '''
-def aggr_rules(T):
+def unconstrain_rules(T):
     Tr = ('rules',)
     for rule in T[1:]:
-        tr = rule
         if rule[1][0] == 'cconstr':
-            tr = aggr_cconstr_rule(rule)
-        Tr += (tr,)
+            rule = unconstrain_cconstr_rule(rule)
+        Tr += (rule,)
     return Tr
 
 '''
-aggr_cconstr_rule: tuple <->
+unconstrain_cconstr_rule: tuple <->
 '''
-def aggr_cconstr_rule(T):
+def unconstrain_cconstr_rule(T):
     cconstr = T[1]
     b1 = cconstr[1]
     patom = cconstr[2]
     b2 = cconstr[3]
     
-    aggr_tvarS = housekeeper.get_tvarS(patom) # set
+    aggr_tvarS = housekeeper.get_tvarS_from_tuple(patom) # set
     sent = None
     if T[0] == 'fullRule':
         sent = T[2]
-        sent_tvarS = housekeeper.get_tvarS(sent) # set
+        sent_tvarS = housekeeper.get_tvarS_from_tuple(sent) # set
         aggr_tvarS -= sent_tvarS
     aggr_satomS = typer.get_satomS_using_tvarS(aggr_tvarS)
     aggr_atoms = ('aggr_atoms', patom) + tuple(aggr_satomS)
@@ -169,7 +166,7 @@ def aggr_cconstr_rule(T):
     aggr_terms += tuple(aggr_tvarS)
     
     aggr_func = 'aggr_func', aggr_terms, aggr_atoms
-    aggr_func = typer.detype_tvarS(aggr_func)
+    aggr_func = typer.detype_tuple(aggr_func)
     
     aggr1 = 'aggr', b1, ('greater', '>'), aggr_func
     aggr2 = 'aggr', b2, ('less', '<'), aggr_func
@@ -184,28 +181,27 @@ def aggr_cconstr_rule(T):
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
-combine_tdecls: dict -> tuple
+combine_tdecls_in_prog: dict -> tuple
 '''
-def combine_tdecls(P):
-    tr = P['tdecls']
+def combine_tdecls_in_prog(P):
+    tdecls = P['tdecls']
+    tr = tdecls
     
     global added_tdecl_type_termS
-    added_tdecl_type_termS = add_tdecl_type_termS(P['tdecls'])
-    
+    added_tdecl_type_termS = add_tdecl_type_termS_via_tdecls(tdecls)
     if added_tdecl_type_termS != ():
         tr += added_tdecl_type_termS,
         
-    rule_termS = evaluator.get_evaluated_termS(P['rules'], expanded_tdecls)
-    
+    constS = evaluator.get_evaluated_termS_in_tuple(P['rules'], expanded_tdecls)
     global added_tdecl_rule_termS
-    added_tdecl_rule_termS = add_tdecl_rule_termS(rule_termS)
-
+    added_tdecl_rule_termS = add_tdecl_rule_termS_via_constS(constS)
     if added_tdecl_rule_termS != ():
         tr += added_tdecl_rule_termS,
         
     added_tdecl_prog_termS = add_tdecl_prog_termS()
     if added_tdecl_prog_termS != ():
         tr += added_tdecl_prog_termS,
+    
     return tr
     
 ########## ########## ########## ########## ########## ########## ########## ##########
@@ -217,9 +213,9 @@ Input: incomplete parsed ASP sort definitions:
 Output: the parsed ASP sort definition of #types:
 ['tdecl', ['sname', ('id', 'types')], ['union', ['union',...],...]]
 
-add_tdecl_type_termS: list -> list
+add_tdecl_type_termS_via_tdecls: tdecls -> tuple
 '''
-def add_tdecl_type_termS(T):
+def add_tdecl_type_termS_via_tdecls(T):
     if len(T) == 1:
         return ()
     else:
@@ -237,9 +233,9 @@ Output: the parsed ASP sort definition of #rule_termS:
 ['tdecl', ['sname', ('id', 'rule_termS')],
     ['set', ['terms', ['const',...],...]]]
     
-add_tdecl_rule_termS: set -> list
+add_tdecl_rule_termS_via_constS: set -> tuple
 '''
-def add_tdecl_rule_termS(S):
+def add_tdecl_rule_termS_via_constS(S):
     if S == set():
         return ()
     else:
@@ -250,15 +246,12 @@ def add_tdecl_rule_termS(S):
         return tr
 
 '''
-Input: an incomplete dictionary parsed ASP program:
-{'tdecls': ['tdecls', ['tdecl',...],...], 'rules': ['rules', ['rule',...],...]}
-
 Output: the parsed ASP sort definition of #prog_termS:
 ['tdecl', ['sname', ('id', 'prog_termS')], ['union', 
     ['sname', ('id', 'types')], 
     ['sname', ('id', 'rule_termS')]]]
     
-add_tdecl_prog_termS: dict -> list
+add_tdecl_prog_termS: void -> tuple
 '''
 def add_tdecl_prog_termS():
     added_tdecls = (added_tdecl_type_termS, added_tdecl_rule_termS)
@@ -286,9 +279,9 @@ Output: parsed ASP predicate declarations:
     ['pdecl', ('id', 'p1'), 
         ['snames', ['sname', ('id', 'prog_termS')]]],...]
         
-introduce_pdecls: dict(pname: int) -> tuple
+introduce_pdecls_via_predS: dict(pname: int) -> tuple
 '''
-def introduce_pdecls(D):
+def introduce_pdecls_via_predS(D):
     tr = 'pdecls',
     for pname in D:
         arity = D[pname]
@@ -300,10 +293,11 @@ def introduce_pdecls(D):
             pdecl += tnames,
         tr += pdecl,
     return tr
+    
 '''
-get_CWAS: dict(pname: int) -> set(tuple)
+get_CWAS_via_predS: dict(pname: int) -> set(tuple)
 '''
-def get_CWAS(D):
+def get_CWAS_via_predS(D):
     rules = set()
     for pname in D:
         patom = 'patom', pname
@@ -343,7 +337,7 @@ Input: parsed ASP rules:
 Output: a set of pairs of predicate names and arities:
 {('p0', 0), ('p1', 1),...}
 
-get_predS: list -> set
+get_predS: tuple -> dict(tuple: int)
 '''
 def get_predS(T):
     if T[0] in housekeeper.lexemes:
