@@ -1,10 +1,13 @@
 from . import housekeeper
+
+########## ########## ########## ########## ########## ########## ########## ##########
+
 '''
 Input: a parsed ASP program:
 ['prog', ['sdefs',...], ['pdecls',...], ['rules',...]]
 
 Output: an ASP program:
-'sorts... predS... rules...'
+'sorts... predicates... rules...'
 
 unparse: list -> str
 '''
@@ -32,15 +35,6 @@ def unparse(T):
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
-Input: parsed ASP sort definitions:
-['sdefs', 
-    ['sdef', ['sname', ('id', 't1')], 
-        ['set', ['terms', ['const', ('id', 'a')]]]],...]
-    
-Output: ASP sort definitions:
-'sorts 
-    #t1 = {a}. ...'
-
 unparse_sdefs: list -> str
 '''
 def unparse_sdefs(T):
@@ -68,14 +62,6 @@ def unparse_sdefs(T):
         return st
 
 '''
-Input: parsed ASP predicate declarations:
-['pdecls', 
-    ['pdecl', ('id', 'p')],...]
-    
-Output: predicate declarations:
-'predS 
-    p(). ...'
-
 unparse_pdecls: list -> str
 '''
 def unparse_pdecls(T):
@@ -99,16 +85,6 @@ def unparse_pdecls(T):
         return st
 
 '''
-Input: parsed ASP rules:
-['rules', 
-    ['rule', 
-        ['head', ['literal', ['patom', ('id', 'p1')]]], 
-        ['body', ['literal', ['patom', ('id', 'p2')]]]],...]
-    
-Output: ASP rules:
-'rules 
-    p1 :- p2. ...'
-    
 unparse_rules: list -> str
 '''
 def unparse_rules(T):

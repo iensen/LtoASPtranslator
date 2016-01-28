@@ -1,7 +1,9 @@
 import random
-from . import evaluator
 
 from . import housekeeper
+
+########## ########## ########## ########## ########## ########## ########## ##########
+
 '''
 dequantify_rules: tuple * tname_constSS -> tuple
 '''
@@ -96,6 +98,8 @@ def dequantify_patom_in_sent(T, tname_constSS):
         T = qt_to_tvar_R(T, someS, 'Some')
         return T
         
+########## ########## ########## ########## ########## ########## ########## ##########
+
 '''
 get_dequantified_patoms: tuple * tname_constSS * str -> set
 '''

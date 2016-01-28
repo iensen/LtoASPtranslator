@@ -3,14 +3,11 @@ from . import typer
 from . import evaluator
 from . import dequantifier
 from . import normalizer
-'''
-Input: a dictionary parsed L program
-{'tdecls': ['tdecls', ['tdecl',...],...], 'rules': ['rules', ['rule',...],...]}
 
-Output: an incomplete dictionary parsed ASP program:
-{'tdecls': ['tdecls', ['tdecl',...],...], 'rules': ['rules', ['rule',...],...]}
-    
-transform: list -> dict
+########## ########## ########## ########## ########## ########## ########## ##########
+
+'''
+transform: list -><
 '''
 def transform(P):
     P = housekeeper.list_to_dict(P)
@@ -39,8 +36,6 @@ def transform(P):
     P = housekeeper.dict_to_list(P)
     return P
     
-########## ########## ########## ########## ########## ########## ########## ##########
-########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
@@ -81,9 +76,10 @@ def sconstr_in_set_expr(T):
         return False
         
 ########## ########## ########## ########## ########## ########## ########## ##########
+
 '''
 qtLegacy_to_tvar_R: From <every/some type Var> to <type Var>
-ASP-like convention in L: <every> in head, <some> in sentence
+ASP-like convention in L: <every> in predicate sentence, <some> in sentence
 
 qtLegacy_to_tvar_R: tuple <->
 '''
@@ -100,6 +96,8 @@ def qtLegacy_to_tvar_R(T):
         for t in T[1:]:
             tr += qtLegacy_to_tvar_R(t),
         return tr
+
+########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
 reform_rules: tuple <->
@@ -129,8 +127,6 @@ def reform_head(T):
         patom = T[1]
         return ('head', ('disj', patom, ('strNeg', patom)))
 
-########## ########## ########## ########## ########## ########## ########## ##########
-########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
@@ -204,15 +200,7 @@ def combine_tdecls_in_prog(P):
     
     return tr
     
-########## ########## ########## ########## ########## ########## ########## ##########
-
 '''
-Input: incomplete parsed ASP sort definitions:
-['tdecls', ['tdecl',...],...]
-
-Output: the parsed ASP sort definition of #types:
-['tdecl', ['sname', ('id', 'types')], ['union', ['union',...],...]]
-
 add_tdecl_type_termS_via_tdecls: tdecls -> tuple
 '''
 def add_tdecl_type_termS_via_tdecls(T):
@@ -226,13 +214,6 @@ def add_tdecl_type_termS_via_tdecls(T):
         return tr
 
 '''
-Input: a set of tuple parsed ASP rule ground terms:
-{('const',...), ('num',...), ('func',...),...}
-
-Output: the parsed ASP sort definition of #rule_termS:
-['tdecl', ['sname', ('id', 'rule_termS')],
-    ['set', ['terms', ['const',...],...]]]
-    
 add_tdecl_rule_termS_via_constS: set -> tuple
 '''
 def add_tdecl_rule_termS_via_constS(S):
@@ -246,11 +227,6 @@ def add_tdecl_rule_termS_via_constS(S):
         return tr
 
 '''
-Output: the parsed ASP sort definition of #prog_termS:
-['tdecl', ['sname', ('id', 'prog_termS')], ['union', 
-    ['sname', ('id', 'types')], 
-    ['sname', ('id', 'rule_termS')]]]
-    
 add_tdecl_prog_termS: void -> tuple
 '''
 def add_tdecl_prog_termS():
@@ -270,15 +246,6 @@ def add_tdecl_prog_termS():
 ########## ########## ########## ########## ########## ########## ########## ##########
     
 '''
-Input: a set of found predS (pairs of predicate names and arities)
-{('p0', 0), ('p1', 1), ('p2', 2),...}
-
-Output: parsed ASP predicate declarations:
-['pdecls', 
-    ['pdecl', ('id', 'p0')], 
-    ['pdecl', ('id', 'p1'), 
-        ['snames', ['sname', ('id', 'prog_termS')]]],...]
-        
 introduce_pdecls_via_predS: dict(pname: int) -> tuple
 '''
 def introduce_pdecls_via_predS(D):
@@ -294,6 +261,8 @@ def introduce_pdecls_via_predS(D):
         tr += pdecl,
     return tr
     
+########## ########## ########## ########## ########## ########## ########## ##########
+
 '''
 get_CWAS_via_predS: dict(pname: int) -> set(tuple)
 '''
@@ -318,6 +287,8 @@ def get_CWAS_via_predS(D):
         rules |= {rule}
     return rules
     
+########## ########## ########## ########## ########## ########## ########## ##########
+
 '''
 introduce_display: dict(pname: int) -> tuple
 '''
@@ -327,16 +298,9 @@ def introduce_display(D):
         display += pname,
     return display
 
-'''
-Input: parsed ASP rules:
-['rules', ['fact', ['head', ['disj', 
-    [...['patom', ('id', 'p0')]], 
-    [...['patom', ('id', 'p1'), 
-        ['terms,...]]]]]],...]
-        
-Output: a set of pairs of predicate names and arities:
-{('p0', 0), ('p1', 1),...}
+########## ########## ########## ########## ########## ########## ########## ##########
 
+'''
 get_predS: tuple -> dict(tuple: int)
 '''
 def get_predS(T):

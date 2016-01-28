@@ -1,3 +1,7 @@
+'''
+Frequently referred labels
+'''
+
 arOp1s = {'plus', 'minus'}
 arOp2s = {'mult', 'div', 'mod'}
 arOps = arOp1s | arOp2s
@@ -33,6 +37,8 @@ def tuple_is_ground(T):
                 return False
         return True
 
+########## ########## ########## ########## ########## ########## ########## ##########
+
 '''
 get_tvarS_from_tuple: tuple -> set
 '''
@@ -47,6 +53,8 @@ def get_tvarS_from_tuple(T):
             S |= get_tvarS_from_tuple(t)
         return S
         
+########## ########## ########## ########## ########## ########## ########## ##########
+
 '''
 subbing_tuple: tuple * dict(tuple1: tuple2) -> tuple
 '''
@@ -60,8 +68,7 @@ def subbing_tuple(T, D):
         for t in T[1:]:
             tr += (subbing_tuple(t, D),)
         return tr
-########## ########## ########## ########## ########## ########## ########## ##########
-########## ########## ########## ########## ########## ########## ########## ##########
+        
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
@@ -94,6 +101,8 @@ def demodularize_tuple(T):
             tr += demodularize_tuple(t),
         return tr
 
+########## ########## ########## ########## ########## ########## ########## ##########
+
 '''
 subbing_calculated_cnames_in_prog: dict(str: tuple) <->
 '''
@@ -110,7 +119,6 @@ def subbing_calculated_cnames_in_prog(P):
             calculated_cnames[cname] = int_to_num(Int) # {tuple: tuple}
         tdecls = subbing_tuple(tdecls, calculated_cnames)
         tdecls = eval_tuple(tdecls)
-        
         rules = subbing_tuple(rules, calculated_cnames)
         rules = eval_tuple(rules)
     return {'tdecls': tdecls, 'rules': rules}
@@ -125,7 +133,6 @@ def update_calculated_cnames_via_cdecls(T):
         global calculated_cnames
         calculated_cnames[cname] = Int
 
-########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
@@ -170,7 +177,7 @@ def calc_ground_ar(T):
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
-num_to_int: num -> int
+num_to_int: tuple -> int
 '''
 def num_to_int(T):
     return int(T[1][1])
@@ -181,23 +188,17 @@ int_to_num: int -> tuple
 def int_to_num(I):
     return ('num', ('numeral', str(I)))
     
-    
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
 list_to_tuple: convert a tree and its subtrees from lists to tuples
 (to make the tree hashable to be a member of a set)
-Input: trees
-['rules', ['fact', ['head',...,['patom', ('identifier', 'p0')]]],...]
-Output: tuple trees
-('rules', ('fact', ('head',...,('patom', ('identifier', 'p0')))),...)
 
 list_to_tuple: list -> tuple
 '''
 def list_to_tuple(T):
     if T == []:
         return ()
-        
     if T[0] in lexemes:
         return T
     else: 
@@ -209,17 +210,12 @@ def list_to_tuple(T):
 '''
 tuple_to_list: convert a tuple tree and its tuple non-leaf subtrees to lists
 (for consistency with the spec of the generic parser)
-Input: tuple trees
-('const', ('identifier', 'a'))
-Output: trees
-['const', ('identifier', 'a')]
 
 tuple_to_list: tuple -> list
 '''
 def tuple_to_list(T):
     if T == ():
         return []
-        
     if T[0] in lexemes:
         return T
     else: # non-terminal label
@@ -233,10 +229,7 @@ def tuple_to_list(T):
 '''
 list_to_dict: change the data type of a program from list to dictionary
 (for convenient handling)
-Input: a parsed L program:
-[['tdecl',...], ['rule',...],...]
-Output: a dictionary parsed L program:
-{'tdecls': ['tdecls', ['tdecl',...],...], 'rules': ['rules', ['rule',...],...]}
+
 list_to_dict: list -> dict
 '''
 def list_to_dict(T):
@@ -255,16 +248,6 @@ def list_to_dict(T):
 '''
 dict_to_list: change the data type of a program from dictionary to list
 (for consistency with the spec of the generic parser)
-Input: a dictionary parsed ASP program:
-{
-    'sdefs': ['sdefs', ['sdef',...],...],
-    'pdecls': ['pdecls', ['pdecl',...],...],
-    'rules': ['rules', ['rule',...],...]}
-Output: a parsed ASP program:
-['prog',
-    ['sdefs', ['sdef',...],...],
-    ['pdecls', ['pdecl',...],...],
-    ['rules', ['rule',...],...]]
     
 dict_to_list: dict -> list
 '''

@@ -1,3 +1,7 @@
+'''
+Convenient stuff
+'''
+
 stoppers = {'aggr', 'strNeg', 'batom', 'patom'}
 
 AND = 'conj'
@@ -46,8 +50,6 @@ def normalize_rules(rules):
                     n_rule = ('fullRule', n_head, n_body)
                     tr += (n_rule,)
     return tr
-
-########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
 normalize_using_mode: tuple * str -> tuple
