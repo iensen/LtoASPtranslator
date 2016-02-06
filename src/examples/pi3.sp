@@ -4,7 +4,7 @@ sorts
 #t1 = {5, 6, 7}.
 #t2 = {0, 1, 2}.
 #type_termS = #t1 + #t2.
-#rule_termS = {0, 2, 7, 6, 1, 5}.
+#rule_termS = {0, 7, 6, 2, 1, 5}.
 #prog_termS = #type_termS + #rule_termS.
 
 predicates
