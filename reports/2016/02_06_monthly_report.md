@@ -14,9 +14,9 @@ after 2016/01/05 monthly report:
     - making use of ASP implicit quantification:
       - universal in head
       - existential in body
-- updated documentation
-  - reorganized source code
-      
+- reorganized source code
+- updated [translator spec][translator_spec]
+
 ## EXAMPLES
 16 syntactically correct [examples][ex]:
 - L source programs (.l), including:
@@ -34,6 +34,7 @@ after 2016/01/05 monthly report:
   - [L solver standalone][exe] (Windows)
   - [L solver source code][py]
   
+[translator_spec]: https://github.com/iensen/LtoASPtranslator/blob/master/docs/translator_spec.md
 [ex]:https://github.com/iensen/LtoASPtranslator/tree/master/src/examples
 [ch5]:https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ch5.l
 [graphs]:https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/graphs.l
