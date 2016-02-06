@@ -1,3 +1,3 @@
 
-b11 p12
+p12 b11
 SATISFIABLE

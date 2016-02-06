@@ -1,3 +1,9 @@
+'''
+From the AST of an ASP program, this module generates the ASP program as a Python string
+'''
+
+########## ########## ########## ########## ########## ########## ########## ##########
+
 from . import housekeeper
 
 ########## ########## ########## ########## ########## ########## ########## ##########
