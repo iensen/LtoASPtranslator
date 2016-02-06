@@ -1,3 +1,24 @@
+'''
+This module transforms an AST of an L program into an AST of an equivalent ASP program.
+
+Beside calling submodules, *transformer* uses its own functions to 
+do other tasks such as:
+- converting L cardinality constraints into ASP body aggregates
+- handling these special sections of an ASP program:
+  - *sorts*
+    - L types become ASP sorts
+    - #type_termS is the union of the above sorts
+    - #rule_termS contains evaluated terms collected from L rules
+      - including subterms of functional terms
+    - #prog_termS = #type_termS + #rule_termS
+  - *predicates*
+    - for example, declaring predicate p/2: p(#prog_termS, #prog_termS)
+  - *display*
+    - displaying only positive literals in answer sets
+'''
+
+########## ########## ########## ########## ########## ########## ########## ##########
+
 from . import housekeeper
 from . import typer
 from . import evaluator

@@ -1,3 +1,21 @@
+'''
+This is a submodule of *transformer*.
+
+The *dequantifier* converts L quantified terms into 
+ASP variables/conjunctions/disjunctions. Example:
+    From:
+        /* suppose type t1 = {1, c1}, type t2 = {2, c2} */
+        p1(every t1) if p2(some t2). 
+        q1(some t1) if q2(every t2).
+    Into:
+        % more similar to ASP:
+        p1(t1 V1) if p2(t2 V2).
+            % ASP implicit quantification: universal in head, existential in body
+        q1(1) or q1(c1) if q2(2) and q2(c2).
+'''
+
+########## ########## ########## ########## ########## ########## ########## ##########
+
 import random
 
 from . import housekeeper

@@ -1,4 +1,10 @@
 '''
+This file contains miscellaneous constructs used by most other files
+'''
+
+########## ########## ########## ########## ########## ########## ########## ##########
+
+'''
 Frequently referred labels
 '''
 

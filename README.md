@@ -18,7 +18,7 @@ For Windows
 - Command-line syntax
   - Change current directory to `src`  
     *Example with Windows Command Prompt:*  
-    `cd/d E:/LtoASPtranslator/src`
+    `cd/d E:\GDrive\git\LtoASPtranslator\src`
   - Specify where to read source L program and OVERWRITE translated ASP program  
     `python translator.py examples/ranking.l > examples/ranking.sp`
   - Choose mode
@@ -41,13 +41,13 @@ For Windows
 - [Sparc manual][Sparc]
 - [Clingo guide][Clingo]
 
-[.l]:https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.l
-[.sp]:https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.sp
-[.txt]:https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.txt
-[exe]:https://github.com/iensen/LtoASPtranslator/blob/master/Lsolver.zip?raw=true
-[py]:https://github.com/iensen/LtoASPtranslator/blob/master/src.zip?raw=true
-[L]:https://github.com/iensen/LtoASPtranslator/blob/master/Lspec/Lspec.pdf
-[parser]:https://github.com/iensen/LtoASPtranslator/blob/master/docs/Lparser_guide.txt
-[translator]:https://github.com/iensen/LtoASPtranslator/blob/master/docs/translator_spec.txt
-[Sparc]:https://github.com/iensen/sparc/blob/master/User_Manual/Sparc_Manual.pdf
-[Clingo]:http://sourceforge.net/projects/potassco/files/guide/2.0/guide-2.0.pdf
+[.l]: https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.l
+[.sp]: https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.sp
+[.txt]: https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.txt
+[exe]: https://github.com/iensen/LtoASPtranslator/blob/master/Lsolver.zip?raw=true
+[py]: https://github.com/iensen/LtoASPtranslator/blob/master/src.zip?raw=true
+[L]: https://github.com/iensen/LtoASPtranslator/blob/master/Lspec/Lspec.pdf
+[parser]: https://github.com/iensen/LtoASPtranslator/blob/master/docs/Lparser_guide.md
+[translator]: https://github.com/iensen/LtoASPtranslator/blob/master/docs/translator_spec.md
+[Sparc]: https://github.com/iensen/sparc/blob/master/User_Manual/Sparc_Manual.pdf
+[Clingo]: http://sourceforge.net/projects/potassco/files/guide/2.0/guide-2.0.pdf

@@ -1,5 +1,28 @@
 '''
-Convenient stuff
+This is a submodule of *transformer*.
+
+The *normalizer*
+    Converts the head/body of an L rule into CNF/DNF
+    Makes an equivalent set of rules from those normalized clauses with
+        no [conjunction/disjunction] in [head/body]
+        
+Example:
+    From:
+        (p1 and p2) or p3. 
+            % But eventually, ASP disallows conjunction in a rule's head
+            % Head in CNF: (p1 or p3) and (p2 or p3)
+        q if (r1 or r2) and r3. 
+            % But eventually, ASP disallows disjunction in a rule's body
+            % Body in DNF: (r1 and r3) or (r2 and r3)
+    Into:
+        p1 or p3. p2 or p3.
+        q if r1 and r3. q if r2 and r3.
+'''
+
+########## ########## ########## ########## ########## ########## ########## ##########
+
+'''
+Convenient references
 '''
 
 stoppers = {'aggr', 'strNeg', 'batom', 'patom'}

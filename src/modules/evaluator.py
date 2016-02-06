@@ -1,3 +1,12 @@
+'''
+This is a submodule of *transformer*.
+
+Most *evaluator* functions return evaluated terms from 
+L statements (which might contain variables and arithmetic terms)
+'''
+
+########## ########## ########## ########## ########## ########## ########## ##########
+
 import random
 
 from . import housekeeper
