@@ -7,6 +7,8 @@ after 2016/01/05 monthly report:
   - now fully support arithmetic
   - collect and declare all program terms required in Sparc `sorts` section
     - including subterms of functional terms
+  - implemented scoping of variables
+    - occurences of a variable in a rule used to be treated as different variables
   - no more redundant sort atoms after CNF/DNF transformation
   - when translating quantified terms, using variables when possible
     - instead of conjunctions/disjunctions of ground terms
