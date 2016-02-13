@@ -10,8 +10,14 @@
     
 ## NOTES
 - Closed-World Assumption
-  - CWA for each possible predicate atom
+  - CWA for each predicate `p/n`: `p(#prog_termS, #prog_termS,..., #prog_termS)`
   - may change later
+  - *EXECUTION PROBLEM*
+    - Gringo grounds CWAs into many ground negative literals
+    - may exhaust memory and crash computer, especially when
+      - a predicate has large arity
+        - possibly an auxiliary predicate added to avoid using `some typeName Var`
+      - `#program_termS` has large size
 - negation
   - L negation is ASP strong negation
   - Currently forbid negation of:
