@@ -9,6 +9,9 @@
     - terms which are evaluated to negative integers are currently unsupported in Sparc
     
 ## NOTES
+- `brain.l`
+  - the original program in Sparc is satisfiable
+  - but this L program is unsatisfiable
 - Closed-World Assumption
   - CWA for each predicate `p/n`:  
     `-p(V1,...,Vn) :- not p(V1,...,Vn), #prog_termS(V1),...,#prog_termS(Vn).`
