@@ -163,11 +163,13 @@ hop_add(N1,N2,1) :- direct_link(N1,N2,D).
 hop_add(N1,N2,2) :- skip_link(N1,N2,D).		
 */
 
-/* L RULES:*/
+/* L RULES: */
 hop_add(node N1, node N2,1) if direct_link(N1,N2, some direction).
 hop_add(node N1, node N2,2) if skip_link(N1,N2, some direction).	
 
-/* ASP RULE:
+
+/* ASP RULES:
+
 % DEFINITION OF ADJUSTED_HOP_SUM
 adjusted_hop_sum(N1,N2,N3,Num) :-
 		hop_count(N2,N1,H1),
@@ -188,14 +190,30 @@ skip_link(n-1,1,right).
 
 */
 
-/* L rules:*/
-adjusted_hop_sum(node N1, node N2, node N3,hopc Num) if
-		hop_count(N2,N1,some hopc H1) and
-		hop_count(N3,N1,some hopc H2) and
-		hop_add(N2,N1,some hopc H3) and
-		hop_add(N3,N1,some hopc H4) and
-		H1 + H2 + H3 + H4 = Num.
+/* L rules: */
 
+    /* an old L rule */
+        adjusted_hop_sum(node N1, node N2, node N3, hopc Num) if
+                hop_count(N2, N1, some hopc H1) and
+                hop_count(N3, N1, some hopc H2) and
+                hop_add(N2, N1, some hopc H3) and
+                hop_add(N3, N1, some hopc H4) and
+                H1 + H2 + H3 + H4 = Num.
+    /* 2 new L rules, replacing `some typeName VarName` */
+        /*
+        adjusted_hop_sum(node N1, node N2, node N3, hopc Num) if 
+            aux_predicate(N1, N2, N3, Num, some hopc, some hopc, some hopc, some hopc).
+            
+        aux_predicate(node N1, node N2, node N3, hopc Num, hopc H1, hopc H2, hopc H3, hopc H4) if
+            hop_count(N2, N1, H1) and
+            hop_count(N3, N1, H2) and
+            hop_add(N2, N1, H3) and
+            hop_add(N3, N1, H4) and
+            H1 + H2 + H3 + H4 = Num.
+        */
+        
+        /* WARNING: CWA for aux_predicate/8 will become roughly 
+        n^8 ground negative literals (via Gringo) and exhaust memory */
 
 direct_link(node N1, node N2,right) if N2 = N1 + 1.
 direct_link(n-1,0,right).
@@ -205,10 +223,6 @@ skip_link(node N1, node N2,right) if N2 = N1 + 2.
 skip_link(n-2,0,right).
 skip_link(n-1,1,right).
 
-
-
-
-		
 
 /* ASP RULES:
 direct_link(N1,N2,left) :- direct_link(N2,N1,right).
