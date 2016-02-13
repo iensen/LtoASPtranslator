@@ -10,9 +10,9 @@
     
 ## NOTES
 - Closed-World Assumption
-  - CWA for each predicate `p/n`: `p(#prog_termS, #prog_termS,..., #prog_termS)`
-  - may change later
-  - *EXECUTION PROBLEM*
+  - CWA for each predicate `p/n`:  
+    `-p(V1,...,Vn) :- not p(V1,...,Vn), #prog_termS(V1),...,#prog_termS(Vn).`
+  - **EXECUTION PROBLEM**
     - Gringo grounds CWAs into many ground negative literals
     - may exhaust memory and crash computer, especially when
       - a predicate has large arity
