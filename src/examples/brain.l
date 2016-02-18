@@ -238,8 +238,8 @@ link(N1,N2,Dir) :- skip_link(N1,N2,Dir).
 
 direct_link(node N1, node N2,left) if direct_link(N2,N1,right).
 skip_link(node N1, node N2,left) if skip_link(N2,N1,right).
-link(node N1,node N2, direction Dir) if direct_link(N1,N2, some direction).
-link(node N1,node N2, direction Dir) if skip_link(N1,N2, some direction).
+link(node N1,node N2, direction Dir) if direct_link(N1,N2, Dir).
+link(node N1,node N2, direction Dir) if skip_link(N1,N2, Dir).
 
 
 /*
@@ -1123,6 +1123,6 @@ maybe bad_node(node N).
 :- not bad. */
 
 /* L RULE :*/
-1<=|{bad}|<=1. 
+1<=|{bad}|<=1.
 /* Semantic error: When the above L rule is commented, 
 the program is still unsatisfiable */
