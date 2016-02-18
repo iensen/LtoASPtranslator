@@ -420,7 +420,7 @@ case(1, node N1, direction Dir) if
 		hop_count(N2,N1,some hopc H) and 
 		H != 1 and 
 		id(N2,N1,some node N4) and 
-		not discordant(N4,N1,Dir,H+2).
+		not_discordant(N4,N1,Dir,H+2).
 
 case(2,node N1, direction Dir) if 
 		not sending(N1) and
@@ -431,7 +431,7 @@ case(2,node N1, direction Dir) if
 		hop_count(N2,N1,some hopc H) and
 		H >= 2 and 
 		id(N2,N1, some node N4) and
-		not discordant(N4,N1,Dir,H+1).		
+		not_discordant(N4,N1,Dir,H+1).		
 
 case(3,node N1, direction Dir) if 
 		not sending(N1) and 
@@ -442,7 +442,7 @@ case(3,node N1, direction Dir) if
 		hop_count(N2,N1,some hopc H) and 
 		H != 1 and 
 		id(N2,N1,some node N4) and 
-		not discordant(N4,N1,Dir,H+2).						
+		not_discordant(N4,N1,Dir,H+2).						
 
 
 sent_to(node N2, node N3 , data Data) if
@@ -785,7 +785,7 @@ integrity(node N3, node N4) if
 
 /* L rules */
 maybe omit(node N1, node N2) if bad_node(N1) and link(N1, N2, some direction).
-0<=|{omit(node N1,node N2)}|<=1.
+0<=|{omit(node N1,node N2)}|<=1 if bad_node(N1) and link(N1, N2, some direction).
  
 /*             
 % a bad node may send good data or bad data if it is sending (any bad data
@@ -811,6 +811,7 @@ sent_to(node N1,node N2,good) or sent_to(N1,N2,bad(N1)) if
        link(N1,N2,Dir).
 
 % a bad node may send any partner id out in the message
+
 1{partner(N1,N2,N3):node(N3)}1 :- 
        bad_node(N1),
        not omit(N1,N2),
@@ -839,16 +840,21 @@ maybe id(node N1, node N2, node N3) if
                    not omit(N1, N2) and
                    link (N1, N2, some direction Dir).
 
-1<=|{id(node N1, node N2, node N3)}|<=1 if is_node(N1) and is_node(N2).
+1<=|{id(node N1, node N2, node N3)}|<=1 if  bad_node(N1) and
+                                            not omit(N1, N2) and
+                                            link (N1, N2, some direction Dir).
 
 
 maybe partner(node N1, node N2, node N3) if
          bad_node(N1) and
-         not_omit(N1,N2) and
+         not omit(N1,N2) and
          link(N1, N2, some direction).
 
-1<=|{partner(node N1, node N2, node N3)}|<=1 
-                        if is_node(N1) and is_node(N2).
+1<=|{partner(node N1, node N2, node N3)}|<=1 if
+                        bad_node(N1) and
+         not omit(N1,N2) and
+         link(N1, N2, some direction).
+
    
 
 maybe hop_count(node N1, node N2, hopc H) if bad_node(N1) 
@@ -856,7 +862,11 @@ maybe hop_count(node N1, node N2, hopc H) if bad_node(N1)
                                              and link(N1, N2, some direction Dir).
 
 
-1<=|{hop_count(node N1, node N2, hopc H)}|<=1 if is_node(N1) and is_node(N2).
+1<=|{hop_count(node N1, node N2, hopc H)}|<=1 if bad_node(N1) 
+                                             and not omit(N1, N2)
+                                             and link(N1, N2, some direction Dir).
+
+
 
 
 maybe integrity(node N1, node N2) if bad_node(N1) 
@@ -1112,7 +1122,7 @@ maybe bad_node(node N).
 /* ASP RULE: 
 :- not bad. */
 
-/* L RULE :
-1<=|{bad}|<=1. */
+/* L RULE :*/
+1<=|{bad}|<=1. 
 /* Semantic error: When the above L rule is commented, 
 the program is still unsatisfiable */
