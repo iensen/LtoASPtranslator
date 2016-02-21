@@ -1,7 +1,7 @@
 
 predicates
 
-a(). b(). 
+b(). a(). 
 
 rules
 
@@ -12,4 +12,4 @@ b :- a.
 
 display
 
-a. b. 
+b. a. 

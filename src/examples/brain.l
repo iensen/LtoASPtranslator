@@ -1124,5 +1124,3 @@ maybe bad_node(node N).
 
 /* L RULE :*/
 1<=|{bad}|<=1.
-/* Semantic error: When the above L rule is commented, 
-the program is still unsatisfiable */
