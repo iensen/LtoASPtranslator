@@ -1,5 +1,5 @@
 # L-ASP TRANSLATOR: ISSUES
-- distribution:
+- distribution
   - making the L solver an Eclipse plug-in fragment to integrate with the L editor
 - Sparc-related matters
   - Empty types
@@ -9,13 +9,10 @@
     - terms which are evaluated to negative integers are currently unsupported in Sparc
     
 ## NOTES
-- `brain.l`
-  - the original program in Sparc is satisfiable
-  - but this L program is unsatisfiable
 - Closed-World Assumption
   - CWA for each predicate `p/n`:  
     `-p(V1,...,Vn) :- not p(V1,...,Vn), #prog_termS(V1),...,#prog_termS(Vn).`
-  - **EXECUTION PROBLEM**
+  - **COMPUTER MEMORY**
     - Gringo grounds CWAs into many ground negative literals
     - may exhaust memory and crash computer, especially when
       - a predicate has large arity
