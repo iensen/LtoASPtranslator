@@ -26,7 +26,6 @@ The views and conclusions contained in the software and documentation are those
 of the authors and should not be interpreted as representing official policies,
 either expressed or implied, of the FreeBSD Project.
 """
-from enum import Enum
 import os
 from optparse import OptionParser
 from genparser.src.astgen.parsing.lexer import *
@@ -41,11 +40,6 @@ def parse_arguments():
     parser = OptionParser()
     return parser.parse_args()[1]
 
-# enumerate of the types of program elements
-class Element(Enum):
-     type_decl = "type declaration"
-     const_decl = "constant declaration"
-     rule = "rule"
 
 def parse_program(chunks, lexer, parser):
     """
