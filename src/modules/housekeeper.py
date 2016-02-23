@@ -14,7 +14,8 @@ arOps = arOp1s | arOp2s
 compOps = {'less', 'greater', 'lessoreq', 'greateroreq', 'noteq', 'eq'}
 lexemes = arOps | compOps | {'pound_id', 'id', 'numeral', 'variable', 'every', 'some'}
 
-ground_terms = {'cname', 'tname', 'pname', 'fname',
+ground_terms = {'num',
+                'cname', 'tname', 'pname', 'fname',
                 'ar',   # possibly non-ground
                 'func'} # possibly non-basic
 basic_terms = ground_terms | {'tvar', 'var'}

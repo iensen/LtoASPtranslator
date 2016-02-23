@@ -37,14 +37,14 @@ def transform(P):
     P['rules'] = qtLegacy_to_tvar_R(P['rules'])
     P = typer.entype_prog(P)
     global expanded_tdecls
-    expanded_tdecls = evaluator.expand_tdecls(P['tdecls'])
+    expanded_tdecls = evaluator.expand_tdecls(P['tdecls']) # tname_constSS
     P['rules'] = dequantifier.dequantify_rules(P['rules'], expanded_tdecls)
     P['rules'] = unconstrain_rules(P['rules'])
     P['tdecls'] = rewrite_tdecls(P['tdecls'])
     P['rules'] = reform_rules(P['rules'])
     P['rules'] = normalizer.normalize_rules(P['rules'])
-    P['tdecls'] = combine_tdecls_in_prog(P)
-    predS = get_predS(P['rules'])
+    predS = get_predS(P['rules'], expanded_tdecls)
+    P = combine_tdecls_in_prog(P, predS)
     pdecls = introduce_pdecls_via_predS(predS)
     pdecls = typer.detype_tuple(pdecls)
     CWAS = get_CWAS_via_predS(predS)
@@ -198,86 +198,51 @@ def unconstrain_cconstr_rule(T):
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
-combine_tdecls_in_prog: dict -> tuple
+combine_tdecls_in_prog: prog * predS -> prog
 '''
-def combine_tdecls_in_prog(P):
+def combine_tdecls_in_prog(P, predS):
     tdecls = P['tdecls']
-    tr = tdecls
-    
-    global added_tdecl_type_termS
-    added_tdecl_type_termS = add_tdecl_type_termS_via_tdecls(tdecls)
-    if added_tdecl_type_termS != ():
-        tr += added_tdecl_type_termS,
-        
-    constS = evaluator.get_evaluated_termS_in_tuple(P['rules'], expanded_tdecls)
-    global added_tdecl_rule_termS
-    added_tdecl_rule_termS = add_tdecl_rule_termS_via_constS(constS)
-    if added_tdecl_rule_termS != ():
-        tr += added_tdecl_rule_termS,
-        
-    added_tdecl_prog_termS = add_tdecl_prog_termS()
-    if added_tdecl_prog_termS != ():
-        tr += added_tdecl_prog_termS,
-    
-    return tr
+    pred_termS_tdeclS = get_pred_termS_tdeclS(predS) # set
+    pred_termS_tdeclS = tuple(pred_termS_tdeclS)
+    tdecls += pred_termS_tdeclS
+    P['tdecls'] = tdecls
+    return P
     
 '''
-add_tdecl_type_termS_via_tdecls: tdecls -> tuple
+get_pred_termS_tdeclS: {pname: (constS,...,constS),...} -> set(tdecl)
 '''
-def add_tdecl_type_termS_via_tdecls(T):
-    if len(T) == 1:
-        return ()
-    else:
-        tr = T[1][1]
-        for t in T[2:]:
-            tr = 'union', tr, t[1]
-        tr = 'tdecl', ('tname', ('id', 'type_termS')), tr
-        return tr
-
-'''
-add_tdecl_rule_termS_via_constS: set -> tuple
-'''
-def add_tdecl_rule_termS_via_constS(S):
-    if S == set():
-        return ()
-    else:
-        tr = 'terms',
-        for El in S:
-            tr += El,
-        tr = 'tdecl', ('tname', ('id', 'rule_termS')), ('set', tr)
-        return tr
-
-'''
-add_tdecl_prog_termS: void -> tuple
-'''
-def add_tdecl_prog_termS():
-    added_tdecls = (added_tdecl_type_termS, added_tdecl_rule_termS)
-    tr = ()
-    for added_tdecl in added_tdecls:
-        if added_tdecl != ():
-            tr += added_tdecl[1],
-    if tr != ():
-        if len(tr) == 1:
-            tr = tr[0]
-        else: # == 2
-            tr = ('union',) + tr
-        tr = 'tdecl', ('tname', ('id', 'prog_termS')), tr
-    return tr
+def get_pred_termS_tdeclS(predS):
+    tdeclS = set()
+    for pname in predS:
+        domain = predS[pname] # tuple(set)
+        arity = len(domain)
+        for ind in range(arity):
+            tname = pname[1][1] + '_' + str(ind+1) + '_termS'
+            tname = 'tname', ('id', tname)
+            Set = domain[ind]
+            Set = tuple(Set)
+            Set = ('terms',) + Set
+            Set = 'set', Set
+            tdecl = 'tdecl', tname, Set
+            tdeclS |= {tdecl}
+    return tdeclS
     
 ########## ########## ########## ########## ########## ########## ########## ##########
     
 '''
-introduce_pdecls_via_predS: dict(pname: int) -> tuple
+introduce_pdecls_via_predS: dict(pname: tuple(set)) -> tuple
 '''
 def introduce_pdecls_via_predS(D):
     tr = 'pdecls',
     for pname in D:
-        arity = D[pname]
+        arity = len(D[pname])
         pdecl = 'pdecl', pname
         if arity > 0:
             tnames = 'tnames',
-            for i in range(arity):
-                tnames += ('tname', ('id', 'prog_termS')),
+            for ind in range(arity):
+                tname = pname[1][1] + '_' + str(ind+1) + '_termS'
+                tname = 'tname', ('id', tname)
+                tnames += tname,
             pdecl += tnames,
         tr += pdecl,
     return tr
@@ -291,12 +256,13 @@ def get_CWAS_via_predS(D):
     rules = set()
     for pname in D:
         patom = 'patom', pname
-        arity = D[pname]
+        arity = len(D[pname])
         if arity > 0:
             terms = 'terms',
-            for i in range(arity):
-                tname = 'tname', ('id', 'prog_termS')
-                var = 'var', ('variable', 'CWA' + str(i))
+            for ind in range(arity):
+                tname = pname[1][1] + '_' + str(ind+1) + '_termS'
+                tname = 'tname', ('id', tname)
+                var = 'var', ('variable', 'CWA_Var_' + str(ind+1))
                 tvar = 'tvar', tname, var
                 terms += tvar,
             patom += terms,
@@ -322,20 +288,24 @@ def introduce_display(D):
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
-get_predS: tuple -> dict(tuple: int)
+get_predS: tuple * tname_constSS -> {pname: (constS,...,constS),...}
 '''
-def get_predS(T):
-    if T[0] in housekeeper.lexemes:
+def get_predS(T, tname_constSS):
+    if T[0] in {'aggr'} | housekeeper.lexemes:
         return {}
     elif T[0] == 'patom':
         pname = T[1]
-        if len(T) == 2:
-            arity = 0
-        else:
-            arity = len(T[2]) - 1
-        return {pname: arity}
+        domain = ()
+        if len(T) > 2:
+            terms = T[2]
+            for term in terms[1:]:
+                evaluated_termS = \
+                    evaluator.get_evaluated_termS_from_basic_term(term, tname_constSS) # set
+                domain += evaluated_termS,
+        d = {pname: domain}
+        return d
     else:
         D = {}
         for t in T[1:]:
-            D.update(get_predS(t))
+            D.update(get_predS(t, tname_constSS))
         return D
