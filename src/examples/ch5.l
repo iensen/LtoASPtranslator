@@ -289,7 +289,7 @@ controlled(risk556 R) if tolerable(R).
 
 /* See  section 5.5.6: */
 tolerable(r(hm_1_14)).
-torerable(r(hm_1_3)).
+tolerable(r(hm_1_3)).
 
 
 /*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
