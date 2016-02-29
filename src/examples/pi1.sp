@@ -1,14 +1,16 @@
 
 predicates
 
-b(). a(). 
+b().
+a().
+
 
 rules
 
 a.
 b :- a.
--a :- not a.
 -b :- not b.
+-a :- not a.
 
 display
 

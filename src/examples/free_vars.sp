@@ -3,24 +3,29 @@ sorts
 
 #type1 = {1, 2, 5}.
 #type2 = {1, 2}.
-#type_termS = #type1 + #type2.
-#rule_termS = {5, 2, 1}.
-#prog_termS = #type_termS + #rule_termS.
+#t_1_termS = {5, 2, 1}.
+#p_2_termS = {2, 1}.
+#q_1_termS = {5, 2, 1}.
+#p_1_termS = {5, 2, 1}.
+#t_2_termS = {2, 1}.
 
 predicates
 
-q(#prog_termS). p(#prog_termS, #prog_termS). t(#prog_termS, #prog_termS). 
+t(#t_1_termS, #t_2_termS).
+p(#p_1_termS, #p_2_termS).
+q(#q_1_termS).
+
 
 rules
 
 p(X, Y) :- (X + Y) = 7, #type2(Y), #type1(X).
 q(X) | -q(X) :- #type1(X).
-:- 1 > #count{0, X: t(X, Y), #type1(X)}, q(Y), #type2(Y).
 :- 2 < #count{0, X: t(X, Y), #type1(X)}, q(Y), #type2(Y).
--t(CWA0, CWA1) :- not t(CWA0, CWA1), #prog_termS(CWA0), #prog_termS(CWA1).
--q(CWA0) :- not q(CWA0), #prog_termS(CWA0).
--p(CWA0, CWA1) :- not p(CWA0, CWA1), #prog_termS(CWA0), #prog_termS(CWA1).
+:- 1 > #count{0, X: t(X, Y), #type1(X)}, q(Y), #type2(Y).
+-p(CWA_Var_1, CWA_Var_2) :- not p(CWA_Var_1, CWA_Var_2), #p_2_termS(CWA_Var_2), #p_1_termS(CWA_Var_1).
+-t(CWA_Var_1, CWA_Var_2) :- not t(CWA_Var_1, CWA_Var_2), #t_2_termS(CWA_Var_2), #t_1_termS(CWA_Var_1).
+-q(CWA_Var_1) :- not q(CWA_Var_1), #q_1_termS(CWA_Var_1).
 
 display
 
-q. p. t. 
+t. p. q. 
