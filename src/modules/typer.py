@@ -130,7 +130,7 @@ def entype_tuple_via_var_tnameS(T, var_tnameS):
 detype_tuple: tuple -><
 '''
 def detype_tuple(T):
-    if T[0] in housekeeper.lexemes | {'aggr'}:
+    if T[0] in housekeeper.lexemes:
         return T
     elif T[0] == 'tvar':
         return T[2]

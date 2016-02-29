@@ -43,7 +43,7 @@ def transform(P):
     P['tdecls'] = rewrite_tdecls(P['tdecls'])
     P['rules'] = reform_rules(P['rules'])
     P['rules'] = normalizer.normalize_rules(P['rules'])
-    predS = get_predS(P['rules'], expanded_tdecls)
+    predS = get_predS(P['rules'], expanded_tdecls, {})
     P = combine_tdecls_in_prog(P, predS)
     pdecls = introduce_pdecls_via_predS(predS)
     pdecls = typer.detype_tuple(pdecls)
@@ -183,7 +183,6 @@ def unconstrain_cconstr_rule(T):
     aggr_terms += tuple(aggr_tvarS)
     
     aggr_func = 'aggr_func', aggr_terms, aggr_atoms
-    aggr_func = typer.detype_tuple(aggr_func)
     
     aggr1 = 'aggr', b1, ('greater', '>'), aggr_func
     aggr2 = 'aggr', b2, ('less', '<'), aggr_func
@@ -193,8 +192,7 @@ def unconstrain_cconstr_rule(T):
     body = 'body', body
     iconstr = 'iconstr', body
     return iconstr
-    
-    
+        
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
@@ -288,10 +286,10 @@ def introduce_display(D):
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
-get_predS: tuple * tname_constSS -> {pname: (constS,...,constS),...}
+get_predS: tuple * tname_constSS * predS-> {pname: (constS,...,constS),...}
 '''
-def get_predS(T, tname_constSS):
-    if T[0] in {'aggr'} | housekeeper.lexemes:
+def get_predS(T, tname_constSS, predS):
+    if T[0] in housekeeper.lexemes:
         return {}
     elif T[0] == 'patom':
         pname = T[1]
@@ -299,13 +297,13 @@ def get_predS(T, tname_constSS):
         if len(T) > 2:
             terms = T[2]
             for term in terms[1:]:
-                evaluated_termS = \
-                    evaluator.get_evaluated_termS_from_basic_term(term, tname_constSS) # set
+                evaluated_termS = evaluator.get_evaluated_termS(term, tname_constSS)
                 domain += evaluated_termS,
         d = {pname: domain}
         return d
     else:
-        D = {}
+        D1 = {}
         for t in T[1:]:
-            D.update(get_predS(t, tname_constSS))
-        return D
+            D2 = get_predS(t, tname_constSS, predS)
+            D1 = housekeeper.union_dicts_of_tuples_of_sets(D1, D2)
+        return D1
