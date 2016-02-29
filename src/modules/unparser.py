@@ -82,7 +82,7 @@ def unparse_pdecls(T):
         st = unparse_pdecls(T[1]) + '('
         if len(T) > 2:
             st += unparse_pdecls(T[2])
-        st += '). '
+        st += ').\n'
         return st
     else:
         st = ''

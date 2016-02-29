@@ -14,7 +14,8 @@ arOps = arOp1s | arOp2s
 compOps = {'less', 'greater', 'lessoreq', 'greateroreq', 'noteq', 'eq'}
 lexemes = arOps | compOps | {'pound_id', 'id', 'numeral', 'variable', 'every', 'some'}
 
-ground_terms = {'cname', 'tname', 'pname', 'fname',
+ground_terms = {'num',
+                'cname', 'tname', 'pname', 'fname',
                 'ar',   # possibly non-ground
                 'func'} # possibly non-basic
 basic_terms = ground_terms | {'tvar', 'var'}
@@ -266,3 +267,38 @@ def dict_to_list(T):
         prog = ('prog',) + prog
     prog = tuple_to_list(prog)
     return prog
+    
+########## ########## ########## ########## ########## ########## ########## ##########
+
+'''
+union_dicts_of_sets: {tuple: set} * // -> //
+'''
+def union_dicts_of_sets(D1, D2):
+    for k2 in D2:
+        if k2 in D1:
+            D1[k2] |= D2[k2]
+        else:
+            D1[k2] = D2[k2]
+    return D1
+    
+########## ########## ########## ########## ########## ########## ########## ##########
+
+'''
+union_dicts_of_tuples_of_sets: {key: tuple(set)} * // -> //
+'''
+def union_dicts_of_tuples_of_sets(D1, D2):
+    for k2 in D2:
+        if k2 in D1:
+            D1[k2] = union_tuples_of_sets(D1[k2], D2[k2])
+        else:
+            D1[k2] = D2[k2]
+    return D1
+    
+'''
+union_tuples_of_sets: tuple(set) * // -> //
+'''
+def union_tuples_of_sets(T1, T2):
+    T3 = ()
+    for i in range(len(T1)):
+        T3 += (T1[i] | T2[i]),
+    return T3

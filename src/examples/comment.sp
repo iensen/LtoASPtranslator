@@ -2,19 +2,20 @@
 sorts
 
 #t = {1, 2, 3}.
-#type_termS = #t.
-#rule_termS = {3, 2, 1}.
-#prog_termS = #type_termS + #rule_termS.
+#p_1_termS = {3, 1, 2}.
+#q_1_termS = {3, 1, 2}.
 
 predicates
 
-p(#prog_termS). q(#prog_termS). 
+p(#p_1_termS).
+q(#q_1_termS).
+
 
 rules
 
 p(X) :- q(X), #t(X).
--p(CWA0) :- not p(CWA0), #prog_termS(CWA0).
--q(CWA0) :- not q(CWA0), #prog_termS(CWA0).
+-p(CWA_Var_1) :- not p(CWA_Var_1), #p_1_termS(CWA_Var_1).
+-q(CWA_Var_1) :- not q(CWA_Var_1), #q_1_termS(CWA_Var_1).
 
 display
 

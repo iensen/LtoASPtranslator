@@ -3,13 +3,14 @@ sorts
 
 #t1 = {5, 6, 7}.
 #t2 = {0, 1, 2}.
-#type_termS = #t1 + #t2.
-#rule_termS = {2, 7, 0, 6, 1, 5}.
-#prog_termS = #type_termS + #rule_termS.
+#p_1_termS = {0, 2, 1}.
+#q_1_termS = {5, 6, 7}.
 
 predicates
 
-p(#prog_termS). q(#prog_termS). 
+q(#q_1_termS).
+p(#p_1_termS).
+
 
 rules
 
@@ -17,9 +18,9 @@ p(N) :- q((N + 5)), #t2(N).
 q(N) | -q(N) :- #t1(N).
 :- 2 < #count{0, N: q(N), #t1(N)}.
 :- 1 > #count{0, N: q(N), #t1(N)}.
--p(CWA0) :- not p(CWA0), #prog_termS(CWA0).
--q(CWA0) :- not q(CWA0), #prog_termS(CWA0).
+-p(CWA_Var_1) :- not p(CWA_Var_1), #p_1_termS(CWA_Var_1).
+-q(CWA_Var_1) :- not q(CWA_Var_1), #q_1_termS(CWA_Var_1).
 
 display
 
-p. q. 
+q. p. 

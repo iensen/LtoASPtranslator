@@ -94,21 +94,19 @@ def get_constS_from_set_expr(T, D):
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 '''
-get_evaluated_termS_in_tuple: tuple * tname_constSS -> set
+get_evaluated_termS: tuple * tname_constSS -> set
 '''
-def get_evaluated_termS_in_tuple(T, D):
-    if T[0] == 'terms':
-        S = set()
-        for term in T[1:]:
-            S |= get_evaluated_tupleS(term, D)
-            if term[0] == 'func':
-                subterms = term[2]
-                S |= get_evaluated_termS_in_tuple(subterms, D)
+def get_evaluated_termS(T, D):
+    if T[0] in housekeeper.basic_terms:
+        S = get_evaluated_tupleS(T, D)
+        if T[0] == 'func':
+            subterms = T[2]
+            S |= get_evaluated_termS(subterms, D)
         return S
-    elif T[0] in {'aggr'} | housekeeper.lexemes:
+    elif T[0] in housekeeper.lexemes:
         return set()
     else:
         S = set()
         for t in T[1:]:
-            S |= get_evaluated_termS_in_tuple(t, D)
+            S |= get_evaluated_termS(t, D)
         return S
