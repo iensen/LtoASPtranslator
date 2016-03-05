@@ -9,8 +9,8 @@ rules
 
 a.
 b :- a.
--b :- not b.
 -a :- not a.
+-b :- not b.
 
 display
 
