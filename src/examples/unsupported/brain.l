@@ -2,7 +2,7 @@
 2016/03/05
 Vu
 
-- new L syntax forbids `p(some t)`
+- new L syntax forbids `p(some t V)`
 - a semantically equivalent brain.l takes too much space
   - clingo used 15GB of RAM but couldn't finish in 5 minutes
 */
