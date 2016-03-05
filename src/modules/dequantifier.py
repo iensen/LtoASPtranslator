@@ -87,7 +87,7 @@ def dequantify_patom_in_psent(T, tname_constSS):
     if everyS == set() == someS:
         return T
     elif everyS != set(): # ?== someS
-        T = qt_to_tvar_R(T, everyS, 'Every')
+        T = qt_to_tvar_R(T, everyS, 'DequantifiedVar')
         return T
     else: # someS != set() ?== everyS
         S = get_dequantified_patoms(T, tname_constSS, 'some')
@@ -113,7 +113,7 @@ def dequantify_patom_in_sent(T, tname_constSS):
             tr = ('conj', tr, patom)
         return tr
     else: # someS != set() ?== everyS
-        T = qt_to_tvar_R(T, someS, 'Some')
+        T = qt_to_tvar_R(T, someS, 'DequantifiedVar')
         return T
         
 ########## ########## ########## ########## ########## ########## ########## ##########

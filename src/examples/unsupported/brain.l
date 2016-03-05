@@ -1,3 +1,10 @@
+/*
+2016/05/03 -- Vu
+- new L syntax forbids `p(some typeNam VarName)`
+- a semantically equivalent brain.l (with new syntax) takes too much space
+  - Clingo took 15GB of RAM and couldn't finish in 5 minutes
+*/
+
 /* Transcribed to L from Sparc */
 
 /*%%%%%%%%%%%%%%

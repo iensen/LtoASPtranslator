@@ -34,7 +34,7 @@ def transform(P):
     P = housekeeper.list_to_dict(P)
     P = housekeeper.demodularize_prog(P)
     P = housekeeper.subbing_calculated_cnames_in_prog(P)
-    P['rules'] = qtLegacy_to_tvar_R(P['rules'])
+    # P['rules'] = qtLegacy_to_tvar_R(P['rules']) # new L syntax forbids `p(some t)`
     P = typer.entype_prog(P)
     global expanded_tdecls
     expanded_tdecls = evaluator.expand_tdecls(P['tdecls']) # tname_constSS
@@ -98,25 +98,25 @@ def sconstr_in_set_expr(T):
         
 ########## ########## ########## ########## ########## ########## ########## ##########
 
-'''
-qtLegacy_to_tvar_R: From <every/some type Var> to <type Var>
-ASP-like convention in L: <every> in predicate sentence, <some> in sentence
+# '''
+# qtLegacy_to_tvar_R: From <every/some type Var> to <type Var>
+# ASP-like convention in L: <every> in predicate sentence, <some> in sentence
 
-qtLegacy_to_tvar_R: tuple <->
-'''
-def qtLegacy_to_tvar_R(T):
-    if T[0] in housekeeper.lexemes:
-        return T
-    elif T[0] == 'qtLegacy':
-        tname = T[2]
-        var = T[3]
-        tvar = ('tvar', tname, var)
-        return tvar
-    else:
-        tr = T[0],
-        for t in T[1:]:
-            tr += qtLegacy_to_tvar_R(t),
-        return tr
+# qtLegacy_to_tvar_R: tuple <->
+# '''
+# def qtLegacy_to_tvar_R(T):
+    # if T[0] in housekeeper.lexemes:
+        # return T
+    # elif T[0] == 'qtLegacy':
+        # tname = T[2]
+        # var = T[3]
+        # tvar = ('tvar', tname, var)
+        # return tvar
+    # else:
+        # tr = T[0],
+        # for t in T[1:]:
+            # tr += qtLegacy_to_tvar_R(t),
+        # return tr
 
 ########## ########## ########## ########## ########## ########## ########## ##########
 

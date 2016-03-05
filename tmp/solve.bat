@@ -2,26 +2,27 @@
 cls
 echo Processing...
 
-set git_tmp=..\..\..\OneDrive\work\tmp
-set name=tmp\brain
+set baseName=..\tmp\examples\file
 
-set l=%name%.l
-set sp=%name%.sp
-set txt=%name%.txt
+set l=%baseName%.l
+set sp=%baseName%.sp
+set txt=%baseName%.txt
 
-set o=%name%.o
-set lp=%name%.lp
-set text=%name%.text
+set o=%baseName%.o
+set lp=%baseName%.lp
+set text=%baseName%.text
+
+main %l%
+
+REM python translator.py %l% > %sp%
 
 REM type %sp%
+REM echo ___________________________________
 
-REM main %l%
+REM java -jar sparc.jar -A -solver clingo %sp% -loutput
+REM -o %o% -solveropts "1"
 
-REM .\translator.exe %l% > %sp%
-
-REM java -jar sparc.jar -A -solver clingo %sp% -o %o% -solveropts "1"
-
-.\clingo 1 %o% --text > %text%
+REM .\clingo 1 %o% --text > %text%
 
 echo:
 echo Done

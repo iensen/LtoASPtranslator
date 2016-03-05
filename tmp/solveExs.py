@@ -9,8 +9,8 @@ def extend(dir, name, ext):
 ########## ########## ########## ########## ########## ########## ########## ##########
 
 def parse(name):
-    cmd =   'main ' + extend(path_src_examples, name, 'l') + ' > ' + \
-            extend(path_tmp_examples, name, 'p')
+    cmd =   '.\\main ' + extend(path_src_examples, name, 'l') \
+            + ' > ' + extend(path_tmp_examples, name, 'p')
     print(cmd)
 
 ########## ########## ########## ########## ########## ########## ########## ##########
@@ -36,9 +36,9 @@ def output(name):
 ########## ########## ########## ########## ########## ########## ########## ##########
 ########## ########## ########## ########## ########## ########## ########## ##########
 
-names = [   'card_constr', 'ch5', 'comment', 'formula', 'free_vars', 
+names = [   'card_constr', 'ch5', 'comment', 'free_vars', 
             'func_terms', 'graphs', 'pi1', 'pi2', 'pi3', 'ranking', 'sentence_head',
-            'switchover', 't3', 'vu_test'] + ['brain']
+            'switchover', 't3', 'vu_test'] 
             
 if __name__ == '__main__':
     print('\ncls')
@@ -47,4 +47,3 @@ if __name__ == '__main__':
         # solve(name)
         translate(name)
         output(name)
-    print('\n')
