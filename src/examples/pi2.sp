@@ -8,8 +8,8 @@ b().
 rules
 
 a :- b.
--a :- not a.
 -b :- not b.
+-a :- not a.
 
 display
 
