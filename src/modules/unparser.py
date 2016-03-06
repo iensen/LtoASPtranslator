@@ -26,12 +26,10 @@ def unparse(T):
                 prog +=  '\nsorts\n\n' + sdefs
         elif t[0] == 'pdecls':
             pdecls = unparse_pdecls(t)
-            if pdecls != '':
-                prog += '\npredicates\n\n' + pdecls + '\n'
+            prog += '\npredicates\n\n' + pdecls + '\n'
         elif t[0] == 'rules':
             rules = unparse_rules(t)
-            if rules != '':
-                prog += '\nrules\n\n' + rules
+            prog += '\nrules\n\n' + rules
         else: # 'display'
             display = unparse_display(t)
             if display != '':

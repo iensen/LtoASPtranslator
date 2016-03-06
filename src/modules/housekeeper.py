@@ -225,8 +225,6 @@ tuple_to_list: convert a tuple tree and its tuple non-leaf subtrees to lists
 tuple_to_list: tuple -> list
 '''
 def tuple_to_list(T):
-    if T == ():
-        return []
     if T[0] in lexemes:
         return T
     else: # non-terminal label
@@ -263,12 +261,9 @@ dict_to_list: change the data type of a program from dictionary to list
 dict_to_list: dict -> list
 '''
 def dict_to_list(T):
-    prog = ()
+    prog = 'prog',
     for keyw in ('sdefs', 'pdecls', 'rules', 'display'):
-        if len(T[keyw]) > 1:
-            prog += T[keyw],
-    if prog != ():
-        prog = ('prog',) + prog
+        prog += T[keyw],
     prog = tuple_to_list(prog)
     return prog
     
