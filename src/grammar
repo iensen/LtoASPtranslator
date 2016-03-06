@@ -10,8 +10,7 @@ calculatable_expr(C) ::= const_name(C)
 calculatable_expr(N) ::= number(N)
 calculatable_expr(A) ::= ground_arithmetic_term(A)
 
-number(num N) ::= num(N)
-num(N) ::= numeral(N)
+number(num N) ::= numeral(N)
 
 const_name(cname C) ::= id(C)
 type_name(tname T) ::= id(T)
@@ -107,9 +106,11 @@ basic_terms(terms T cut_root(Ts)) ::= basic_term(T) comma basic_terms(Ts)
 ground_terms(terms T) ::= ground_term(T)
 ground_terms(terms T cut_root(Ts)) ::= ground_term(T) comma ground_terms(Ts)
 
-term(T) ::= quantified_term(T)
+term(Q) ::= quantified_term(Q)
 term(F) ::= functional_term(F)
-term(T) ::= basic_term(T)
+term(B) ::= basic_term(B)
+
+term(T) ::= lparen term(T) rparen
 
 quantified_term(qt Q I) ::= quantifier(Q) type_name(I)
 

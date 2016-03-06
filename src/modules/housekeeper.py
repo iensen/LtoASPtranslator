@@ -90,7 +90,11 @@ def demodularize_prog(prog):
 demodularize_tuple: tuple -> tuple
 '''
 def demodularize_tuple(T):
-    if T[0] in lexemes:
+    if T[0] == 'numeral':
+        formattedNum = str(int(T[1]))
+        formattedNum = 'numeral', formattedNum
+        return formattedNum
+    elif T[0] in lexemes:
         return T
     elif T[0] in {'ar', 'sum', 'product'}:
         a = demodularize_tuple(T[1])

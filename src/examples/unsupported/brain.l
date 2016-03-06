@@ -5,6 +5,10 @@ Vu
 - new L syntax forbids `p(some t V)`
 - a semantically equivalent brain.l takes too much space
   - clingo used 15GB of RAM but couldn't finish in 5 minutes
+  - for detail, search for:  
+    ```
+    adjusted_hop_sum(node N1, node N2, node N3, hopc Num)
+    ```
 */
 
 /* Transcribed to L from Sparc */

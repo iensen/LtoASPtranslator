@@ -30,5 +30,5 @@ noteq = !=
 eq = =
 variable = [A-Z][_a-zA-Z0-9]*
 id = [a-z][_a-zA-Z0-9]*
-numeral = [0-9]+
+numeral = -0+|[0-9]+
 spaces = \s+
