@@ -1,4 +1,7 @@
 \documentclass[a4paper,10pt]{article}
+%DIF LATEXDIFF DIFFERENCE FILE
+%DIF DEL Lspec_old.tex   Mon Feb 22 21:23:17 2016
+%DIF ADD Lspec.tex       Fri Mar 11 23:40:01 2016
 \usepackage[utf8]{inputenc}
 \usepackage{amsthm}
 \usepackage{amsmath}
@@ -41,6 +44,31 @@
 \title{L specification (draft)}
 \author{Evgenii Balai}
 \def\no{{ not}\;}
+%DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF
+%DIF UNDERLINE PREAMBLE %DIF PREAMBLE
+\RequirePackage[normalem]{ulem} %DIF PREAMBLE
+\RequirePackage{color}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
+\providecommand{\DIFaddtex}[1]{{\protect\color{blue}\uwave{#1}}} %DIF PREAMBLE
+\providecommand{\DIFdeltex}[1]{{\protect\color{red}\sout{#1}}}                      %DIF PREAMBLE
+%DIF SAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddbegin}{} %DIF PREAMBLE
+\providecommand{\DIFaddend}{} %DIF PREAMBLE
+\providecommand{\DIFdelbegin}{} %DIF PREAMBLE
+\providecommand{\DIFdelend}{} %DIF PREAMBLE
+%DIF FLOATSAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddFL}[1]{\DIFadd{#1}} %DIF PREAMBLE
+\providecommand{\DIFdelFL}[1]{\DIFdel{#1}} %DIF PREAMBLE
+\providecommand{\DIFaddbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFaddendFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelendFL}{} %DIF PREAMBLE
+%DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
+%DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF
+%DIF HYPERREF PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFadd}[1]{\texorpdfstring{\DIFaddtex{#1}}{#1}} %DIF PREAMBLE
+\providecommand{\DIFdel}[1]{\texorpdfstring{\DIFdeltex{#1}}{}} %DIF PREAMBLE
+%DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
+
 \begin{document}
 
 \maketitle
@@ -90,7 +118,7 @@ An \textit{\textbf{arithmetic term}} is a string of one of the following forms:
 \item  $-(t)$ 
 \item $(t \diamond u)$
 \end{itemize} 
-where each of $t$ and $u$ is   either an integer numeral, a variable  or an  arithmetic term; and $\diamond$ is a special symbol in the set \texttt{\{'+', '-', '*', '/', '\%'\}}; (\texttt{'\%'} stands for modulo operation). Parentheses can optionally be omitted in which case standard operator precedences apply. 
+where each of $t$ and $u$ is   either an integer numeral, a variable  \DIFdelbegin \DIFdel{, a numeric constant  }\DIFdelend or an  arithmetic \DIFdelbegin \DIFdel{terms}\DIFdelend \DIFaddbegin \DIFadd{term}\DIFaddend ; and $\diamond$ is a special symbol in the set \texttt{\{'+', '-', '*', '/', '\%'\}}; (\texttt{'\%'} stands for modulo operation). Parentheses can optionally be omitted in which case standard operator precedences apply. 
 
 A \textbf{\textit{functional term}} is a string of the form $f(t_1,\ldots t_n)$ where $t_1,\dots,t_n$ are basic terms, f  is an identifier also referred to as an \textit{\textbf{functional symbol}} and $n>0$. 
 
@@ -104,13 +132,14 @@ We will say that a basic term $t^\prime$ is a \textbf{\textit{subterm}} of $t$ i
 \item there exists a term $t^{\prime\prime}$ such that $t^\prime$ is a subterm of  $t^{\prime\prime}$ and  $t^{\prime\prime}$ is a subterm of $t$
 \end{itemize}
 
-We say that $t^\prime$ is a \textit{proper subterm} of $t$ if $t^\prime$ is a subterm of $t$ and $t \not= t^\prime$. 
+\DIFaddbegin \DIFadd{We say that $t^\prime$ is a }\textit{\DIFadd{proper subterm}} \DIFadd{of $t$ if $t^\prime$ is a subterm of $t$ and $t \not= t^\prime$. 
+}
 
-\noindent
-A term $t$ is called \textbf{\textit{ground}} iff one of the following holds:
-\begin{itemize}
+\DIFaddend \noindent
+A term $t$ is called \textbf{\textit{ground}} iff \DIFaddbegin \DIFadd{one of the following holds:
+}\DIFaddend \begin{itemize}
 \item $t$ is an identifier of an integer numeral; or 
-\item all proper subterms of $t$  are ground 
+\item all \DIFdelbegin \DIFdel{of the }\DIFdelend \DIFaddbegin \DIFadd{proper }\DIFaddend subterms of $t$  \DIFdelbegin \DIFdel{other than $t$ itself  }\DIFdelend are ground 
 \end{itemize}
 
 
@@ -136,7 +165,7 @@ A shorthand $\{l..r\}$, where each of $l$ and $r$ is either a constant name, int
 \item An identifier.
 
 \item $t~$\texttt{where} $~V_1~in~type_1,\ldots, V_n~in~type_n$
- 
+
 where $t$ is a term, $\{V_1, \ldots, V_n\}$ is a set of all variables occurring in $t$ and $type_1, \ldots type_n$ are identifiers.
 
 \item $(S_1 \diamond S_2)$ , where $S_1$ and $S_2$ are set expressions and $\diamond$ is a set theoretic operation, one of the special characters in the set $\{+,*,/\}$. Parentheses can be omitted in which case $*$ and $/$ have higher precedence than $+$ and all operations are left-associative.
@@ -149,15 +178,24 @@ A \textit{\textbf{type declaration}} is of the form
 \end{equation}
 where $t$ is an identifier and $set\_expr$ is a set expression defined in section \ref{sexpr}.
 We will say that the type $t$ is \textit{defined} by a program if it contains a declaration of the form (\ref{tdecl}). 
- 
+
 \subsection{Quantified Terms}
 
-A \textit{\textbf{quantified term}} is of the form:
- $$ quantifier~p $$
+A \textit{\textbf{quantified term}} is of \DIFdelbegin \DIFdel{one of the forms:
+ }%DIFDELCMD < \begin{itemize}
+%DIFDELCMD < \item %%%
+\DIFdel{$ quantifier~p $
+}%DIFDELCMD < \item %%%
+\DIFdel{$ \mbox{\texttt{some}}~t\_Var$
+}%DIFDELCMD < \end{itemize} 
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \DIFadd{the form:
+ }$$\DIFadd{ quantifier~p }$$
+\DIFaddend 
 
 
 
-Where $quantifier$ is an identifier in the set $\{\mbox{\texttt{every}, \texttt{some}}\}$, $p$ is an identifier also referred to as the $type$ of the quantified term.
+Where $quantifier$ is an identifier in the set $\{\mbox{\texttt{every}, \texttt{some}}\}$, $p$ is an identifier also referred to as \DIFaddbegin \DIFadd{the }\DIFaddend $type$ \DIFdelbegin \DIFdel{,  and $t\_Var$ is a typed variable}\DIFdelend \DIFaddbegin \DIFadd{of the quantified term}\DIFaddend .
 
 We will refer to a quantified term starting with a quantifier $\mbox{\texttt{some}}$($\mbox{\texttt{every}}$) as an \textbf{\textit{existentially quantified}}(\textbf{\textit{universally quantified}}).  
 
@@ -179,26 +217,31 @@ A predicate atom is called \textbf{\textit{basic}} if $t_1,\ldots,t_n$ are basic
 A \textit{\textbf{built-in atom}} is a string of the form $t_1 \preceq t_2$ where $t_1$ and $t_2$ are terms and $\preceq \in$ \texttt{\{'<','>', '>=','<=','=','!='\}} is a string of special characters.
 
 An atom is called \textbf{\textit{ground}} if all the terms occurring in the atom are ground.
+\DIFaddbegin 
 
-\subsection{Literals}
+\subsection{\DIFadd{Literals}}
 
-A \textit{\textbf{literal}} is of one of the forms:
+\DIFadd{A }\textit{\textbf{\DIFadd{literal}}} \DIFadd{is of one of the forms:
+}
 
 \begin{itemize}
-\item $a$
-\item $\texttt{not}~a$
-\end{itemize}
-where $a$ is an atom.
+\item \DIFadd{$a$
+}\item \DIFadd{$\texttt{not}~a$
+}\end{itemize}
+\DIFadd{where $a$ is an atom.
+}
 
 
-\subsection{Sentences}\label{sentsec}
+\DIFaddend \subsection{Sentences}\DIFaddbegin \label{sentsec}
+\DIFaddend 
 
-A \textit{\textbf{sentence}} is either a literal or an expression of the one of the forms  $(A~or~B)$, $(A~and~B)$, where $A$ and $B$ are sentences. A sentence of the form $A~and~B$
-can also be written as $A, B$. Parentheses can be omitted in which case $and$ has higheer precedence than $or$. A sentence is called a \textbf{\textit{predicate sentence}}, if all the atoms occurring in the sentence are predicate atoms.
+A \textit{\textbf{sentence}} is either \DIFdelbegin \DIFdel{an atom }\DIFdelend \DIFaddbegin \DIFadd{a literal }\DIFaddend or an expression of the \DIFdelbegin \DIFdel{form $(not~A)$, }\DIFdelend \DIFaddbegin \DIFadd{one of the forms  }\DIFaddend $(A~or~B)$, $(A~and~B)$, where $A$ and $B$ are \DIFdelbegin \DIFdel{atoms}\DIFdelend \DIFaddbegin \DIFadd{sentences}\DIFaddend . A sentence of the form $A~and~B$
+can also be written as $A, B$. Parentheses can be omitted in which case \DIFdelbegin \DIFdel{$not$ has highest precedence and }\DIFdelend \DIFaddbegin \DIFadd{$and$ has higheer precedence than }\DIFaddend $or$\DIFdelbegin \DIFdel{has the lowest precedence}\DIFdelend . A sentence is called a \textbf{\textit{predicate sentence}}, if all the atoms occurring in the sentence are predicate atoms.
 
-\subsection{Maybe Statements}
+\subsection{Maybe \DIFdelbegin \DIFdel{Literals}\DIFdelend \DIFaddbegin \DIFadd{Statements}\DIFaddend }
 
-A \textbf{\textit{maybe statement}} is of the form $$\mbox{\texttt{maybe}}~p(t_1,\ldots t_n)$$ where $p(t_1,\ldots,t_n)$ is a basic predicate atom.
+A \textbf{\DIFdelbegin \textit{\DIFdel{maybe literal}}%DIFAUXCMD
+\DIFdelend \DIFaddbegin \textit{\DIFadd{maybe statement}}\DIFaddend } is of the form $$\mbox{\texttt{maybe}}~p(t_1,\ldots t_n)\DIFdelbegin \DIFdel{.}\DIFdelend $$ where $p(t_1,\ldots,t_n)$ is a basic predicate atom.
 
 \subsection{Cardinality Constraints}
 
@@ -226,14 +269,15 @@ head~\mbox{\texttt{if}}~sentence.
 where $head$ is one of the following:
 \begin{enumerate}
 \item  a predicate sentence;
-\item  a maybe statement;
+\item  a maybe \DIFdelbegin \DIFdel{literal}\DIFdelend \DIFaddbegin \DIFadd{statement}\DIFaddend ;
 \item  a cardinality constraint.
 \end{enumerate}
 
-and $sentence$ is a sentence defined in section (\ref{sentsec}).
-We will also refer to $head$ and $sentence$ and the \textit{\textbf{head}} and the \textit{\textbf{body}} of the corresponding rule respectively.
- 
-\subsection{Program} \label{progdef}
+\DIFaddbegin \DIFadd{and $sentence$ is a sentence defined in section (\ref{sentsec}).
+We will also refer to $head$ and $sentence$ and the }\textit{\textbf{\DIFadd{head}}} \DIFadd{and the }\textit{\textbf{\DIFadd{body}}} \DIFadd{of the corresponding rule respectively.
+ }
+
+\DIFaddend \subsection{Program} \label{progdef}
 A \textbf{\textit{program}} is a collection of statements, each of which is either a constant declarations, a
  type declaration, or a rule.
 
@@ -260,12 +304,16 @@ Rules of a program must satisfy the following conditions:
 \begin{enumerate}
 
 
-\item The leftmost occurrence of any variable  $V$ in a rule must be in the head of the rule and must be preceeded by a type name (also referred to as \textit{the type} of the variable in this rule).
+\item The leftmost occurrence of any variable  $V$ in a rule \DIFdelbegin \DIFdel{is }\DIFdelend \DIFaddbegin \DIFadd{must be in the head of the rule and must be }\DIFaddend preceeded by a type name (also referred to as \textit{the type} of the variable \DIFdelbegin \DIFdel{), which can also be preceed by a quantifier}\DIFdelend \DIFaddbegin \DIFadd{in this rule)}\DIFaddend .
 All other occurrences of $V$ are subterms of a basic term.
 \item For every typed variable $t~Var$ the identifier $t$ is a type 
  defined by the program.
 \item Every identifier  occurring in the rule as a subterm of an arithmetic term is a constant name defined by the program.
-\end{enumerate}
+\DIFdelbegin %DIFDELCMD < \item %%%
+\DIFdel{Every variable occurring in a rule which does not  occur in a quantified term also occurs in the head of the rule.
+}%DIFDELCMD < \item %%%
+\DIFdel{Every predicate atom $p(t_1,\ldots,t_n)$ occurring in $r$ does not contain two different variables $X$ and $Y$ such that $X$ occurs in a universally quantified term $every X$ in $r$ and $Y$ occurs in an existentially quantified term $some Y$ in $r$.
+}\DIFdelend \end{enumerate}
 \subsection{Language Grammar}
 
 
@@ -300,7 +348,7 @@ $functional\_term$ ::= $identifier~\texttt{(}~terms~\texttt{)}~$\\
 $ground\_functional\_term$ ::= $identifier~\texttt{(}~ground\_terms~\texttt{)}~$\\
 
 \noindent
-$quantified\_term$ ::= $quantifier~identifier$\\
+$quantified\_term$ ::= \DIFdelbegin \DIFdel{$quantifier~identifier~variable~|~quantifier~identifier$}\DIFdelend \DIFaddbegin \DIFadd{$quantifier~identifier$}\DIFaddend \\
 $quantifier$ ::= $\texttt{every}~|~\texttt{some}$ \\
 $basic\_terms$ ::= $basic\_term~|~basic\_term\texttt{,} ~basic\_terms$ \\
 $ground\_terms$ ::= $ground\_term~|~ground\_term\texttt{,} ~ground\_terms$ \\
@@ -330,34 +378,47 @@ $predicate\_atom$ ::= $identifier [\texttt{(} terms \texttt{)}]$\\
 $basic\_predicate\_atom$ ::= $identifier [\texttt{(} basic\_terms \texttt{)}]$\\
 $built\_in$ ::= $ basic\_term~op~basic\_term$\\
 $op$ ::= $\texttt{>}~|~\texttt{<}~|~\texttt{>=}~|~\texttt{<=}~|~\texttt{=}~|~\texttt{!=}$ \\
+\DIFdelbegin \subsubsection{\DIFdel{Sentences}}
+%DIFAUXCMD
+\addtocounter{subsubsection}{-1}%DIFAUXCMD
+\DIFdelend 
 
-\subsubsection{Literals}
-$literal$ ::= $atom~|~\texttt{not}~atom$\\
-$predicate\_literal$ ::= $atom~|~\texttt{not}~predicate\_atom$
+\DIFdelbegin \DIFdel{$sentence$ }\DIFdelend \DIFaddbegin \subsubsection{\DIFadd{Literals}}
+\DIFadd{$literal$ }\DIFaddend ::= \DIFdelbegin \DIFdel{$s3$ }\DIFdelend \DIFaddbegin \DIFadd{$atom~|~\texttt{not}~atom$}\DIFaddend \\
+\DIFdelbegin \DIFdel{$s3$ }\DIFdelend \DIFaddbegin \DIFadd{$predicate\_literal$ }\DIFaddend ::= \DIFdelbegin \DIFdel{$s2~|~s3~\texttt{or}~s2$}\DIFdelend \DIFaddbegin \DIFadd{$atom~|~\texttt{not}~predicate\_atom$
+}
 
-\subsubsection{Sentences}
-$sentence$ ::= $s3$ \\
-$s2$ ::= $s2~|~s3~\texttt{or}~s2$\\
-$s1$ ::= $s1~|~s2~\texttt{and}~s1~|~s2~\texttt{,}~s1$
-\\
-$s0$ ::= $literal~|~\texttt{(}s3\texttt{)}$ \\
+\subsubsection{\DIFadd{Sentences}}
+\DIFadd{$sentence$ ::= $s3$ }\DIFaddend \\
+$s2$ ::= \DIFdelbegin \DIFdel{$s1~|~s2~\texttt{and}~s1~|~s2~\texttt{,}~s1$
+}\DIFdelend \DIFaddbegin \DIFadd{$s2~|~s3~\texttt{or}~s2$}\DIFaddend \\
+$s1$ ::= \DIFdelbegin \DIFdel{$s0~|~\texttt{not}~s0$}\DIFdelend \DIFaddbegin \DIFadd{$s1~|~s2~\texttt{and}~s1~|~s2~\texttt{,}~s1$
+}\DIFaddend \\
+$s0$ ::= \DIFdelbegin \DIFdel{$atom~|~\texttt{(}s3\texttt{)}$ }\DIFdelend \DIFaddbegin \DIFadd{$literal~|~\texttt{(}s3\texttt{)}$ }\DIFaddend \\
 $predicate\_sentence$ ::= $predicate\_s3$ \\
-$predicate\_s2$ ::= $predicate\_s2~|~predicate\_s3~\texttt{or}~predicate\_s2$\\
-$predicate\_s1$ ::= $predicate\_s1~|~predicate\_s2~\texttt{and}~predicate\_s1~|~predicate\_s2~\texttt{,}~pedicate\_s1$
-\\
-$predicate\_s0$ ::= $predicate\_literal~|~\texttt{(}predicate\_s3\texttt{)}$ 
+\DIFdelbegin \DIFdel{$predicate\_s3$ ::= $predicate\_s2~|~predicate\_s3~\texttt{or}~predicate\_s2$}%DIFDELCMD < \\
+%DIFDELCMD < %%%
+\DIFdelend $predicate\_s2$ ::= \DIFdelbegin \DIFdel{$predicate\_s1~|~predicate\_s2~\texttt{and}~predicate\_s1~|~predicate\_s2~\texttt{,}~pedicate\_s1$
+}\DIFdelend \DIFaddbegin \DIFadd{$predicate\_s2~|~predicate\_s3~\texttt{or}~predicate\_s2$}\DIFaddend \\
+$predicate\_s1$ ::= \DIFdelbegin \DIFdel{$predicate\_s0~|~\texttt{not}~predicate\_s0$}\DIFdelend \DIFaddbegin \DIFadd{$predicate\_s1~|~predicate\_s2~\texttt{and}~predicate\_s1~|~predicate\_s2~\texttt{,}~pedicate\_s1$
+}\DIFaddend \\
+$predicate\_s0$ ::= \DIFdelbegin \DIFdel{$predicate\_atom~|~\texttt{(}predicate\_s3\texttt{)}$ 
+}\DIFdelend \DIFaddbegin \DIFadd{$predicate\_literal~|~\texttt{(}predicate\_s3\texttt{)}$ 
+}\DIFaddend 
 
 
-\subsubsection{Maybe Statements}
-$maybe\_st$ ::= $\texttt{maybe}~basic\_predicate\_atom$\\
+\subsubsection{Maybe \DIFdelbegin \DIFdel{Literals}\DIFdelend \DIFaddbegin \DIFadd{Statements}\DIFaddend }
+\DIFdelbegin \DIFdel{$maybe\_lit$ }\DIFdelend \DIFaddbegin \DIFadd{$maybe\_st$ }\DIFaddend ::= $\texttt{maybe}~basic\_predicate\_atom$\\
 \subsubsection{Cardinality Constraints}
 $bound$ ::= $arithmetic\_term~|~numeric\_constant~|~identifier$\\
 $card\_constr$ ::= $bound~ \texttt{<= |\{}  basic\_predicate\_atom \texttt{\}| <=} ~bound$\\
 
 \subsubsection{Rules}
 $rule$ ::= $head \texttt{.} | head~\texttt{if}~sentence \texttt{.} $ \\
-$head$ ::= $predicate\_sentence~|~maybe\_st~|~card\_constr$
- 
+$head$ ::= \DIFdelbegin \DIFdel{$predicate\_sentence~|~maybe\_lit~|~card\_constr$
+ }\DIFdelend \DIFaddbegin \DIFadd{$predicate\_sentence~|~maybe\_st~|~card\_constr$
+ }\DIFaddend 
+
 \subsubsection{Program}
 $program$ ::= $statements$\\
 $statements$ ::= $statement~|~statement,~statements$\\
@@ -379,7 +440,7 @@ p(t X) if /* this is a rule */ q(X).
 
 
 \section{Semantics}
-We define the semantics of an $L$ program $\Pi$ in terms of \textit{models} of $P$. A model is, intuitively,  a minimal set of atoms which, satisfies the rules of the program. 
+We define the semantics of an $L$ program $\Pi$ in terms of \textit{models} of $P$. A model is\DIFdelbegin \DIFdel{a }\DIFdelend \DIFaddbegin \DIFadd{, intuitively,  a minimal }\DIFaddend set of atoms which, \DIFdelbegin \DIFdel{intuitively, }\DIFdelend satisfies the rules of the program. 
 The notion of satisfiability is defined in section \ref{rsat} with all necessary background provided in sections 
 \ref{constants} - \ref{grp}.
 
@@ -407,13 +468,13 @@ The models $\Pi$ coincide with the models of program $\Pi^\prime$ obtained from 
 
 \medskip\noindent
 By condition 2 for constant declarations defined in section \ref{progdef}, if the program $\Pi^\prime$ starts another constant declaration, its right hand side cannot contain numeric constants, therefore its semantics can be defined in the same manner as for $\Pi$.
- 
+
 \medskip\noindent
 Therefore, it is sufficient to define the semantics for programs not containing constant declarations (and, therefore, not containing constant names in arithmetic terms too).
 
 \subsection{Arithmetic Terms}\label{at}
 
-A program may contain ground arithmetic terms constructed from integer numerals and operations `+` (plus),  `-` (minus), `*` (multiplication), `/` (integer division), `\%` (modulo)\footnote{Current implementation allows only numerals in the range 0 to 2,147,483,647. Moreover, correct evaluation for an arithmetic term is guaranteed only if all its subterms have values within the range.} Each arithmetic term  has \textit{a value}. 
+A program may contain ground arithmetic terms constructed from integer numerals and operations `+` (plus),  `-` (minus), `*` (multiplication), `/` (integer division), `\%` (modulo)\footnote{Current implementation allows only numerals in the range \DIFdelbegin \DIFdel{-2,147,483,648 }\DIFdelend \DIFaddbegin \DIFadd{0 }\DIFaddend to 2,147,483,647. Moreover, correct evaluation for an arithmetic term is guaranteed only if all its subterms have values within the range.} Each arithmetic term  has \textit{a value}. 
 The meaning and precedence of operations  `+`,  `-`, `*` is as usual. The  operation `/` has the same precedence as `*` and is defined as $$a/b := sgn(a*b) *(|a|~div~|b|)$$
 where 
 \begin{enumerate}
@@ -441,7 +502,7 @@ The mapping is defined as follows:
 \begin{enumerate}
 \item For every sort expression of the form $$\{t_1,\ldots,t_n\}$$   $\mathcal{D}_\Pi(\{t_1,\ldots,t_n\})$ is $ \{t_1,\ldots,t_n\}$
 \item For every sort expression of the form   $$t~\mbox{\texttt{where}} ~V_1~in~type_1,\ldots, V_n~in~type_n$$
- 
+
 \noindent
 $\mathcal{D}_\Pi(t~\mbox{\texttt{where}} ~V_1~in~type_1,\ldots, V_n~in~type_n)$ is $\{t| V_1 \in \mathcal{D}_\Pi(type_1),\ldots, V_n \in \mathcal{D}_\Pi(type_n)\}$ 
 \item For every sort expression of the form $$S_1 \diamond S_2$$ 
@@ -459,12 +520,27 @@ In the remainder of the section  we will mostly  use   $\mathcal{D}_\Pi$ to obta
 
 
 
-\subsection{Programs  Variables and Ground Programs}\label{grp}
+\subsection{Programs  \DIFdelbegin \DIFdel{with Free }\DIFdelend Variables and Ground Programs}\label{grp}
 
-For a program $\Pi$ containing variables we obtain a corresponding \textit{ground} program $\Pi^g$ as follows:
+\DIFdelbegin \DIFdel{Let $\Pi$ be an $L$ program and $r$ be a rule of $P$. 
+A variable $V$ occurring in  $r$  is called a }\textit{\DIFdel{free}} %DIFAUXCMD
+\DIFdel{variable if at least one of the following conditions is satisfied:
+}%DIFDELCMD < \begin{enumerate}
+%DIFDELCMD < \item %%%
+\DIFdel{$V$ occurs in the  head of $r$, and the head of $r$ is either a sentence or a maybe literal.
+}%DIFDELCMD < \item %%%
+\DIFdel{$V$ occurs in the head of $r$ and in the body of $r$.
+}%DIFDELCMD < \end{enumerate}
+%DIFDELCMD < %%%
+\DIFdel{Other variables occurring in $r$ are }\textit{\DIFdel{quantified}} %DIFAUXCMD
+\DIFdel{variables.
+}%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdelend For a program $\Pi$ \DIFaddbegin \DIFadd{containing variables }\DIFaddend we obtain a corresponding \textit{ground} program $\Pi^g$ as follows:
 \begin{enumerate}
-\item each rule $r$ containing variables is replaced with a maximal collection of rules, each of which corresponds to a unique substitution 
-of  variables (together with possibly preceeding type names)  with ground terms. A variable $v$ can be replaced with a term $f$ if
+\item each rule $r$ containing \DIFdelbegin \DIFdel{free }\DIFdelend variables is replaced with a maximal collection of rules, each of which corresponds to a unique substitution 
+of  \DIFdelbegin \DIFdel{free }\DIFdelend variables (together with possibly preceeding type names)  with ground terms. A variable $v$ can be replaced with a term $f$ if
 \begin{itemize}
 \item there in an occurrence of a typed variable $t~v$ in $r$, and
 \item  $f\in \mathcal{D}(t)$
@@ -509,8 +585,9 @@ A model of $\Pi$ is a set of ground atoms satisfying certain conditions.
 
 To describe the conditions,  we  first introduce some definitions.
  We will call a predicate atom $p(t_1,\ldots, t_n)$ \textit{basic} if all the terms $t_1,\ldots t_n$ are basic.
- 
-Similarly, a sentence is called basic if all the atoms occurring in the sentence are basic.
+ \DIFaddbegin 
+
+\DIFaddend Similarly, a sentence is called basic if all the atoms occurring in the sentence are basic.
 
 \begin{definition}(A set ground atoms satisfying a basic predicate atom) \\
 \rm{
@@ -540,49 +617,84 @@ A set of ground atoms satisfies a ground built-in atom $t_1 \diamond t_2$ iff on
 \medskip\noindent
 The semantics of a program containing a built-in atom $t_1 \diamond t_2$ where $\diamond~\in~\{<, \le, \ge, >\}$ is \textit{defined} if and only of both $t_1$, $t_2$ are both constants or integer numerals.
 
-\begin{definition} (A set of ground atoms satisfying a literal)\\
+\begin{definition} (A set of ground atoms satisfying a \DIFaddbegin \DIFadd{literal)}\\
 {\rm
-A set of ground atoms $A$ satisfies a literal $l$ if one of the following conditions is satisfied:
-\begin{enumerate}
-\item $l$ is of the form $a$, where $a$ is an atom satisfied by $A$
-\item $l$ is of the form $\texttt{not}~a$, where $a$ is an atom not satisfied by $A$ 
-\end{enumerate}
+\DIFadd{A set of ground atoms $A$ satisfies a literal $l$ if one of the following conditions is satisfied:
+}\begin{enumerate}
+\item \DIFadd{$l$ is of the form $a$, where $a$ is an atom satisfied by $A$
+}\item \DIFadd{$l$ is of the form $\texttt{not}~a$, where $a$ is an atom not satisfied by $A$ 
+}\end{enumerate}
 } 
 \end{definition}
 
-\begin{definition}(A set of ground atoms satisfying a basic sentence) \\
-\rm{
+\begin{definition}\DIFadd{(A set of ground atoms satisfying a }\DIFaddend basic sentence) \\
+\DIFdelbegin %DIFDELCMD < \rm{
+%DIFDELCMD < A set of of ground atoms $A$ satisfies a basic sentence $S$ ($A \vdash S$) if one of the following conditions is satisfied:
+%DIFDELCMD < \begin{enumerate}
+%DIFDELCMD < \item $S$ is a basic atom, and $S \in A$
+%DIFDELCMD < \item $S$ is of the form $not~S^\prime$, and $A$ does not satisfy $S^\prime$
+%DIFDELCMD < \item $S$ is of the form $S_1~or~S_2$ ($S_1~and~S_2$) and $A$ satisfies one (both) of the sentences  $S_1$ and $S_2$
+%DIFDELCMD < \end{enumerate}
+%DIFDELCMD < }
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \rm{
 A set of of ground atoms $A$ satisfies a basic sentence $S$ ($A \vdash S$) if one of the following conditions is satisfied:
 \begin{enumerate}
 \item $S$ is a literal satisfied by $A$
 \item $S$ is of the form $S_1~or~S_2$ ($S_1~and~S_2$) and $A$ satisfies one (both) of the sentences  $S_1$ and $S_2$
 \end{enumerate}
 }
+\DIFaddend 
 
 \hfill$\Box$
 \end{definition}
 
 \noindent
-Let $S$ be a sentence, and 
-\noindent\medskip
+\DIFdelbegin %DIFDELCMD < \medskip
+%DIFDELCMD < %%%
+\DIFdelend Let $S$ be a sentence\DIFdelbegin \DIFdel{. By $S^\prime$ we denote the sentence obtained from $S$ by replacing each  quantified term 
+}\begin{displaymath}\DIFdel{quantifier~p }\end{displaymath}
+%DIFAUXCMD
+\DIFdel{with }\begin{displaymath}\DIFdel{ quantifier~p~X}\end{displaymath}
+ %DIFAUXCMD
+\DIFdel{where $X$ is a variable not occurring in $S$ and 
+unique for each quantified term in $S$.
+}%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \DIFadd{, and 
+}\DIFaddend \noindent\medskip
 Let
 \begin{itemize}
-\item $\{U_1,\ldots U_n\}$ be the set of all universally quantified terms  of $S$ whose  types are $Tu_1,\ldots, Tu_n$ respectively;
-\item $\{E_1, \ldots E_m\}$ be the set of all universally quantified terms  of $S$ whose  types are $Te_1,\ldots, Te_m$ respectively;
-\end{itemize}
+\item \DIFdelbegin \DIFdel{$X_1,\ldots X_n$ be the variables occurring in existentially }\DIFdelend \DIFaddbegin \DIFadd{$\{U_1,\ldots U_n\}$ be the set of all universally }\DIFaddend quantified terms  of \DIFdelbegin \DIFdel{$S^\prime$ of types $Tx_1,\ldots, Tx_n$ correspondingly
+}\DIFdelend \DIFaddbegin \DIFadd{$S$ whose  types are $Tu_1,\ldots, Tu_n$ respectively;
+}\DIFaddend \item \DIFdelbegin \DIFdel{$Y_1, \ldots Y_m$ be the variables occurring in }\DIFdelend \DIFaddbegin \DIFadd{$\{E_1, \ldots E_m\}$ be the set of all }\DIFaddend universally quantified terms  of \DIFdelbegin \DIFdel{$S^\prime$ of types $Ty_1, \ldots, Ty_m$ correspondingly
+}\DIFdelend \DIFaddbegin \DIFadd{$S$ whose  types are $Te_1,\ldots, Te_m$ respectively;
+}\DIFaddend \end{itemize}
 
 \noindent\medskip
-For a set $\{T_1,\ldots,T_k\}$ of quantified terms of $S$  $S|_{\{T_k = t_1, \ldots, T_k = t_k\}}$ we denote the sentence obtained from $S$ by 
+For a \DIFdelbegin \DIFdel{sentence }\DIFdelend \DIFaddbegin \DIFadd{set $\{T_1,\ldots,T_k\}$ of quantified terms of }\DIFaddend $S$  \DIFdelbegin \DIFdel{by $S|_{\{Z_1 = z_1, \ldots, Z_n = z_n\}}$ }\DIFdelend \DIFaddbegin \DIFadd{$S|_{\{T_k = t_1, \ldots, T_k = t_k\}}$ }\DIFaddend we denote the sentence obtained from $S$ by 
 \begin{enumerate}
-\item for quantified term $T_i \in \{T_1,\ldots, T_k\}$ replacing every occurrence of a quantified term $T_i$  with $t_i$;
-\end{enumerate}
+\item for \DIFdelbegin \DIFdel{each variable $Z_i \in \{Z_1,\ldots, Z_n\}$ }\DIFdelend \DIFaddbegin \DIFadd{quantified term $T_i \in \{T_1,\ldots, T_k\}$ }\DIFaddend replacing every occurrence of a quantified term \DIFdelbegin \begin{displaymath}\DIFdel{ quantifier~p~Z_i}\end{displaymath} %DIFAUXCMD
+\DIFdel{with $z_i$;
+}%DIFDELCMD < \item %%%
+\DIFdel{replacing all other occurrences of each $Z_i \in  \{Z_1,\ldots, Z_n\}$ with $z_i$.
+}\DIFdelend \DIFaddbegin \DIFadd{$T_i$  with $t_i$;
+}\DIFaddend \end{enumerate}
 
 \begin{definition}(A set of ground atoms satisfying a sentence)\\
-\rm{
+\DIFdelbegin %DIFDELCMD < \rm{
+%DIFDELCMD <    A set of ground terms $A$ satisfies  $S$ iff
+%DIFDELCMD <   \begin{displaymath} \exists (x_1,\ldots,x_n)  \in \mathcal{D}(Tx_1) \times \ldots \times \mathcal{D}(Tx_n): 
+%DIFDELCMD < \forall (y_1,\ldots,y_m) \in  \mathcal{D}(Ty_1) \times \ldots \times \mathcal{D}(Ty_m):\end{displaymath} \begin{displaymath}(A \vdash S^\prime|_{\{X_1 = x_1, \ldots, X_n = x_n, Y_1 = y_m,\ldots Y_m = y_m\}})\end{displaymath}
+%DIFDELCMD < }
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \rm{
    A set of ground terms $A$ satisfies  $S$ iff
   $$ \exists (e_1,\ldots,e_n)  \in \mathcal{D}(Te_1) \times \ldots \times \mathcal{D}(Te_n): 
 \forall (u_1,\ldots,u_m) \in  \mathcal{D}(Tu_1) \times \ldots \times \mathcal{D}(Tu_m):$$ $$(A \vdash S|_{\{E_1 = e_1, \ldots, E_m = e_m, U_1 = u_1,\ldots U_n = u_n\}})$$
 }
+\DIFaddend 
 
 \hfill$\Box$
 \end{definition}
@@ -620,22 +732,69 @@ A set of ground atoms $A$ satisfies a rule
 
 
 
-\subsection{Program models}
+\DIFdelbegin %DIFDELCMD < \begin{definition}%%%
+\DIFdel{(A model of a program)}%DIFDELCMD < \\
+%DIFDELCMD < \rm{
+%DIFDELCMD < Let $A$ be a set of ground atoms of a program $\Pi$; $M$ be the sets of all literals $l$ such that $\Pi$ contains a rule
+%DIFDELCMD < \begin{displaymath}\mbox{\texttt{maybe}}~l~\mbox{\texttt{if}}~body.\end{displaymath} where $body$ is satisfied by $A$.
+%DIFDELCMD < $A$ is a model of $\Pi$ if and only if it can be written as a union  $M^\prime \cup C$, where
+%DIFDELCMD < \begin{enumerate}
+%DIFDELCMD < \item $M^\prime$ is $M \cap A$;
+%DIFDELCMD < \item $C$ is the smallest set of ground literals such that $M^\prime \cup C$ satisfies all the rules of $\Pi$ whose heads are sentences;
+%DIFDELCMD < \item $M^\prime \cup C$ satisfies all the rules of $\Pi$ whose heads are cardinality constraints.
+%DIFDELCMD < \end{enumerate}
+%DIFDELCMD < }
+%DIFDELCMD < \hfill %%%
+\DIFdel{$\Box$
+}%DIFDELCMD < \end{definition}
+%DIFDELCMD < %%%
+\subsection*{\DIFdel{Alternative Definition for program models(by Dr.Gelfond)}}
+%DIFAUXCMD
+\DIFdelend \DIFaddbegin \subsection{\DIFadd{Program models}}
+\DIFaddend 
 
-Let $\Pi$ be an $L$ program.
+\DIFdelbegin %DIFDELCMD < \begin{definition}%%%
+\DIFdel{(Program reduct) }%DIFDELCMD < \\
+%DIFDELCMD < \rm{
+%DIFDELCMD < Let $\Pi$ be an L program and $A$ be a set of ground atoms.
+%DIFDELCMD < We obtain an L program $\Pi^A$ (the \textit{reduct} of $\Pi$ with respect to $S$) from $\Pi$ as follows:
+%DIFDELCMD < \begin{enumerate}
+%DIFDELCMD < \item For every rule  $r$ of $\Pi$ of the form
+%DIFDELCMD < \begin{displaymath}\mbox{\texttt{maybe}}~l~\mbox{\texttt{if}}~body.\end{displaymath} 
+%DIFDELCMD < if $body$ is satisfied by $S$, add the rule $l~ \texttt{if} body$ and remove $r$.
+%DIFDELCMD < \item For every rule  $r$ of $\Pi$ of the form
+%DIFDELCMD < \begin{displaymath}\mbox{\texttt{maybe}}~l~\mbox{\texttt{if}}~body.\end{displaymath}  where $body$ is not satisfied by $S$, remove $r$.
+%DIFDELCMD < \end{enumerate}
+%DIFDELCMD < }
+%DIFDELCMD < \hfill%%%
+\DIFdel{$\Box$
+}%DIFDELCMD < \end{definition}
+%DIFDELCMD < %%%
+\DIFdel{Note that the reduct of }\DIFdelend \DIFaddbegin \DIFadd{Let }\DIFaddend $\Pi$ \DIFdelbegin \DIFdel{is }\DIFdelend \DIFaddbegin \DIFadd{be }\DIFaddend an $L$ program\DIFdelbegin \DIFdel{not containing rules with maybe literals in heads.
+}\DIFdelend \DIFaddbegin \DIFadd{.
 For every atom $a$ occurring, let $a^\prime$ be a fresh atom not occurring in $\Pi$, such that for any two distict atoms $a_1 \not= a_2$ of $\Pi$, $a^\prime_1 \not= a^\prime_2$.
 By $\Pi^\prime$ we denote a program obtained form $\Pi$ by:
+}
 
 \begin{enumerate}
-\item replacing all maybe statements of the form $\texttt{maybe}~l$ with $l~or~(\texttt{not}~l)$.
-\item replacing all literals of the form $\texttt{not} a$ with $a^\prime$. 
-\end{enumerate}
+\item \DIFadd{replacing all maybe statements of the form $\texttt{maybe}~l$ with $l~or~(\texttt{not}~l)$.
+}\item \DIFadd{replacing all literals of the form $\texttt{not} a$ with $a^\prime$. 
+}\end{enumerate}
 
-Let $A^\prime$ denote the set of all new atoms introduced in $P^\prime$.
+\DIFadd{Let $A^\prime$ denote the set of all new atoms introduced in $P^\prime$.
+}
 
 
-\begin{definition}(A model of a program)\\
-\rm{
+\DIFaddend \begin{definition}(A model of a program)\\
+\DIFdelbegin %DIFDELCMD < \rm{
+%DIFDELCMD < Let $A$ be a set of ground atoms of a program $\Pi$; $A$ is a model of $\Pi$ if and only if the following conditions are satisfied:
+%DIFDELCMD < \begin{enumerate}
+%DIFDELCMD < \item $A$ is the mimimal set satisfying the rules of $\Pi^A$ whose heads are sentences.
+%DIFDELCMD < \item $A$ satisfies all the rules of $\Pi^A$ whose heads are cardinality constraints.
+%DIFDELCMD < \end{enumerate}
+%DIFDELCMD < }
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \rm{
 Let $A$ be a set of ground atoms of a program $\Pi$; $A$ is a model of $\Pi$ if and only if 
 there exists a set of atoms $B$ of $\Pi^\prime$ such that  the following conditions are satisfied:
 \begin{enumerate}
@@ -644,7 +803,7 @@ there exists a set of atoms $B$ of $\Pi^\prime$ such that  the following conditi
 \item $B$ satisfies all the rules of $\Pi^\prime$ whose heads are cardinality constraints.
 \end{enumerate}
 }
-\hfill$\Box$
+\DIFaddend \hfill$\Box$
 \end{definition}
 
 \section{Examples}
@@ -667,15 +826,45 @@ has exactly one model $\{\}$, because it  does not contain maybe literals or car
 
 \medskip\noindent
 The program $\Pi_3$:
-\begin{verbatim}
+\DIFdelbegin %DIFDELCMD < \begin{verbatim}%DIFDELCMD < 
+%DIFDELCMD < 
+
+%DIFDELCMD < type t1 = {5,6,7}.
+%DIFDELCMD < type t2 = {0,1,2}
+%DIFDELCMD < p(t2 N) if q(N+5).
+%DIFDELCMD < maybe q(t1 N).
+%DIFDELCMD < 1{q(t1 N)}2. 
+%DIFDELCMD < \end{verbatim}
+%DIFDELCMD < %%%
+\DIFdel{has three models:
+}%DIFDELCMD < \begin{verbatim}%DIFDELCMD < 
+%DIFDELCMD < {q(5),q(6),p(1),p(0)}; 
+%DIFDELCMD < {q(6),q(7),p(1),p(2)}; 
+%DIFDELCMD < {q(5),q(7),p(0),p(2)}.
+%DIFDELCMD < \end{verbatim}
+%DIFDELCMD < 
+
+%DIFDELCMD < \medskip\noindent
+%DIFDELCMD < %%%
+\DIFdel{Note that, for example, }\texttt{\DIFdel{\{q(5),q(6),p(1),p(0),p(2)\}}} %DIFAUXCMD
+\DIFdel{is not a model of $\Pi_3$, because $C =$ }\texttt{\DIFdel{\{p(1),p(0),p(2)\}}} %DIFAUXCMD
+\DIFdel{is not the smallest set of ground atoms such that }\texttt{\DIFdel{\{q(5),q(6)\}}} %DIFAUXCMD
+\DIFdel{$\cup~C$ satisfies the rules
+}%DIFDELCMD < \begin{verbatim}%DIFDELCMD < 
+%DIFDELCMD < p(0) if q(5).
+%DIFDELCMD < p(1) if q(6).
+%DIFDELCMD < p(2) if q(7).
+%DIFDELCMD < \end{verbatim}
+%DIFDELCMD <  %%%
+\DIFdelend \DIFaddbegin \begin{verbatim}
 type t1 = {5,6,7}.
 type t2 = {0,1,2}.
 p(t2 N) if q(N+5).
 maybe q(t1 N).
 1<=|{q(t1 N)}<=2. 
 \end{verbatim}
-has six models:
-\begin{verbatim}
+\DIFadd{has six models:
+}\begin{verbatim}
 {p(1), p(2), q(6), q(7)},
 {p(2), q(7)},
 {p(1), q(6)},
@@ -683,6 +872,7 @@ has six models:
 {p(0), p(2), q(5), q(7)},
 {p(0), q(5)}
 \end{verbatim}
+\DIFaddend 
 
 
 \subsection{Safety Obligations}
@@ -736,20 +926,27 @@ The set of required inspection is represented by a type consisting of two elemen
 type requiredInspection = {epa_i_652_6B_714_A, epa_i_652_6B_714_B}.
 \end{verbatim} 
 
-An EPA safety hearing is passed if it is not pending:
-\begin{verbatim}
+\DIFaddbegin \DIFadd{An EPA safety hearing is passed if it is not pending:
+}\begin{verbatim}
 passed(epaFine_j_652_6B_710_C H) if not pending(H).
 \end{verbatim}
- 
-\medskip\noindent
-The first inspection named EPA i/652/6B/714/A is  passed if we have completed all 
-   required forms and every EPA safety hearing is passed:
 
-\begin{verbatim}
+\DIFaddend \medskip\noindent
+The first inspection named EPA i/652/6B/714/A is  passed if we have completed all 
+   required forms and \DIFdelbegin \DIFdel{have no EPA safety hearings pending}\DIFdelend \DIFaddbegin \DIFadd{every EPA safety hearing is passed}\DIFaddend :
+
+\DIFdelbegin %DIFDELCMD < \begin{verbatim}%DIFDELCMD < 
+%DIFDELCMD < passed(epa_i_652_6B_714_A) if
+%DIFDELCMD <    completed(every requiredFromEPA714) and
+%DIFDELCMD <    not pending(every epaFine_j_652_6B_710_C).
+%DIFDELCMD < \end{verbatim}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \begin{verbatim}
 passed(epa_i_652_6B_714_A) if
    completed(every requiredFromEPA714) and
    passed(every epaFine_j_652_6B_710_C).
 \end{verbatim}
+\DIFaddend 
 
 \medskip\noindent
 The second inspection named  EPA i/652/6B/714/B is passed if we have paid all fines 
@@ -763,15 +960,22 @@ passed(epa_i_652_6B_714_B) if
 \medskip\noindent
 All the forms, hearings and infractions mentioned in the previous two definitions are defined by types:
 
-\begin{verbatim}
+\DIFdelbegin %DIFDELCMD < \begin{verbatim}%DIFDELCMD < 
+%DIFDELCMD < type epaSafetyHearing = {}.
+%DIFDELCMD < type requiredFromEPA714 = {} .
+%DIFDELCMD < type epaFine_j_652_6B_710_C = {}.
+%DIFDELCMD < \end{verbatim}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \begin{verbatim}
 type epaSafetyHearing = {es1,es2}.
 type requiredFromEPA714 = {rfe1} .
 type epaFine_j_652_6B_710_C = {efj1,efj2,efj3}.
 \end{verbatim}
+\DIFaddend 
 
 \medskip\noindent
 A complete program with type declarations and rules put in the right order is given in appendix \ref{A}
-   
+
 \subsection{K-vertex Connectivity of Graphs}
 
 A graph is called \textit{K-vertex-connected} (or simply \textit{K-connected})  if it has more than $K$ vertices and remains connected whenever fewer than $K$ vertices are removed.
@@ -811,17 +1015,26 @@ type node = {1..n}.
 
 
 \medskip\noindent
-The edges of the graph are represented with the facts below. The atom $edge(i,j)$ for integers $i$ and $j$ is true if and only if there is an edge from node $i$ to node $j$ in the graph. The edges are defined as follows:
+The edges of the graph are represented with the facts below. The atom $edge(i,j)$ for integers $i$ and $j$ is true if and only if there is an edge from node $i$ to node $j$ in the graph. The edges are defined as follows\DIFdelbegin \footnote{\DIFdel{for this example we could also define the edges using a single rule }\texttt{\DIFdel{edge(node X, node Y)}}%DIFAUXCMD
+\DIFdel{, however we use a more sophisticated description for demonstration purpose. Similar rules can be used to define, for example, graphs with double ring topologies.}}  %DIFAUXCMD
+\addtocounter{footnote}{-1}%DIFAUXCMD
+\DIFdelend :
 
-\begin{verbatim}
+\DIFdelbegin %DIFDELCMD < \begin{verbatim}%DIFDELCMD < 
+%DIFDELCMD < edge(node X, node Y) if X%n = (Y+1)%n.
+%DIFDELCMD < edge(node X, node Y) if X%n = (Y+2)%n.
+%DIFDELCMD < \end{verbatim}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \begin{verbatim}
 edge(node X, node Y) if X%n = (Y+1)%n.
 edge(node X, node Y) if X%n = (Y+2)%n.
 edge(node X, node Y) if edges(X,Y) 
 \end{verbatim}
+\DIFaddend 
 
-\noindent
-where the last rule is needed to represent the undirectedness of the graph.
-\medskip\noindent
+\DIFaddbegin \noindent
+\DIFadd{where the last rule is needed to represent the undirectedness of the graph.
+}\DIFaddend \medskip\noindent
 We will check $K-connectedness$ by trying to remove up to $K-1$ nodes from the graph and checking whether the graphs remains connected.
 For a node $N$ \texttt{removed(N)} is true if $N$ is removed from the graph. Any node may be removed from the graph:
 
@@ -854,13 +1067,23 @@ reachable(node X,node Y) if edge(X,Y)
 \end{verbatim}
 
 \medskip\noindent
+\DIFdelbegin \DIFdel{A }\DIFdelend \DIFaddbegin 
 
-To define reachability for nodes not connected by an edge, we need an auxiliary relation $reachable\_through(X,Z,Y)$ which says
-"a node $Y$ is reachable from node $X$ through node $Z$".
+\DIFadd{To define reachability for nodes not connected by an edge, we need an auxiliary relation $reachable\_through(X,Z,Y)$ which says
+"a }\DIFaddend node $Y$ is reachable from node $X$ \DIFdelbegin \DIFdel{if there exists a }\DIFdelend \DIFaddbegin \DIFadd{through }\DIFaddend node $Z$\DIFaddbegin \DIFadd{".
+}
 
-$reachable\_through(X,Z,Y)$ holds if $Z$ is reachable from $X$, $Y$ is reachable from $Z$ and none of the nodes $X$,$Y$,$Z$ was removed:
+\DIFadd{$reachable\_through(X,Z,Y)$ holds if $Z$ is }\DIFaddend reachable from $X$\DIFdelbegin \DIFdel{such that }\DIFdelend \DIFaddbegin \DIFadd{, }\DIFaddend $Y$ is reachable from $Z$ and none of the nodes $X$,$Y$,$Z$ was removed:
 
-\begin{verbatim}
+\DIFdelbegin %DIFDELCMD < \begin{verbatim}%DIFDELCMD < 
+%DIFDELCMD < reachable(node X,node Y) if reachable(X,some node Z)
+%DIFDELCMD <                             and reachable(Z,Y) 
+%DIFDELCMD <                             and not removed(X) 
+%DIFDELCMD <                             and not removed(Y) 
+%DIFDELCMD <                             and not removed(Z).
+%DIFDELCMD < \end{verbatim}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \begin{verbatim}
 reachable_though(node X,node Z, node Y) if reachable(X,Z),              
                             and reachable(Z,Y) 
                             and not removed(X) 
@@ -868,11 +1091,13 @@ reachable_though(node X,node Z, node Y) if reachable(X,Z),
                             and not removed(Z).
 \end{verbatim}
 
-Finally, a node $Y$ is reachable from node $X$ if $Y$ is reachable from $X$ through some node:
+\DIFadd{Finally, a node $Y$ is reachable from node $X$ if $Y$ is reachable from $X$ through some node:
+}
 
 \begin{verbatim}
 reachable(node X, node Y) if reachable_through(node X, some node, node Y).
 \end{verbatim} 
+\DIFaddend 
 
 
 \medskip\noindent
@@ -899,15 +1124,58 @@ The graph is not $K$-connected if and only there exists at least one model of th
 The program has no models for $k<=4$ but has a model for $k=5$. That is, the graph on figure \ref{fig1} is $4-connected$ but not $5-connected$ (for example, the nodes \{2,3,4,5\} can be removed from the graph to make it disconnected).
 
 
-A complete program for this example is given in appendix \ref{B}
+\DIFaddbegin \DIFadd{A complete program for this example is given in appendix \ref{B}
+}
 
  
 
-\pagebreak
+\DIFaddend \pagebreak
 \appendix
 \section{L program for checking safety obligations}\label{A}
 
-\begin{verbatim}
+\DIFdelbegin %DIFDELCMD < \begin{verbatim}%DIFDELCMD < 
+%DIFDELCMD < 
+
+%DIFDELCMD < type requiredInspection = {epa_i_652_6B_714_A, epa_i_652_6B_714_B}.
+%DIFDELCMD < type epaSafetyHearing = {}.
+%DIFDELCMD < type requiredFromEPA714 = {} .
+%DIFDELCMD < type epaFine_j_652_6B_710_C = {}.
+%DIFDELCMD < 
+
+%DIFDELCMD < 
+%DIFDELCMD < safetyObligationsMet if
+%DIFDELCMD <    requirementsCertified and
+%DIFDELCMD <    validationProcessFollowed and
+%DIFDELCMD <    passed(every requiredInspection).
+%DIFDELCMD < 
+
+%DIFDELCMD < requirementsCertified if
+%DIFDELCMD <    requirementsSound and
+%DIFDELCMD <    requirementsComplete.
+%DIFDELCMD < 
+
+%DIFDELCMD < validationProcessFollowed if
+%DIFDELCMD <    satisfied(code_825_A_6_A) and
+%DIFDELCMD <    satisfied(code_825_A_6_B) and
+%DIFDELCMD <    satisfied(code_825_A_6_C) and
+%DIFDELCMD <    satisfied(code_825_A_6_D) and
+%DIFDELCMD <    satisfied(code_825_A_6_E).
+%DIFDELCMD < 
+
+%DIFDELCMD < 
+%DIFDELCMD < passed(epa_i_652_6B_714_A) if
+%DIFDELCMD <    completed(every requiredFromEPA714) and
+%DIFDELCMD <    not pending(every epaFine_j_652_6B_710_C).
+%DIFDELCMD < 
+
+%DIFDELCMD < 
+%DIFDELCMD < passed(epa_i_652_6B_714_B) if
+%DIFDELCMD <    paid(every epaFine_j_652_6B_710_C).
+%DIFDELCMD < 
+
+%DIFDELCMD < \end{verbatim}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \begin{verbatim}
 
 type requiredInspection = {epa_i_652_6B_714_A, epa_i_652_6B_714_B}.
 type epaSafetyHearing = {es1,es2}.
@@ -942,9 +1210,46 @@ passed(epa_i_652_6B_714_A) if
 passed(epa_i_652_6B_714_B) if
    paid(every epaFine_j_652_6B_710_C).
 \end{verbatim}
-\pagebreak
+\DIFaddend \pagebreak
 \section{L program for checking K-connectivity of a graph}\label{B}
-\begin{verbatim}
+\DIFdelbegin %DIFDELCMD < \begin{verbatim}%DIFDELCMD < 
+%DIFDELCMD < const n = 5.
+%DIFDELCMD < const k = 2.
+%DIFDELCMD < 
+
+%DIFDELCMD < type node = {1..n}.
+%DIFDELCMD < 
+
+%DIFDELCMD < edge(node X, node Y) if X%n = (Y+1)%n.
+%DIFDELCMD < edge(node X, node Y) if X%n = (Y+2)%n.
+%DIFDELCMD < 
+
+%DIFDELCMD < maybe removed(node N).
+%DIFDELCMD < 
+
+%DIFDELCMD < 0 <= |{removed(node N)}| <= k-1.
+%DIFDELCMD < 
+
+%DIFDELCMD < reachable(node X, X) if not removed(X).
+%DIFDELCMD < reachable(node X,node Y) if edge(X,Y) 
+%DIFDELCMD <                             and not removed(X) 
+%DIFDELCMD <                             and not removed(Y). 
+%DIFDELCMD < reachable(node X,node Y) if reachable(X,some node Z)
+%DIFDELCMD <                             and reachable(Z,Y) 
+%DIFDELCMD <                             and not removed(X) 
+%DIFDELCMD <                             and not removed(Y) 
+%DIFDELCMD <                             and not removed(Z).
+%DIFDELCMD < 
+
+%DIFDELCMD < disconnected if    not reachable(some node X, some node Y) 
+%DIFDELCMD <                    and not removed(X)
+%DIFDELCMD <                    and not removed(Y).                
+%DIFDELCMD < 
+
+%DIFDELCMD < 1<=|{disconnected}|<=1.
+%DIFDELCMD < \end{verbatim}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \begin{verbatim}
 const n = 6.
 const k = 5.
 
@@ -966,7 +1271,7 @@ reachable_through(node X,node Z, node Y) if reachable(X,Z)
                             and not removed(X) 
                             and not removed(Y) 
                             and not removed(Z).
-                            
+
 
 reachable(node X,node Y) if reachable_through(X,some node, Y).
 
@@ -980,7 +1285,7 @@ disconnected_graph  if   disconnected(some node, some node).
 
 1<=|{disconnected_graph}|<=1.
 \end{verbatim}
-%\bibliography{mylib}
+\DIFaddend %\bibliography{mylib}
 %\bibliographystyle{plain}
 
 
