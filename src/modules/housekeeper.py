@@ -96,13 +96,13 @@ def demodularize_tuple(T):
         return formattedNum
     elif T[0] in lexemes:
         return T
-    elif T[0] in {'ar', 'sum', 'product'}:
+    elif T[0] in {'ar', 'sum', 'prod'}:
         a = demodularize_tuple(T[1])
         b = demodularize_tuple(T[3])
-        if T[2][0] == 'mod': # T[0] in {'ar', 'product'}
-            root = 'sum' if T[0] == 'product' else 'ar'
-            div = 'product', a, ('div', '/'), b
-            mult = 'product', div, ('mult', '*'), b
+        if T[2][0] == 'mod': # T[0] in {'ar', 'prod'}
+            root = 'sum' if T[0] == 'prod' else 'ar'
+            div = 'prod', a, ('div', '/'), b
+            mult = 'prod', div, ('mult', '*'), b
             return root, a, ('minus', '-'), mult
         else:
             return T[0], a, T[2], b
@@ -172,7 +172,7 @@ def calc_ground_ar(T):
         return calculated_cnames[T]
     elif T[0] == 'num':
         return num_to_int(T)
-    else: # in {'ar', 'sum', 'product'}
+    else: # in {'ar', 'sum', 'prod'}
         a = calc_ground_ar(T[1])
         b = calc_ground_ar(T[3])
         arOp = T[2]
