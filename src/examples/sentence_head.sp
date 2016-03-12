@@ -1,29 +1,29 @@
 
 predicates
 
-g().
-q().
 a().
 d().
-c().
+q().
+g().
 b().
+c().
 
 
 rules
 
--q | -c :- g.
--q | -c :- d.
 b | -c :- g.
 b | -c :- d.
+-q | -c :- g.
+-q | -c :- d.
 a | -c :- g.
 a | -c :- d.
--q :- not q.
 -b :- not b.
--c :- not c.
--g :- not g.
 -a :- not a.
+-q :- not q.
+-c :- not c.
 -d :- not d.
+-g :- not g.
 
 display
 
-g. q. a. d. c. b. 
+a. d. q. g. b. c. 
