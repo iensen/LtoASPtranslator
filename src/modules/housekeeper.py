@@ -102,7 +102,7 @@ def demodularize_tuple(T):
         if T[2][0] == 'mod': # T[0] in {'ar', 'product'}
             root = 'sum' if T[0] == 'product' else 'ar'
             div = 'product', a, ('div', '/'), b
-            mult = 'product', b, ('mult', '*'), div
+            mult = 'product', div, ('mult', '*'), b
             return root, a, ('minus', '-'), mult
         else:
             return T[0], a, T[2], b
