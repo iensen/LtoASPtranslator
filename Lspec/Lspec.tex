@@ -147,7 +147,8 @@ where $t$ is an identifier and $set\_expr$ is a set expression defined in sectio
 We will say that the type $t$ is \textit{defined} by a program if it contains a declaration of the form (\ref{tdecl}). 
 
 \subsection{Quantified Terms}
-%VUFIXME 
+
+
 A \textit{\textbf{quantified term}} is of the form:
  $$ quantifier~p $$
 
@@ -155,7 +156,7 @@ A \textit{\textbf{quantified term}} is of the form:
 
 Where $quantifier$ is an identifier in the set $\{\mbox{\texttt{every}, \texttt{some}}\}$, $p$ is an identifier also referred to as the $type$ of the quantified term.
 
-We will refer to a quantified term starting with a quantifier $\mbox{\texttt{some}}$($\mbox{\texttt{every}}$) as an \textbf{\textit{existentially quantified}}(\textbf{\textit{universally quantified}}).  
+We will refer to a quantified term starting with the quantifier $\mbox{\texttt{some}}$($\mbox{\texttt{every}}$) as an \textbf{\textit{existentially quantified}} (\textbf{\textit{universally quantified}}) term.  
 
 
 \subsection{Terms}
@@ -169,10 +170,10 @@ Atoms are divided into two categories:
 \end{itemize}
 
 A \textit{\textbf{predicate atom}} is a string of the form $p(t_1,\ldots t_n)$ where 
-$p$ is an identifier also referred to as a \textbf{\textit{predicate name}} and $t_1,\ldots,t_n$ are terms.
+$p$ is an identifier also referred to as a \textbf{\textit{predicate name}} and $t_1,\ldots,t_n$ are terms with $n \geq 0$.
 A predicate atom is called \textbf{\textit{basic}} if $t_1,\ldots,t_n$ are basic terms.
 
-A \textit{\textbf{built-in atom}} is a string of the form $t_1 \preceq t_2$ where $t_1$ and $t_2$ are terms and $\preceq \in$ \texttt{\{'<','>', '>=','<=','=','!='\}} is a string of special characters.
+A \textit{\textbf{built-in atom}} is a string of the form $t_1 \preceq t_2$ where $t_1$ and $t_2$ are basic terms and $\preceq \in$ \texttt{\{'<','>', '>=','<=','=','!='\}} is a string of special characters.
 
 An atom is called \textbf{\textit{ground}} if all the terms occurring in the atom are ground.
 
@@ -184,17 +185,17 @@ A \textit{\textbf{literal}} is of one of the forms:
 \item $a$
 \item $\texttt{not}~a$
 \end{itemize}
-where $a$ is an atom.
+where $a$ is a basic atom.
 
 
 \subsection{Sentences}\label{sentsec}
 
 A \textit{\textbf{sentence}} is either a literal or an expression of the one of the forms  $(A~or~B)$, $(A~and~B)$, where $A$ and $B$ are sentences. A sentence of the form $A~and~B$
-can also be written as $A, B$. Parentheses can be omitted in which case $and$ has higheer precedence than $or$. A sentence is called a \textbf{\textit{predicate sentence}}, if all the atoms occurring in the sentence are predicate atoms.
+can also be written as $A, B$. Parentheses can be omitted in which case $and$ has higher precedence than $or$. A sentence is called a \textbf{\textit{predicate sentence}}, if all the atoms occurring in the sentence are predicate atoms.
 
-\subsection{Maybe Statements}
+\subsection{Maybe Constructs}
 
-A \textbf{\textit{maybe statement}} is of the form $$\mbox{\texttt{maybe}}~p(t_1,\ldots t_n)$$ where $p(t_1,\ldots,t_n)$ is a basic predicate atom.
+A \textbf{\textit{maybe construct}} is of the form $$\mbox{\texttt{maybe}}~p(t_1,\ldots t_n)$$ where $p(t_1,\ldots,t_n)$ is a basic predicate atom.
 
 \subsection{Cardinality Constraints}
 
@@ -202,12 +203,12 @@ A \textit{\textbf{cardinality constraint}} is of the form
 $$v_1 <= |\{p(t_1,\ldots t_n)\}| <= v_2.$$
 where
 \begin{enumerate}
-\item each of $v_1$ and $v_2$ is a ground arithmetic term, integer numeral or a constant name, 
+\item each of $v_1$ and $v_2$ is a ground arithmetic term, an integer numeral, or a constant name, 
 \item $p(t_1,\ldots,t_n)$ is a basic predicate atom.
 \end{enumerate}
 \subsection{Rules} \label{rl}
 
-A \textit{\textbf{rule}} can be of the two forms:
+A \textit{\textbf{rule}} can be of two forms:
 \begin{equation}\label{eq1}
   head. 
 \end{equation}
@@ -227,7 +228,7 @@ where $head$ is one of the following:
 \end{enumerate}
 
 and $sentence$ is a sentence defined in section (\ref{sentsec}).
-We will also refer to $head$ and $sentence$ and the \textit{\textbf{head}} and the \textit{\textbf{body}} of the corresponding rule respectively.
+We will also refer to $head$ and $sentence$ as the \textit{\textbf{head}} and the \textit{\textbf{body}} of the corresponding rule respectively.
  
 \subsection{Program} \label{progdef}
 A \textbf{\textit{program}} is a collection of statements, each of which is either a constant declarations, a
@@ -237,8 +238,8 @@ A \textbf{\textit{program}} is a collection of statements, each of which is eith
 
 Constant declarations of a program must satisfy the following conditions:
 \begin{enumerate}
-\item Each constant name must not occur in the left hand side of a constant declaration at most once.
-\item Each identifier which is a subterm of the right hand side of a constant declaration must occur in the left hand side of a preceding constant declaration.   
+\item Each constant name must occur in the left-hand side of exactly one constant declaration.
+\item Each identifier which is a subterm of the right-hand side of a constant declaration must occur in the left-hand side of a preceding constant declaration.   
 
 \end{enumerate}
 
@@ -246,8 +247,8 @@ Constant declarations of a program must satisfy the following conditions:
 
 Type declarations of a program must satisfy the following conditions:
 \begin{enumerate}
-\item Each type name must occur in the left hand side of a type declaration at most once.
-\item Each identifier occurring as  a subexpression of an expression on the right hand side of a  type declaration must be a type name defined by a preceding type declaration. 
+\item Each type name must occur in the left-hand side of exactly one type declaration.
+\item Each identifier occurring as  a subexpression of the right-hand side of a  type declaration must be a type name defined by a preceding type declaration. 
 \end{enumerate}
 
 
@@ -257,9 +258,8 @@ Rules of a program must satisfy the following conditions:
 
 
 \item The leftmost occurrence of any variable  $V$ in a rule must be in the head of the rule and must be preceeded by a type name (also referred to as \textit{the type} of the variable in this rule).
-All other occurrences of $V$ are subterms of a basic term.
-\item For every typed variable $t~Var$ the identifier $t$ is a type 
- defined by the program.
+
+\item For every typed variable $t~Var$, the identifier $t$ is a type defined by the program.
 \item Every identifier  occurring in the rule as a subterm of an arithmetic term is a constant name defined by the program.
 \end{enumerate}
 \subsection{Language Grammar}
@@ -379,7 +379,7 @@ We define the semantics of an $L$ program $\Pi$ in terms of \textit{models} of $
 The notion of satisfiability is defined in section \ref{rsat} with all necessary background provided in sections 
 \ref{constants} - \ref{grp}.
 
-The semantics of a program $P$ containing a comment coincide with the semantics of the program obtained from $P$ by removing the comments. In the rest of this section we will consider programs not containing comments.
+The semantics of a program $P$ containing comments coincide with the semantics of the program obtained from $P$ by removing the comments. In the rest of this section we will consider programs not containing comments.
 
 
 
@@ -387,7 +387,7 @@ The semantics of a program $P$ containing a comment coincide with the semantics 
 \subsection{Constant Declarations} \label{constants}
 
 
-Let $\Pi$ be an $L$ program starting with constant declaration of the form
+Let $\Pi$ be an $L$ program starting with a constant declaration of the form
 $$\texttt{const} ~cn = gar\_term.$$
 
 Where $cn$ is referred to as a constant name and $gar\_term$ is a ground arithmetic term.
@@ -397,7 +397,7 @@ therefore its value $v$ can be obtained as defined in section \ref{at}.
 The models $\Pi$ coincide with the models of program $\Pi^\prime$ obtained from $\Pi$ by:
 \begin{enumerate}
 \item Removing the declaration $\texttt{const}~cn = gar\_term.$
-\item Replacing every subterm of a term $\Pi$ equal to $cn$ with numeric constant $v$. 
+\item Replacing every subterm of a term in $\Pi$ equal to $cn$ with the numeric constant $v$. 
 \end{enumerate} 
 
 
@@ -405,11 +405,11 @@ The models $\Pi$ coincide with the models of program $\Pi^\prime$ obtained from 
 By condition 2 for constant declarations defined in section \ref{progdef}, if the program $\Pi^\prime$ starts another constant declaration, its right hand side cannot contain numeric constants, therefore its semantics can be defined in the same manner as for $\Pi$.
  
 \medskip\noindent
-Therefore, it is sufficient to define the semantics for programs not containing constant declarations (and, therefore, not containing constant names in arithmetic terms too).
+Therefore, it is sufficient to define the semantics for programs not containing constant declarations (and, therefore, not containing constant names in arithmetic terms either).
 
 \subsection{Arithmetic Terms}\label{at}
 
-A program may contain ground arithmetic terms constructed from integer numerals and operations `+` (plus),  `-` (minus), `*` (multiplication), `/` (integer division), `\%` (modulo)\footnote{Current implementation allows only numerals in the range 0 to 2,147,483,647. Moreover, correct evaluation for an arithmetic term is guaranteed only if all its subterms have values within the range.} Each arithmetic term  has \textit{a value}. 
+A program may contain ground arithmetic terms constructed from integer numerals and operations `+` (plus),  `-` (minus), `*` (multiplication), `/` (integer division), `\%` (modulo)\footnote{Current implementation allows only numerals in the range from 0 to 2,147,483,647. Moreover, correct evaluation for an arithmetic term is guaranteed only if all its subterms have values within the range.} Each arithmetic term  has \textit{a value}. 
 The meaning and precedence of operations  `+`,  `-`, `*` is as usual. The  operation `/` has the same precedence as `*` and is defined as $$a/b := sgn(a*b) *(|a|~div~|b|)$$
 where 
 \begin{enumerate}
@@ -440,8 +440,8 @@ The mapping is defined as follows:
  
 \noindent
 $\mathcal{D}_\Pi(t~\mbox{\texttt{where}} ~V_1~in~type_1,\ldots, V_n~in~type_n)$ is $\{t| V_1 \in \mathcal{D}_\Pi(type_1),\ldots, V_n \in \mathcal{D}_\Pi(type_n)\}$ 
-\item For every sort expression of the form $$S_1 \diamond S_2$$ 
-$\mathcal{D}_\Pi(S_1 \diamond S_2)$ is $ \mathcal{D}_\Pi(S_1) \odot  \mathcal{D}_\Pi(S_2)$, where $\odot$ is a set operation: union, intersection, or difference when $\diamond$ is $+$, $*$ or $/$ correspondingly.
+\item For every set expression of the form $$S_1 \diamond S_2$$ 
+$\mathcal{D}_\Pi(S_1 \diamond S_2)$ is $ \mathcal{D}_\Pi(S_1) \odot  \mathcal{D}_\Pi(S_2)$, where $\odot$ is a set operation: union, intersection, or difference when $\diamond$ is $+$, $*$ or $\backslash$ correspondingly.
 
 \item For every type declaration of the form $$\texttt{type}~tn = set\_expr$$
 
@@ -454,8 +454,8 @@ $\mathcal{D}_\Pi(tn)$ is $\mathcal{D}_\Pi(set\_expr)$
 In the remainder of the section  we will mostly  use   $\mathcal{D}_\Pi$ to obtain the values  which correspond to the type names of $\Pi$.
 
 
-
-\subsection{Programs  Variables and Ground Programs}\label{grp}
+%VUUUUUUUUUUUUUU
+\subsection{Programs with Variables and Ground Programs}\label{grp}
 
 For a program $\Pi$ containing variables we obtain a corresponding \textit{ground} program $\Pi^g$ as follows:
 \begin{enumerate}
@@ -559,19 +559,14 @@ A set of of ground atoms $A$ satisfies a basic sentence $S$ ($A \vdash S$) if on
 \end{definition}
 
 \noindent
-Let $S$ be a sentence, and 
-\noindent\medskip
-Let
+Let $S$ be a sentence. And let
 \begin{itemize}
 \item $\{U_1,\ldots U_n\}$ be the set of all universally quantified terms  of $S$ whose  types are $Tu_1,\ldots, Tu_n$ respectively;
-\item $\{E_1, \ldots E_m\}$ be the set of all universally quantified terms  of $S$ whose  types are $Te_1,\ldots, Te_m$ respectively;
+\item $\{E_1, \ldots E_m\}$ be the set of all existentially quantified terms  of $S$ whose  types are $Te_1,\ldots, Te_m$ respectively;
 \end{itemize}
-
+%VUUUUUUUUUUUU
 \noindent\medskip
-For a set $\{T_1,\ldots,T_k\}$ of quantified terms of $S$  $S|_{\{T_k = t_1, \ldots, T_k = t_k\}}$ we denote the sentence obtained from $S$ by 
-\begin{enumerate}
-\item for quantified term $T_i \in \{T_1,\ldots, T_k\}$ replacing every occurrence of a quantified term $T_i$  with $t_i$;
-\end{enumerate}
+For a set $\{T_1,\ldots,T_k\}$ of quantified terms of $S$,  we denote the sentence obtained from $S$ by replacing every occurrence of a quantified term $T_i$  with $t_i$ by $S|_{\{T_k = t_1, \ldots, T_k = t_k\}}$.
 
 \begin{definition}(A set of ground atoms satisfying a sentence)\\
 \rm{
@@ -597,14 +592,13 @@ $A$ satisfies  the constraint $v_1 <= |\{p(t_1,\ldots t_n)\}| <= v_2$ iff $v_1 \
 \end{definition}
 
 
-As described in section \ref{rl}, program rules may be in one of the two forms. We sometimes say that a rule of the form $$head.$$ has a body which is satisfied by any set of ground atoms and use a canonical form $$head~\mbox{\texttt{if}}~body.$$ even if the body is not present.
+As described in section \ref{rl}, program rules may be in one of the two forms. We sometimes say that a rule of the form $$head.$$ has a body which is satisfied by any set of ground atoms and use the canonical form $$head~\mbox{\texttt{if}}~body.$$ even if the body is not present.
 
 
 
 \begin{definition}(A set of ground atoms satisfying a rule)\\
 \rm{
-A set of ground atoms $A$ satisfies a rule 
- head is either a cardinality constraint or a sentence and one of the following conditions holds:
+A set of ground atoms $A$ satisfies a rule, whose head is either a cardinality constraint or a sentence, if one of the following conditions holds:
 \begin{enumerate}
 \item $A$ does not satisfy $body$;
 \item $A$ satisfies both $body$ and $head$.
@@ -623,8 +617,8 @@ For every atom $a$ occurring, let $a^\prime$ be a fresh atom not occurring in $\
 By $\Pi^\prime$ we denote a program obtained form $\Pi$ by:
 
 \begin{enumerate}
-\item replacing all maybe statements of the form $\texttt{maybe}~l$ with $l~or~(\texttt{not}~l)$.
-\item replacing all literals of the form $\texttt{not} a$ with $a^\prime$. 
+\item replacing all maybe contructs of the form $\texttt{maybe}~l$ with $l~or~(\texttt{not}~l)$.
+\item replacing all literals of the form $\texttt{not}~a$ with $a^\prime$. 
 \end{enumerate}
 
 Let $A^\prime$ denote the set of all new atoms introduced in $P^\prime$.
@@ -636,7 +630,7 @@ Let $A$ be a set of ground atoms of a program $\Pi$; $A$ is a model of $\Pi$ if 
 there exists a set of atoms $B$ of $\Pi^\prime$ such that  the following conditions are satisfied:
 \begin{enumerate}
 \item $A = B \setminus A^\prime$.
-\item $B$ is the mimimal set satisfying the rules of $\Pi^\prime$ whose heads are sentences.
+\item $B$ is the mimimal set satisfying the rules of $\Pi^\prime$ whose heads are predicate sentences.
 \item $B$ satisfies all the rules of $\Pi^\prime$ whose heads are cardinality constraints.
 \end{enumerate}
 }
