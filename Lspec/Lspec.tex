@@ -129,11 +129,17 @@ A \textbf{\textit{set expression}}  is of one of the following forms:
 
 A shorthand $\{l..r\}$ (where each of $l$ and $r$ is either a constant name, an integer numeral, or a ground arithmetic term) may be used to represent the  set of all integers in the closed interval $[l, r]$. The numeric value represented by $l$ must be strictly less than that by $r$.
 
-\item An identifier (the name of some type).
+% types have not been introduced so far, so this violates linearity 
+% moreover, this constraint is not sufficient, and the correct one can be found in section 
+% which defines a program 
+%\item An identifier (the name of some type).
 
+\item An identifier.
 \item $t~$\texttt{where} $~V_1~in~type_1,\ldots, V_n~in~type_n$
  
-where $t$ is a term, $\{V_1, \ldots, V_n\}$ is the set of all variables occurring in $t$ and $type_1, \ldots type_n$ are identifiers (type names).
+where $t$ is a term, $\{V_1, \ldots, V_n\}$ is the set of all variables occurring in $t$ and $type_1, \ldots type_n$ are identifiers. 
+% same as above
+%(type names).
 
 \item $(S_1 \diamond S_2)$ , where $S_1$ and $S_2$ are set expressions and $\diamond$ is a set-theoretic operator, denoted by one of the special characters in $\{+, *, \backslash \}$. Parentheses can be omitted in which case $*$ and $\backslash$ have higher precedence than $+$ and all operations are left-associative.
 \end{itemize}
@@ -222,7 +228,7 @@ head~\mbox{\texttt{if}}~sentence.
 where $head$ is one of the following:
 \begin{enumerate}
 \item  a predicate sentence;
-\item  a maybe statement;
+\item  a maybe construct;
 \item  a cardinality constraint.
 \end{enumerate}
 
@@ -327,8 +333,9 @@ $built\_in$ ::= $ basic\_term~op~basic\_term$\\
 $op$ ::= $\texttt{>}~|~\texttt{<}~|~\texttt{>=}~|~\texttt{<=}~|~\texttt{=}~|~\texttt{!=}$ \\
 
 \subsubsection{Literals}
-$literal$ ::= $atom~|~\texttt{not}~atom$\\
-$predicate\_literal$ ::= $atom~|~\texttt{not}~predicate\_atom$
+$predicate\_literal$ ::= $predicate\_atom~|~\texttt{not}~predicate\_atom$\\
+$literal$ ::= $atom~|~\texttt{not}~predicate\_atom$
+
 
 \subsubsection{Sentences}
 $sentence$ ::= $s3$ \\
@@ -620,6 +627,7 @@ By $\Pi^\prime$ we denote a program obtained form $\Pi$ by:
 \item replacing all literals of the form $\texttt{not}~a$ with $a^\prime$. 
 \end{enumerate}
 
+\noindent
 Let $A^\prime$ denote the set of all new atoms introduced in $P^\prime$.
 
 
@@ -860,7 +868,8 @@ reachable_though(node X,node Z, node Y) if reachable(X,Z),
 Finally, a node $Y$ is reachable from node $X$ if $Y$ is reachable from $X$ through some node:
 
 \begin{verbatim}
-reachable(node X, node Y) if reachable_through(node X, some node, node Y).
+reachable(node X, node Y)
+                if reachable_through(node X, some node, node Y).
 \end{verbatim} 
 
 

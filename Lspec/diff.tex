@@ -1,7 +1,7 @@
 \documentclass[a4paper,10pt]{article}
 %DIF LATEXDIFF DIFFERENCE FILE
-%DIF DEL Lspec_old.tex   Mon Feb 22 21:23:17 2016
-%DIF ADD Lspec.tex       Fri Mar 11 23:40:01 2016
+%DIF DEL Lspec_old.tex   Sat Mar 12 21:48:32 2016
+%DIF ADD Lspec.tex       Sat Mar 12 22:02:21 2016
 \usepackage[utf8]{inputenc}
 \usepackage{amsthm}
 \usepackage{amsmath}
@@ -84,15 +84,23 @@ L symbols are non-empty strings of ascii characters divided into the following d
 \item special characters
 \end{itemize}
 
-\textbf{\textit{An integer numeral}} is a string of one or more decimal digits (0-9) possibly preceding by a minus sign
+\DIFaddbegin \DIFadd{An }\DIFaddend \textbf{\DIFdelbegin \textit{\DIFdel{An integer numeral}}%DIFAUXCMD
+\DIFdelend \DIFaddbegin \textit{\DIFadd{integer numeral}}\DIFaddend } is a string of one or more decimal digits (0-9)\DIFdelbegin \DIFdel{possibly preceding by a minus sign
+}\DIFdelend \DIFaddbegin \DIFadd{.
+}\DIFaddend 
 
 
-An \textbf{\textit{identifier}} is a  string of one or more letters, digits and underscore characters beginning with a letter. 
+An \textbf{\textit{identifier}} is a string of one \DIFaddbegin \DIFadd{letter followed by zero }\DIFaddend or more letters, digits\DIFdelbegin \DIFdel{and underscore characters beginning with a letter}\DIFdelend \DIFaddbegin \DIFadd{, and underscores}\DIFaddend .
 
 A \textbf{\textit{special character}} is one of the following characters:
-\begin{verbatim}
-'>','=','<','+','-','*','-','{','}','(',')',',','.','|'
+\DIFdelbegin %DIFDELCMD < \begin{verbatim}%DIFDELCMD < 
+%DIFDELCMD < '>','=','<','+','-','*','-','{','}','(',')',',','.','|'
+%DIFDELCMD < \end{verbatim}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \begin{verbatim}
+> = < + - * / % { } ( ) , . | \
 \end{verbatim}
+\DIFaddend 
 
 A \textbf{\textit{symbol}} is an integer numeral, an identifier or a special character.
 \subsection{Basic Terms}
@@ -105,7 +113,7 @@ Basic terms are divided into the following categories:
 \item functional terms
 \end{itemize}
 
-A \textit{\textbf{constant}} is either an identifier starting with a lowercase letter or an integer numeral. 
+A \textit{\textbf{constant}} is either an \DIFaddbegin \DIFadd{integer numeral or an }\DIFaddend identifier starting with a lowercase letter\DIFdelbegin \DIFdel{or an integer numeral}\DIFdelend .
 
 
 
@@ -113,32 +121,39 @@ A \textit{\textbf{variable}} is an identifier starting with an uppercase letter.
 
 A \textit{\textbf{typed variable}} is a string of the form $id~var$, where $id$ is an identifier also referred to as $type~name$ and $var$ is a variable.
 
-An \textit{\textbf{arithmetic term}} is a string of one of the following forms: 
-\begin{itemize}
-\item  $-(t)$ 
-\item $(t \diamond u)$
-\end{itemize} 
-where each of $t$ and $u$ is   either an integer numeral, a variable  \DIFdelbegin \DIFdel{, a numeric constant  }\DIFdelend or an  arithmetic \DIFdelbegin \DIFdel{terms}\DIFdelend \DIFaddbegin \DIFadd{term}\DIFaddend ; and $\diamond$ is a special symbol in the set \texttt{\{'+', '-', '*', '/', '\%'\}}; (\texttt{'\%'} stands for modulo operation). Parentheses can optionally be omitted in which case standard operator precedences apply. 
+An \textit{\textbf{arithmetic term}} is a string of \DIFdelbegin \DIFdel{one of the following forms: 
+}%DIFDELCMD < \begin{itemize}
+%DIFDELCMD < \item  %%%
+\DIFdel{$-(t)$ 
+}%DIFDELCMD < \item %%%
+\DIFdel{$(t \diamond u)$
+}%DIFDELCMD < \end{itemize} 
+%DIFDELCMD < %%%
+\DIFdel{where}\DIFdelend \DIFaddbegin \DIFadd{the form $t \diamond u$, where: }\DIFaddend each of $t$ and $u$ is either an integer numeral, a variable, \DIFdelbegin \DIFdel{a numeric constant  }\DIFdelend or an  arithmetic \DIFdelbegin \DIFdel{terms}\DIFdelend \DIFaddbegin \DIFadd{term}\DIFaddend ; and $\diamond$ is a special symbol in the set \texttt{\{'+', '-', '*', '/', '\%'\}} \DIFdelbegin \DIFdel{; (}\DIFdelend \DIFaddbegin \DIFadd{(with }\DIFaddend \texttt{'\%'} \DIFdelbegin \DIFdel{stands for modulo operation}\DIFdelend \DIFaddbegin \DIFadd{standing for modulo operator}\DIFaddend ). Parentheses can optionally be omitted in which case standard operator precedences apply. 
 
-A \textbf{\textit{functional term}} is a string of the form $f(t_1,\ldots t_n)$ where $t_1,\dots,t_n$ are basic terms, f  is an identifier also referred to as an \textit{\textbf{functional symbol}} and $n>0$. 
+A \textbf{\textit{functional term}} is a string of the form $f(t_1,\ldots t_n)$ where $t_1,\dots,t_n$ are basic terms, f  is an identifier also referred to as \DIFdelbegin \DIFdel{an }\DIFdelend \DIFaddbegin \DIFadd{a }\DIFaddend \textit{\textbf{functional symbol}}\DIFaddbegin \DIFadd{, }\DIFaddend and $n>0$. 
 
-We will say that a basic term $t^\prime$ is a \textbf{\textit{subterm}} of $t$ iff at least one of the following condition holds:
+\DIFaddbegin \DIFadd{Let $t$ and $t^\prime$ be basic terms. }\DIFaddend We will say that \DIFdelbegin \DIFdel{a basic term }\DIFdelend $t^\prime$ is a \textbf{\textit{subterm}} of $t$ iff at least one of the following \DIFdelbegin \DIFdel{condition }\DIFdelend \DIFaddbegin \DIFadd{conditions }\DIFaddend holds:
 \begin{itemize}
 \item $t  = t^\prime$ 
-\item $t$ is of the form $-(t^\prime)$
-\item $t$ is of the form $(t^\prime \diamond t_1)$
-\item $t$ is of the form $(t_1 \diamond t^\prime)$
-\item $t$ is of the form $f(t_1,\ldots t_n)$ and $t^\prime \in \{t_1,\ldots,t_n\}$
-\item there exists a term $t^{\prime\prime}$ such that $t^\prime$ is a subterm of  $t^{\prime\prime}$ and  $t^{\prime\prime}$ is a subterm of $t$
+\item $t$ is of the form \DIFdelbegin \DIFdel{$-(t^\prime)$
+}%DIFDELCMD < \item %%%
+\DIFdel{$t$ is of the form $(t^\prime \diamond t_1)$
+}\DIFdelend \DIFaddbegin \DIFadd{$t^\prime \diamond t_1$, where $t_1$ is some basic term
+}\DIFaddend \item $t$ is of the form \DIFdelbegin \DIFdel{$(t_1 \diamond t^\prime)$
+}\DIFdelend \DIFaddbegin \DIFadd{$t_1 \diamond t^\prime$, where $t_1$ is some basic term
+}\DIFaddend \item $t$ is of the form $f(t_1,\ldots t_n)$ and $t^\prime \in \{t_1,\ldots,t_n\}$
+\item there exists a \DIFdelbegin \DIFdel{term $t^{\prime\prime}$ }\DIFdelend \DIFaddbegin \DIFadd{basic term $t_1$ }\DIFaddend such that $t^\prime$ is a subterm of  \DIFdelbegin \DIFdel{$t^{\prime\prime}$ and  $t^{\prime\prime}$ }\DIFdelend \DIFaddbegin \DIFadd{$t_1$ and  $t_1$ }\DIFaddend is a subterm of $t$
 \end{itemize}
 
-\DIFaddbegin \DIFadd{We say that $t^\prime$ is a }\textit{\DIFadd{proper subterm}} \DIFadd{of $t$ if $t^\prime$ is a subterm of $t$ and $t \not= t^\prime$. 
+\noindent
+\DIFaddbegin \DIFadd{We say that $t^\prime$ is a }\textit{\DIFadd{proper subterm}} \DIFadd{of $t$ if $t^\prime$ is a subterm of $t$ and $t^\prime \not= t$. 
 }
 
-\DIFaddend \noindent
-A term $t$ is called \textbf{\textit{ground}} iff \DIFaddbegin \DIFadd{one of the following holds:
+
+\DIFaddend A term $t$ is called \textbf{\textit{ground}} iff \DIFaddbegin \DIFadd{at least one of the following holds:
 }\DIFaddend \begin{itemize}
-\item $t$ is an identifier of an integer numeral; or 
+\item $t$ is an identifier \DIFdelbegin \DIFdel{of }\DIFdelend \DIFaddbegin \DIFadd{or }\DIFaddend an integer numeral; or 
 \item all \DIFdelbegin \DIFdel{of the }\DIFdelend \DIFaddbegin \DIFadd{proper }\DIFaddend subterms of $t$  \DIFdelbegin \DIFdel{other than $t$ itself  }\DIFdelend are ground 
 \end{itemize}
 
@@ -150,25 +165,37 @@ A \textit{\textbf{constant declaration}} is of the form
 \texttt{const} ~c = v.
 \end{equation}
 where  $c$ is an identifier also referred to as  
-\textbf{\textit{constant name}}  and $v$ is a ground arithmetic term, an integer numeral  or an identifier.
-We will say that the constant $c$ is \textit{defined} by a program if it contains a declaration of the form (\ref{cdecl}).
-\subsection{Set Expressions}\label{sexpr}
+\textbf{\textit{constant name}}  and $v$ is a ground arithmetic term, an integer numeral\DIFaddbegin \DIFadd{, }\DIFaddend or an identifier. We will say that the constant $c$ is \textit{defined} by a program if \DIFdelbegin \DIFdel{it }\DIFdelend \DIFaddbegin \DIFadd{the program }\DIFaddend contains a declaration of the form (\ref{cdecl}).
+\DIFaddbegin 
+
+
+\DIFaddend \subsection{Set Expressions}\label{sexpr}
 
 A \textbf{\textit{set expression}}  is of one of the following forms:
 \begin{itemize}
 \item $\{t_1,t_2, \ldots, t_n\}$
 
- where $t_1,\ldots,t_n$ are ground terms. 
+ where $t_1,\ldots,t_n$ are ground terms \DIFaddbegin \DIFadd{and $n>0$}\DIFaddend . 
 
-A shorthand $\{l..r\}$, where each of $l$ and $r$ is either a constant name, integer numeral or a ground arithmetic term may be used to represent the  set of all integers in the range $n..m$.
+A shorthand $\{l..r\}$ \DIFdelbegin \DIFdel{, }\DIFdelend \DIFaddbegin \DIFadd{(}\DIFaddend where each of $l$ and $r$ is either a constant name, \DIFdelbegin \DIFdel{integer numeral }\DIFdelend \DIFaddbegin \DIFadd{an integer numeral, }\DIFaddend or a ground arithmetic term\DIFaddbegin \DIFadd{) }\DIFaddend may be used to represent the  set of all integers in the \DIFdelbegin \DIFdel{range $n..m$}\DIFdelend \DIFaddbegin \DIFadd{closed interval $[l, r]$. The numeric value represented by $l$ must be strictly less than that by $r$}\DIFaddend .
 
-\item An identifier.
+%DIF >  types have not been introduced so far, so this violates linearity 
+%DIF >  moreover, this constraint is not sufficient, and the correct one can be found in section 
+%DIF >  which defines a program 
+%DIF > \item An identifier (the name of some type).
+\DIFaddbegin 
 
-\item $t~$\texttt{where} $~V_1~in~type_1,\ldots, V_n~in~type_n$
+\DIFaddend \item An identifier.
+\DIFdelbegin %DIFDELCMD < 
 
-where $t$ is a term, $\{V_1, \ldots, V_n\}$ is a set of all variables occurring in $t$ and $type_1, \ldots type_n$ are identifiers.
+%DIFDELCMD < %%%
+\DIFdelend \item $t~$\texttt{where} $~V_1~in~type_1,\ldots, V_n~in~type_n$
 
-\item $(S_1 \diamond S_2)$ , where $S_1$ and $S_2$ are set expressions and $\diamond$ is a set theoretic operation, one of the special characters in the set $\{+,*,/\}$. Parentheses can be omitted in which case $*$ and $/$ have higher precedence than $+$ and all operations are left-associative.
+where $t$ is a term, $\{V_1, \ldots, V_n\}$ is \DIFdelbegin \DIFdel{a }\DIFdelend \DIFaddbegin \DIFadd{the }\DIFaddend set of all variables occurring in $t$ and $type_1, \ldots type_n$ are identifiers. 
+%DIF >  same as above
+%DIF > (type names).
+
+\item $(S_1 \diamond S_2)$ , where $S_1$ and $S_2$ are set expressions and $\diamond$ is a \DIFdelbegin \DIFdel{set theoretic operation, }\DIFdelend \DIFaddbegin \DIFadd{set-theoretic operator, denoted by }\DIFaddend one of the special characters in \DIFdelbegin \DIFdel{the set $\{+,*,/\}$}\DIFdelend \DIFaddbegin \DIFadd{$\{+, *, \backslash \}$}\DIFaddend . Parentheses can be omitted in which case $*$ and \DIFdelbegin \DIFdel{$/$ }\DIFdelend \DIFaddbegin \DIFadd{$\backslash$ }\DIFaddend have higher precedence than $+$ and all operations are left-associative.
 \end{itemize}
 
 \subsection{Type Declarations}
@@ -180,6 +207,7 @@ where $t$ is an identifier and $set\_expr$ is a set expression defined in sectio
 We will say that the type $t$ is \textit{defined} by a program if it contains a declaration of the form (\ref{tdecl}). 
 
 \subsection{Quantified Terms}
+
 
 A \textit{\textbf{quantified term}} is of \DIFdelbegin \DIFdel{one of the forms:
  }%DIFDELCMD < \begin{itemize}
@@ -197,7 +225,7 @@ A \textit{\textbf{quantified term}} is of \DIFdelbegin \DIFdel{one of the forms:
 
 Where $quantifier$ is an identifier in the set $\{\mbox{\texttt{every}, \texttt{some}}\}$, $p$ is an identifier also referred to as \DIFaddbegin \DIFadd{the }\DIFaddend $type$ \DIFdelbegin \DIFdel{,  and $t\_Var$ is a typed variable}\DIFdelend \DIFaddbegin \DIFadd{of the quantified term}\DIFaddend .
 
-We will refer to a quantified term starting with a quantifier $\mbox{\texttt{some}}$($\mbox{\texttt{every}}$) as an \textbf{\textit{existentially quantified}}(\textbf{\textit{universally quantified}}).  
+We will refer to a quantified term starting with \DIFdelbegin \DIFdel{a }\DIFdelend \DIFaddbegin \DIFadd{the }\DIFaddend quantifier $\mbox{\texttt{some}}$($\mbox{\texttt{every}}$) as an \textbf{\textit{existentially quantified}} (\textbf{\textit{universally quantified}}) \DIFaddbegin \DIFadd{term}\DIFaddend .  
 
 
 \subsection{Terms}
@@ -211,10 +239,10 @@ Atoms are divided into two categories:
 \end{itemize}
 
 A \textit{\textbf{predicate atom}} is a string of the form $p(t_1,\ldots t_n)$ where 
-$p$ is an identifier also referred to as a \textbf{\textit{predicate name}} and $t_1,\ldots,t_n$ are terms.
+$p$ is an identifier also referred to as a \textbf{\textit{predicate name}} and $t_1,\ldots,t_n$ are terms \DIFaddbegin \DIFadd{with $n \geq 0$}\DIFaddend .
 A predicate atom is called \textbf{\textit{basic}} if $t_1,\ldots,t_n$ are basic terms.
 
-A \textit{\textbf{built-in atom}} is a string of the form $t_1 \preceq t_2$ where $t_1$ and $t_2$ are terms and $\preceq \in$ \texttt{\{'<','>', '>=','<=','=','!='\}} is a string of special characters.
+A \textit{\textbf{built-in atom}} is a string of the form $t_1 \preceq t_2$ where $t_1$ and $t_2$ are \DIFaddbegin \DIFadd{basic }\DIFaddend terms and $\preceq \in$ \texttt{\{'<','>', '>=','<=','=','!='\}} is a string of special characters.
 
 An atom is called \textbf{\textit{ground}} if all the terms occurring in the atom are ground.
 \DIFaddbegin 
@@ -225,23 +253,21 @@ An atom is called \textbf{\textit{ground}} if all the terms occurring in the ato
 }
 
 \begin{itemize}
-\item \DIFadd{$a$
-}\item \DIFadd{$\texttt{not}~a$
+\item \DIFadd{$a$, where $a$ is an atom
+}\item \DIFadd{$\texttt{not}~b$, where $b$ is a basic atom
 }\end{itemize}
-\DIFadd{where $a$ is an atom.
-}
 
 
 \DIFaddend \subsection{Sentences}\DIFaddbegin \label{sentsec}
 \DIFaddend 
 
 A \textit{\textbf{sentence}} is either \DIFdelbegin \DIFdel{an atom }\DIFdelend \DIFaddbegin \DIFadd{a literal }\DIFaddend or an expression of the \DIFdelbegin \DIFdel{form $(not~A)$, }\DIFdelend \DIFaddbegin \DIFadd{one of the forms  }\DIFaddend $(A~or~B)$, $(A~and~B)$, where $A$ and $B$ are \DIFdelbegin \DIFdel{atoms}\DIFdelend \DIFaddbegin \DIFadd{sentences}\DIFaddend . A sentence of the form $A~and~B$
-can also be written as $A, B$. Parentheses can be omitted in which case \DIFdelbegin \DIFdel{$not$ has highest precedence and }\DIFdelend \DIFaddbegin \DIFadd{$and$ has higheer precedence than }\DIFaddend $or$\DIFdelbegin \DIFdel{has the lowest precedence}\DIFdelend . A sentence is called a \textbf{\textit{predicate sentence}}, if all the atoms occurring in the sentence are predicate atoms.
+can also be written as $A, B$. Parentheses can be omitted in which case \DIFdelbegin \DIFdel{$not$ has highest precedence and }\DIFdelend \DIFaddbegin \DIFadd{$and$ has higher precedence than }\DIFaddend $or$\DIFdelbegin \DIFdel{has the lowest precedence}\DIFdelend . A sentence is called a \textbf{\textit{predicate sentence}}, if all the atoms occurring in the sentence are predicate atoms.
 
-\subsection{Maybe \DIFdelbegin \DIFdel{Literals}\DIFdelend \DIFaddbegin \DIFadd{Statements}\DIFaddend }
+\subsection{Maybe \DIFdelbegin \DIFdel{Literals}\DIFdelend \DIFaddbegin \DIFadd{Constructs}\DIFaddend }
 
 A \textbf{\DIFdelbegin \textit{\DIFdel{maybe literal}}%DIFAUXCMD
-\DIFdelend \DIFaddbegin \textit{\DIFadd{maybe statement}}\DIFaddend } is of the form $$\mbox{\texttt{maybe}}~p(t_1,\ldots t_n)\DIFdelbegin \DIFdel{.}\DIFdelend $$ where $p(t_1,\ldots,t_n)$ is a basic predicate atom.
+\DIFdelend \DIFaddbegin \textit{\DIFadd{maybe construct}}\DIFaddend } is of the form $$\mbox{\texttt{maybe}}~p(t_1,\ldots t_n)\DIFdelbegin \DIFdel{.}\DIFdelend $$ where $p(t_1,\ldots,t_n)$ is a basic predicate atom.
 
 \subsection{Cardinality Constraints}
 
@@ -249,12 +275,12 @@ A \textit{\textbf{cardinality constraint}} is of the form
 $$v_1 <= |\{p(t_1,\ldots t_n)\}| <= v_2.$$
 where
 \begin{enumerate}
-\item each of $v_1$ and $v_2$ is a ground arithmetic term, integer numeral or a constant name, 
+\item each of $v_1$ and $v_2$ is a ground arithmetic term, \DIFdelbegin \DIFdel{integer numeral }\DIFdelend \DIFaddbegin \DIFadd{an integer numeral, }\DIFaddend or a constant name, 
 \item $p(t_1,\ldots,t_n)$ is a basic predicate atom.
 \end{enumerate}
 \subsection{Rules} \label{rl}
 
-A \textit{\textbf{rule}} can be of the two forms:
+A \textit{\textbf{rule}} can be of \DIFdelbegin \DIFdel{the }\DIFdelend two forms:
 \begin{equation}\label{eq1}
   head. 
 \end{equation}
@@ -269,12 +295,12 @@ head~\mbox{\texttt{if}}~sentence.
 where $head$ is one of the following:
 \begin{enumerate}
 \item  a predicate sentence;
-\item  a maybe \DIFdelbegin \DIFdel{literal}\DIFdelend \DIFaddbegin \DIFadd{statement}\DIFaddend ;
+\item  a maybe \DIFdelbegin \DIFdel{literal}\DIFdelend \DIFaddbegin \DIFadd{construct}\DIFaddend ;
 \item  a cardinality constraint.
 \end{enumerate}
 
 \DIFaddbegin \DIFadd{and $sentence$ is a sentence defined in section (\ref{sentsec}).
-We will also refer to $head$ and $sentence$ and the }\textit{\textbf{\DIFadd{head}}} \DIFadd{and the }\textit{\textbf{\DIFadd{body}}} \DIFadd{of the corresponding rule respectively.
+We will also refer to $head$ and $sentence$ as the }\textit{\textbf{\DIFadd{head}}} \DIFadd{and the }\textit{\textbf{\DIFadd{body}}} \DIFadd{of the corresponding rule respectively.
  }
 
 \DIFaddend \subsection{Program} \label{progdef}
@@ -285,8 +311,8 @@ A \textbf{\textit{program}} is a collection of statements, each of which is eith
 
 Constant declarations of a program must satisfy the following conditions:
 \begin{enumerate}
-\item Each constant name must not occur in the left hand side of a constant declaration at most once.
-\item Each identifier which is a subterm of the right hand side of a constant declaration must occur in the left hand side of a preceding constant declaration.   
+\item Each constant name must \DIFdelbegin \DIFdel{not }\DIFdelend occur in the \DIFdelbegin \DIFdel{left hand side of a constant declarationat most once}\DIFdelend \DIFaddbegin \DIFadd{left-hand side of exactly one constant declaration}\DIFaddend .
+\item Each identifier which is a subterm of the \DIFdelbegin \DIFdel{right hand }\DIFdelend \DIFaddbegin \DIFadd{right-hand }\DIFaddend side of a constant declaration must occur in the \DIFdelbegin \DIFdel{left hand }\DIFdelend \DIFaddbegin \DIFadd{left-hand }\DIFaddend side of a preceding constant declaration.   
 
 \end{enumerate}
 
@@ -294,8 +320,8 @@ Constant declarations of a program must satisfy the following conditions:
 
 Type declarations of a program must satisfy the following conditions:
 \begin{enumerate}
-\item Each type name must occur in the left hand side of a type declaration at most once.
-\item Each identifier occurring as  a subexpression of an expression on the right hand side of a  type declaration must be a type name defined by a preceding type declaration. 
+\item Each type name must occur in the \DIFdelbegin \DIFdel{left hand side of a type declarationat most once}\DIFdelend \DIFaddbegin \DIFadd{left-hand side of exactly one type declaration}\DIFaddend .
+\item Each identifier occurring as  a subexpression of \DIFdelbegin \DIFdel{an expression on the right hand }\DIFdelend \DIFaddbegin \DIFadd{the right-hand }\DIFaddend side of a  type declaration must be a type name defined by a preceding type declaration. 
 \end{enumerate}
 
 
@@ -304,10 +330,12 @@ Rules of a program must satisfy the following conditions:
 \begin{enumerate}
 
 
-\item The leftmost occurrence of any variable  $V$ in a rule \DIFdelbegin \DIFdel{is }\DIFdelend \DIFaddbegin \DIFadd{must be in the head of the rule and must be }\DIFaddend preceeded by a type name (also referred to as \textit{the type} of the variable \DIFdelbegin \DIFdel{), which can also be preceed by a quantifier}\DIFdelend \DIFaddbegin \DIFadd{in this rule)}\DIFaddend .
+\item The leftmost occurrence of any variable  $V$ in a rule \DIFdelbegin \DIFdel{is }\DIFdelend \DIFaddbegin \DIFadd{must be in the head of the rule and must be }\DIFaddend preceeded by a type name (also referred to as \textit{the type} of the variable \DIFdelbegin \DIFdel{), which can also be preceed by a quantifier.
 All other occurrences of $V$ are subterms of a basic term.
-\item For every typed variable $t~Var$ the identifier $t$ is a type 
- defined by the program.
+}\DIFdelend \DIFaddbegin \DIFadd{in this rule).
+}
+
+\DIFaddend \item For every typed variable $t~Var$\DIFaddbegin \DIFadd{, }\DIFaddend the identifier $t$ is a type defined by the program.
 \item Every identifier  occurring in the rule as a subterm of an arithmetic term is a constant name defined by the program.
 \DIFdelbegin %DIFDELCMD < \item %%%
 \DIFdel{Every variable occurring in a rule which does not  occur in a quantified term also occurs in the head of the rule.
@@ -384,9 +412,10 @@ $op$ ::= $\texttt{>}~|~\texttt{<}~|~\texttt{>=}~|~\texttt{<=}~|~\texttt{=}~|~\te
 \DIFdelend 
 
 \DIFdelbegin \DIFdel{$sentence$ }\DIFdelend \DIFaddbegin \subsubsection{\DIFadd{Literals}}
-\DIFadd{$literal$ }\DIFaddend ::= \DIFdelbegin \DIFdel{$s3$ }\DIFdelend \DIFaddbegin \DIFadd{$atom~|~\texttt{not}~atom$}\DIFaddend \\
-\DIFdelbegin \DIFdel{$s3$ }\DIFdelend \DIFaddbegin \DIFadd{$predicate\_literal$ }\DIFaddend ::= \DIFdelbegin \DIFdel{$s2~|~s3~\texttt{or}~s2$}\DIFdelend \DIFaddbegin \DIFadd{$atom~|~\texttt{not}~predicate\_atom$
+\DIFadd{$predicate\_literal$ }\DIFaddend ::= \DIFdelbegin \DIFdel{$s3$ }\DIFdelend \DIFaddbegin \DIFadd{$predicate\_atom~|~\texttt{not}~predicate\_atom$}\DIFaddend \\
+\DIFdelbegin \DIFdel{$s3$ }\DIFdelend \DIFaddbegin \DIFadd{$literal$ }\DIFaddend ::= \DIFdelbegin \DIFdel{$s2~|~s3~\texttt{or}~s2$}\DIFdelend \DIFaddbegin \DIFadd{$atom~|~\texttt{not}~predicate\_atom$
 }
+
 
 \subsubsection{\DIFadd{Sentences}}
 \DIFadd{$sentence$ ::= $s3$ }\DIFaddend \\
@@ -444,7 +473,7 @@ We define the semantics of an $L$ program $\Pi$ in terms of \textit{models} of $
 The notion of satisfiability is defined in section \ref{rsat} with all necessary background provided in sections 
 \ref{constants} - \ref{grp}.
 
-The semantics of a program $P$ containing a comment coincide with the semantics of the program obtained from $P$ by removing the comments. In the rest of this section we will consider programs not containing comments.
+The semantics of a program $P$ containing \DIFdelbegin \DIFdel{a comment }\DIFdelend \DIFaddbegin \DIFadd{comments }\DIFaddend coincide with the semantics of the program obtained from $P$ by removing the comments. In the rest of this section we will consider programs not containing comments.
 
 
 
@@ -452,7 +481,7 @@ The semantics of a program $P$ containing a comment coincide with the semantics 
 \subsection{Constant Declarations} \label{constants}
 
 
-Let $\Pi$ be an $L$ program starting with constant declaration of the form
+Let $\Pi$ be an $L$ program starting with \DIFaddbegin \DIFadd{a }\DIFaddend constant declaration of the form
 $$\texttt{const} ~cn = gar\_term.$$
 
 Where $cn$ is referred to as a constant name and $gar\_term$ is a ground arithmetic term.
@@ -462,7 +491,7 @@ therefore its value $v$ can be obtained as defined in section \ref{at}.
 The models $\Pi$ coincide with the models of program $\Pi^\prime$ obtained from $\Pi$ by:
 \begin{enumerate}
 \item Removing the declaration $\texttt{const}~cn = gar\_term.$
-\item Replacing every subterm of a term $\Pi$ equal to $cn$ with numeric constant $v$. 
+\item Replacing every subterm of a term \DIFaddbegin \DIFadd{in }\DIFaddend $\Pi$ equal to $cn$ with \DIFaddbegin \DIFadd{the }\DIFaddend numeric constant $v$. 
 \end{enumerate} 
 
 
@@ -470,11 +499,11 @@ The models $\Pi$ coincide with the models of program $\Pi^\prime$ obtained from 
 By condition 2 for constant declarations defined in section \ref{progdef}, if the program $\Pi^\prime$ starts another constant declaration, its right hand side cannot contain numeric constants, therefore its semantics can be defined in the same manner as for $\Pi$.
 
 \medskip\noindent
-Therefore, it is sufficient to define the semantics for programs not containing constant declarations (and, therefore, not containing constant names in arithmetic terms too).
+Therefore, it is sufficient to define the semantics for programs not containing constant declarations (and, therefore, not containing constant names in arithmetic terms \DIFdelbegin \DIFdel{too}\DIFdelend \DIFaddbegin \DIFadd{either}\DIFaddend ).
 
 \subsection{Arithmetic Terms}\label{at}
 
-A program may contain ground arithmetic terms constructed from integer numerals and operations `+` (plus),  `-` (minus), `*` (multiplication), `/` (integer division), `\%` (modulo)\footnote{Current implementation allows only numerals in the range \DIFdelbegin \DIFdel{-2,147,483,648 }\DIFdelend \DIFaddbegin \DIFadd{0 }\DIFaddend to 2,147,483,647. Moreover, correct evaluation for an arithmetic term is guaranteed only if all its subterms have values within the range.} Each arithmetic term  has \textit{a value}. 
+A program may contain ground arithmetic terms constructed from integer numerals and operations `+` (plus),  `-` (minus), `*` (multiplication), `/` (integer division), `\%` (modulo)\footnote{Current implementation allows only numerals in the range \DIFdelbegin \DIFdel{-2,147,483,648 }\DIFdelend \DIFaddbegin \DIFadd{from 0 }\DIFaddend to 2,147,483,647. Moreover, correct evaluation for an arithmetic term is guaranteed only if all its subterms have values within the range.} Each arithmetic term  has \textit{a value}. 
 The meaning and precedence of operations  `+`,  `-`, `*` is as usual. The  operation `/` has the same precedence as `*` and is defined as $$a/b := sgn(a*b) *(|a|~div~|b|)$$
 where 
 \begin{enumerate}
@@ -505,8 +534,8 @@ The mapping is defined as follows:
 
 \noindent
 $\mathcal{D}_\Pi(t~\mbox{\texttt{where}} ~V_1~in~type_1,\ldots, V_n~in~type_n)$ is $\{t| V_1 \in \mathcal{D}_\Pi(type_1),\ldots, V_n \in \mathcal{D}_\Pi(type_n)\}$ 
-\item For every sort expression of the form $$S_1 \diamond S_2$$ 
-$\mathcal{D}_\Pi(S_1 \diamond S_2)$ is $ \mathcal{D}_\Pi(S_1) \odot  \mathcal{D}_\Pi(S_2)$, where $\odot$ is a set operation: union, intersection, or difference when $\diamond$ is $+$, $*$ or $/$ correspondingly.
+\item For every \DIFdelbegin \DIFdel{sort }\DIFdelend \DIFaddbegin \DIFadd{set }\DIFaddend expression of the form $$S_1 \diamond S_2$$ 
+$\mathcal{D}_\Pi(S_1 \diamond S_2)$ is $ \mathcal{D}_\Pi(S_1) \odot  \mathcal{D}_\Pi(S_2)$, where $\odot$ is a set operation: union, intersection, or difference when $\diamond$ is $+$, $*$ or \DIFdelbegin \DIFdel{$/$ }\DIFdelend \DIFaddbegin \DIFadd{$\backslash$ }\DIFaddend correspondingly.
 
 \item For every type declaration of the form $$\texttt{type}~tn = set\_expr$$
 
@@ -519,8 +548,8 @@ $\mathcal{D}_\Pi(tn)$ is $\mathcal{D}_\Pi(set\_expr)$
 In the remainder of the section  we will mostly  use   $\mathcal{D}_\Pi$ to obtain the values  which correspond to the type names of $\Pi$.
 
 
-
-\subsection{Programs  \DIFdelbegin \DIFdel{with Free }\DIFdelend Variables and Ground Programs}\label{grp}
+%DIF > VUUUUUUUUUUUUUU
+\subsection{Programs with \DIFdelbegin \DIFdel{Free }\DIFdelend Variables and Ground Programs}\label{grp}
 
 \DIFdelbegin \DIFdel{Let $\Pi$ be an $L$ program and $r$ be a rule of $P$. 
 A variable $V$ occurring in  $r$  is called a }\textit{\DIFdel{free}} %DIFAUXCMD
@@ -652,35 +681,39 @@ A set of of ground atoms $A$ satisfies a basic sentence $S$ ($A \vdash S$) if on
 \noindent
 \DIFdelbegin %DIFDELCMD < \medskip
 %DIFDELCMD < %%%
-\DIFdelend Let $S$ be a sentence\DIFdelbegin \DIFdel{. By $S^\prime$ we denote the sentence obtained from $S$ by replacing each  quantified term 
+\DIFdelend Let $S$ be a sentence. \DIFdelbegin \DIFdel{By $S^\prime$ we denote the sentence obtained from $S$ by replacing each  quantified term 
 }\begin{displaymath}\DIFdel{quantifier~p }\end{displaymath}
 %DIFAUXCMD
 \DIFdel{with }\begin{displaymath}\DIFdel{ quantifier~p~X}\end{displaymath}
  %DIFAUXCMD
-\DIFdel{where $X$ is a variable not occurring in $S$ and 
-unique for each quantified term in $S$.
+\DIFdel{where $X$ is a variable not occurring in $S$ and unique for each quantified term in $S$.
 }%DIFDELCMD < 
 
+%DIFDELCMD < \noindent\medskip
 %DIFDELCMD < %%%
-\DIFdelend \DIFaddbegin \DIFadd{, and 
-}\DIFaddend \noindent\medskip
-Let
-\begin{itemize}
+\DIFdel{Let
+}\DIFdelend \DIFaddbegin \DIFadd{And let
+}\DIFaddend \begin{itemize}
 \item \DIFdelbegin \DIFdel{$X_1,\ldots X_n$ be the variables occurring in existentially }\DIFdelend \DIFaddbegin \DIFadd{$\{U_1,\ldots U_n\}$ be the set of all universally }\DIFaddend quantified terms  of \DIFdelbegin \DIFdel{$S^\prime$ of types $Tx_1,\ldots, Tx_n$ correspondingly
 }\DIFdelend \DIFaddbegin \DIFadd{$S$ whose  types are $Tu_1,\ldots, Tu_n$ respectively;
-}\DIFaddend \item \DIFdelbegin \DIFdel{$Y_1, \ldots Y_m$ be the variables occurring in }\DIFdelend \DIFaddbegin \DIFadd{$\{E_1, \ldots E_m\}$ be the set of all }\DIFaddend universally quantified terms  of \DIFdelbegin \DIFdel{$S^\prime$ of types $Ty_1, \ldots, Ty_m$ correspondingly
+}\DIFaddend \item \DIFdelbegin \DIFdel{$Y_1, \ldots Y_m$ be the variables occurring in universally }\DIFdelend \DIFaddbegin \DIFadd{$\{E_1, \ldots E_m\}$ be the set of all existentially }\DIFaddend quantified terms  of \DIFdelbegin \DIFdel{$S^\prime$ of types $Ty_1, \ldots, Ty_m$ correspondingly
 }\DIFdelend \DIFaddbegin \DIFadd{$S$ whose  types are $Te_1,\ldots, Te_m$ respectively;
 }\DIFaddend \end{itemize}
+\DIFdelbegin %DIFDELCMD < 
 
+%DIFDELCMD < %%%
+\DIFdelend %DIF > VUUUUUUUUUUUU
 \noindent\medskip
-For a \DIFdelbegin \DIFdel{sentence }\DIFdelend \DIFaddbegin \DIFadd{set $\{T_1,\ldots,T_k\}$ of quantified terms of }\DIFaddend $S$  \DIFdelbegin \DIFdel{by $S|_{\{Z_1 = z_1, \ldots, Z_n = z_n\}}$ }\DIFdelend \DIFaddbegin \DIFadd{$S|_{\{T_k = t_1, \ldots, T_k = t_k\}}$ }\DIFaddend we denote the sentence obtained from $S$ by 
-\begin{enumerate}
-\item for \DIFdelbegin \DIFdel{each variable $Z_i \in \{Z_1,\ldots, Z_n\}$ }\DIFdelend \DIFaddbegin \DIFadd{quantified term $T_i \in \{T_1,\ldots, T_k\}$ }\DIFaddend replacing every occurrence of a quantified term \DIFdelbegin \begin{displaymath}\DIFdel{ quantifier~p~Z_i}\end{displaymath} %DIFAUXCMD
+For a \DIFdelbegin \DIFdel{sentence }\DIFdelend \DIFaddbegin \DIFadd{set $\{T_1,\ldots,T_k\}$ of quantified terms of }\DIFaddend $S$\DIFdelbegin \DIFdel{by $S|_{\{Z_1 = z_1, \ldots, Z_n = z_n\}}$ }\DIFdelend \DIFaddbegin \DIFadd{,  }\DIFaddend we denote the sentence obtained from $S$ by \DIFdelbegin %DIFDELCMD < \begin{enumerate}
+%DIFDELCMD < \item %%%
+\DIFdel{for each variable $Z_i \in \{Z_1,\ldots, Z_n\}$ }\DIFdelend replacing every occurrence of a quantified term \DIFdelbegin \begin{displaymath}\DIFdel{ quantifier~p~Z_i}\end{displaymath} %DIFAUXCMD
 \DIFdel{with $z_i$;
 }%DIFDELCMD < \item %%%
 \DIFdel{replacing all other occurrences of each $Z_i \in  \{Z_1,\ldots, Z_n\}$ with $z_i$.
-}\DIFdelend \DIFaddbegin \DIFadd{$T_i$  with $t_i$;
-}\DIFaddend \end{enumerate}
+}%DIFDELCMD < \end{enumerate}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \DIFadd{$T_i$  with $t_i$ by $S|_{\{T_k = t_1, \ldots, T_k = t_k\}}$.
+}\DIFaddend 
 
 \begin{definition}(A set of ground atoms satisfying a sentence)\\
 \DIFdelbegin %DIFDELCMD < \rm{
@@ -713,20 +746,28 @@ $A$ satisfies  the constraint $v_1 <= |\{p(t_1,\ldots t_n)\}| <= v_2$ iff $v_1 \
 \end{definition}
 
 
-As described in section \ref{rl}, program rules may be in one of the two forms. We sometimes say that a rule of the form $$head.$$ has a body which is satisfied by any set of ground atoms and use a canonical form $$head~\mbox{\texttt{if}}~body.$$ even if the body is not present.
+As described in section \ref{rl}, program rules may be in one of the two forms. We sometimes say that a rule of the form $$head.$$ has a body which is satisfied by any set of ground atoms and use \DIFdelbegin \DIFdel{a }\DIFdelend \DIFaddbegin \DIFadd{the }\DIFaddend canonical form $$head~\mbox{\texttt{if}}~body.$$ even if the body is not present.
 
 
 
 \begin{definition}(A set of ground atoms satisfying a rule)\\
-\rm{
-A set of ground atoms $A$ satisfies a rule 
- head is either a cardinality constraint or a sentence and one of the following conditions holds:
+\DIFdelbegin %DIFDELCMD < \rm{
+%DIFDELCMD < A set of ground atoms $A$ satisfies a rule 
+%DIFDELCMD <  head is either a cardinality constraint or a sentence and one of the following conditions holds:
+%DIFDELCMD < \begin{enumerate}
+%DIFDELCMD < \item $A$ does not satisfy $body$;
+%DIFDELCMD < \item $A$ satisfies both $body$ and $head$.
+%DIFDELCMD < \end{enumerate}
+%DIFDELCMD < }
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \rm{
+A set of ground atoms $A$ satisfies a rule, whose head is either a cardinality constraint or a sentence, if one of the following conditions holds:
 \begin{enumerate}
 \item $A$ does not satisfy $body$;
 \item $A$ satisfies both $body$ and $head$.
 \end{enumerate}
 }
-\hfill $\Box$
+\DIFaddend \hfill $\Box$
 \end{definition}
 
 
@@ -777,10 +818,11 @@ By $\Pi^\prime$ we denote a program obtained form $\Pi$ by:
 }
 
 \begin{enumerate}
-\item \DIFadd{replacing all maybe statements of the form $\texttt{maybe}~l$ with $l~or~(\texttt{not}~l)$.
-}\item \DIFadd{replacing all literals of the form $\texttt{not} a$ with $a^\prime$. 
+\item \DIFadd{replacing all maybe contructs of the form $\texttt{maybe}~l$ with $l~or~(\texttt{not}~l)$.
+}\item \DIFadd{replacing all literals of the form $\texttt{not}~a$ with $a^\prime$. 
 }\end{enumerate}
 
+\noindent
 \DIFadd{Let $A^\prime$ denote the set of all new atoms introduced in $P^\prime$.
 }
 
@@ -799,7 +841,7 @@ Let $A$ be a set of ground atoms of a program $\Pi$; $A$ is a model of $\Pi$ if 
 there exists a set of atoms $B$ of $\Pi^\prime$ such that  the following conditions are satisfied:
 \begin{enumerate}
 \item $A = B \setminus A^\prime$.
-\item $B$ is the mimimal set satisfying the rules of $\Pi^\prime$ whose heads are sentences.
+\item $B$ is the mimimal set satisfying the rules of $\Pi^\prime$ whose heads are predicate sentences.
 \item $B$ satisfies all the rules of $\Pi^\prime$ whose heads are cardinality constraints.
 \end{enumerate}
 }
@@ -1095,7 +1137,8 @@ reachable_though(node X,node Z, node Y) if reachable(X,Z),
 }
 
 \begin{verbatim}
-reachable(node X, node Y) if reachable_through(node X, some node, node Y).
+reachable(node X, node Y)
+                if reachable_through(node X, some node, node Y).
 \end{verbatim} 
 \DIFaddend 
 
@@ -1105,17 +1148,30 @@ The graph is k-connected if any two nodes  that were not removed are reachable f
 We next define the disconnected relation: the graph is disconnected if there exists a pair of nodes which are not reachable from
 each other.
 
-\begin{verbatim}
-disconnected if    not reachable(some node X, some node Y) 
+\DIFdelbegin %DIFDELCMD < \begin{verbatim}%DIFDELCMD < 
+%DIFDELCMD < disconnected if    not reachable(some node X, some node Y) 
+%DIFDELCMD <                    and not removed(X)
+%DIFDELCMD <                    and not removed(Y).                
+%DIFDELCMD < \end{verbatim}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \begin{verbatim}
+disconnected(node X, node Y) if not reachable(X, Y) 
                    and not removed(X)
                    and not removed(Y).                
+
+disconnected_graph if disconnected(some node, some node).   
 \end{verbatim}
-If there exists at least one way to remove at most $k-1$ such that the graph is disconnected, the graph is not k-connected.
+\DIFaddend If there exists at least one way to remove at most $k-1$ such that the graph is disconnected, the graph is not k-connected.
 We can check this by, first, putting a constraint requiring the graph to be disconnected:
 
-\begin{verbatim}
-1<=|{disconnected}|<=1.
+\DIFdelbegin %DIFDELCMD < \begin{verbatim}%DIFDELCMD < 
+%DIFDELCMD < 1<=|{disconnected}|<=1.
+%DIFDELCMD < \end{verbatim}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \begin{verbatim}
+1<=|{disconnected_graph}|<=1.
 \end{verbatim}
+\DIFaddend 
 
 \medskip\noindent
 The graph is not $K$-connected if and only there exists at least one model of the program.
