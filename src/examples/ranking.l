@@ -1,6 +1,6 @@
 /*
     AN ILLUSTRATIVE L PROGRAM
-    2015/12/22
+    Written 2015/12/22, updated 2016/03/14
     Vu Phan
 
     This L program outputs ranks of students in an imaginary course
@@ -104,22 +104,16 @@ student_meets_criterion(every student, inferior).
 /* Default rank's criterion is met by all students */
 
     
-/* The rule below means: a student isn't in a rank if either:
+/* The two rules below mean: a student isn't in a rank if either:
     she doesn't meet the criterion for that rank, or
     she already meets the criterion for a higher rank */
     
 not student_rank(student S, rank R2) if
     not student_meets_criterion(S, R2) or
-    student_meets_criterion(S, rank R1) and higher_rank(R1, R2).
-
-/* 
-The rule above can also be written as:
-    not student_rank(student S, rank R2) if
-        not student_meets_criterion(S, R2) or
-        student_meets_criterion_for_higher_rank(S, some rank, R2).
-    student_meets_criterion_for_higher_rank(student S, rank R1, rank R2) if
-        student_meets_criterion(S, R1) and higher_rank(R1, R2).
-*/
+    student_meets_criterion_for_higher_rank(S, some rank, R2).
+    
+student_meets_criterion_for_higher_rank(student S, rank R1, rank R2) if
+    student_meets_criterion(S, R1) and higher_rank(R1, R2).
     
     
 student_dropped(gray).
@@ -136,9 +130,10 @@ maybe student_rank(student S, rank R) if student_remaining(S).
         https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.sp
     Sparc querying mode:
         ?- student_rank(S, R)
-        R = average S = cher
-        R = below_average S = dale
         R = outstanding S = ann
         R = inferior S = flo
+        R = below_average S = dale
+        R = average S = cher
         R = above_average S = bree
+        ?-
 */
