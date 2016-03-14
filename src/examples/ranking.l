@@ -61,11 +61,11 @@ assessment_score(flo, e(3), f).
 assessment_score(gray, q(1), fail).
 assessment_score(gray, e(1), f).
 
-    
+/* Assessment A of student S is acceptable if its grade is 
+    either: pass (for a quiz), or a/b/c/d (for an exam) */    
 acceptable_assessment(student S, assessment A) if
     assessment_score(S, A, some acceptable_grade).
-/* Assessment A of student S is acceptable if its grade is 
-    either: pass (for a quiz), or a/b/c/d (for an exam) */
+
     
     
 type rank = {outstanding, above_average, average, below_average, inferior}.
@@ -75,10 +75,11 @@ higher_rank(above_average, average).
 higher_rank(average, below_average).
 higher_rank(below_average, inferior).
 
+/* Transitivity */
 higher_rank(rank R1, rank R3) if
     higher_rank(R1, rank R2) and
     higher_rank(R2, R3).
-/* Transitivity */
+
 
     
 /* Note below: If a student meets the criterion for a rank, 
@@ -99,9 +100,10 @@ student_meets_criterion(student S, average) if
     
 student_meets_criterion(student S, below_average) if
     acceptable_assessment(S, every assessment).
-    
-student_meets_criterion(every student, inferior).
+   
 /* Default rank's criterion is met by all students */
+student_meets_criterion(every student, inferior).
+
 
     
 /* The two rules below mean: a student isn't in a rank if either:
@@ -119,21 +121,14 @@ student_meets_criterion_for_higher_rank(student S, rank R1, rank R2) if
 student_dropped(gray).
 student_remaining(student S) if not student_dropped(S).
 
-maybe student_rank(student S, rank R) if student_remaining(S).
 /* For each rank, a remaining student is possibly in that rank */
+maybe student_rank(student S, rank R) if student_remaining(S).
 
-1 <= |{student_rank(student S, rank R)}| <= 1 if student_remaining(S).
+
 /* Each remaining student is in precisely one rank */
+1 <= |{student_rank(student S, rank R)}| <= 1 if student_remaining(S).
 
-/*
-    Translated ASP program:
-        https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.sp
-    Sparc querying mode:
-        ?- student_rank(S, R)
-        R = outstanding S = ann
-        R = inferior S = flo
-        R = below_average S = dale
-        R = average S = cher
-        R = above_average S = bree
-        ?-
-*/
+
+/* The program has one model containing, among other atoms, a rank for every student:
+ student_rank(bree,above_average) student_rank(dale,below_average) student_rank(cher,average) ... 
+ */
