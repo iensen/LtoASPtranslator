@@ -38,7 +38,7 @@
 %\newcommmand{\red}[1]{\textcolor{red}{#1}}
 %\renewcommand\red[1]{{\color{red}#1}}
 %opening
-\title{L specification (draft)}
+\title{L Specification (draft)}
 \author{Evgenii Balai}
 \def\no{{ not}\;}
 \begin{document}
@@ -141,7 +141,7 @@ where $t$ is a term, $\{V_1, \ldots, V_n\}$ is the set of all variables occurrin
 % same as above
 %(type names).
 
-\item $(S_1 \diamond S_2)$ , where $S_1$ and $S_2$ are set expressions and $\diamond$ is a set-theoretic operator, denoted by one of the special characters in $\{+, *, \backslash \}$. Parentheses can be omitted in which case $*$ and $\backslash$ have higher precedence than $+$ and all operations are left-associative.
+\item $(S_1 \diamond S_2)$, where $S_1$ and $S_2$ are set expressions and $\diamond$ is a set-theoretic operator, denoted by one of the special characters in $\{+, *, \backslash \}$. Parentheses can be omitted in which case $*$ and $\backslash$ have higher precedence than $+$ and all operations are left-associative.
 \end{itemize}
 
 \subsection{Type Declarations}
@@ -162,7 +162,7 @@ A \textit{\textbf{quantified term}} is of the form:
 
 Where $quantifier$ is an identifier in the set $\{\mbox{\texttt{every}, \texttt{some}}\}$, $p$ is an identifier also referred to as the $type$ of the quantified term.
 
-We will refer to a quantified term starting with the quantifier $\mbox{\texttt{some}}$($\mbox{\texttt{every}}$) as an \textbf{\textit{existentially quantified}} (\textbf{\textit{universally quantified}}) term.  
+We will refer to a quantified term starting with the quantifier $\mbox{\texttt{some}}$ ($\mbox{\texttt{every}}$) as an \textbf{\textit{existentially quantified}} (\textbf{\textit{universally quantified}}) term.  
 
 
 \subsection{Terms}
@@ -232,11 +232,13 @@ where $head$ is one of the following:
 \item  a cardinality constraint.
 \end{enumerate}
 
+\noindent
 and $sentence$ is a sentence defined in section (\ref{sentsec}).
+
 We will also refer to $head$ and $sentence$ as the \textit{\textbf{head}} and the \textit{\textbf{body}} of the corresponding rule respectively.
  
 \subsection{Program} \label{progdef}
-A \textbf{\textit{program}} is a collection of statements, each of which is either a constant declarations, a
+A \textbf{\textit{program}} is a collection of statements, each of which is either a constant declaration, a
  type declaration, or a rule.
 
 \noindent\vspace{0.2cm}
@@ -423,7 +425,7 @@ where
 -1 & \mbox{otherwise }. \end{cases} $
 \item for $a\ge 0$ and $b\ge0$ $a~div~b$ is a floor division, i.e, $a~div~b$ is the largest integer such that $b * (a~div~b)  \le  a$.
 \end{enumerate}
-The  operation `/` has the same precedence as `*` and is defined as $$a\%b := a - n * (a/n) $$
+The  operation `\%` has the same precedence as `*` and is defined as $$a\%b := a - n * (a/n) $$
 All operations are associated from left to right. 
 
 
@@ -459,8 +461,6 @@ $\mathcal{D}_\Pi(tn)$ is $\mathcal{D}_\Pi(set\_expr)$
 \medskip\noindent
 In the remainder of the section  we will mostly  use   $\mathcal{D}_\Pi$ to obtain the values  which correspond to the type names of $\Pi$.
 
-
-%VUUUUUUUUUUUUUU
 \subsection{Programs with Variables and Ground Programs}\label{grp}
 
 For a program $\Pi$ containing variables we obtain a corresponding \textit{ground} program $\Pi^g$ as follows:
@@ -570,7 +570,8 @@ Let $S$ be a sentence. And let
 \item $\{U_1,\ldots U_n\}$ be the set of all universally quantified terms  of $S$ whose  types are $Tu_1,\ldots, Tu_n$ respectively;
 \item $\{E_1, \ldots E_m\}$ be the set of all existentially quantified terms  of $S$ whose  types are $Te_1,\ldots, Te_m$ respectively;
 \end{itemize}
-%VUUUUUUUUUUUU
+
+
 \noindent\medskip
 For a set $\{T_1,\ldots,T_k\}$ of quantified terms of $S$,  we denote the sentence obtained from $S$ by replacing every occurrence of a quantified term $T_i$  with $t_i$ by $S|_{\{T_k = t_1, \ldots, T_k = t_k\}}$.
 
@@ -615,8 +616,6 @@ A set of ground atoms $A$ satisfies a rule, whose head is either a cardinality c
 
 
 
-
-\subsection{Program models}
 
 Let $\Pi$ be an $L$ program.
 For every atom $a$ occurring, let $a^\prime$ be a fresh atom not occurring in $\Pi$, such that for any two distict atoms $a_1 \not= a_2$ of $\Pi$, $a^\prime_1 \not= a^\prime_2$.
