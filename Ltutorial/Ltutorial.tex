@@ -1,0 +1,649 @@
+
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage[margin=0.4in]{geometry}
+\usepackage{listings}
+\usepackage{lstautogobble}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\newtheorem{definition}{Definition}
+\newtheorem{claim}{Claim}
+\newtheorem{theorem}{Theorem}
+\newtheorem{example}{Example}
+\newtheorem{condition}{Condition}
+\newtheorem{proposition}{Proposition}
+\usepackage{graphicx}
+\definecolor{mygreen}{RGB}{0,150,0}
+\newtheorem{lemma}{Lemma}
+\usepackage{color}
+\usepackage{calrsfs}
+
+\usepackage{latexsym}
+\usepackage{listings}
+\usepackage{mathrsfs}
+\usepackage[colorlinks=true]{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=blue,
+    urlcolor=blue
+}
+\usepackage{ulem}
+\def\st{\noindent}
+\renewcommand\em{\it}
+\renewcommand\emph{\textit}
+\newcommand\red[1]{{\color{red}#1}}
+\newcommand\blue[1]{{\color{blue}#1}}
+\newcommand\green[1]{{\color{mygreen}#1}}
+\newcommand\cancelr[1]{{\color{red}\sout{#1}}}
+\newcommand\cancelg[1]{{\color{mygreen}\sout{#1}}}
+%\newcommmand{\red}[1]{\textcolor{red}{#1}}
+%\renewcommand\red[1]{{\color{red}#1}}
+%opening
+\title{L Tutorial}
+\author{Vu Phan}
+\def\no{{ not}\;}
+\begin{document}
+
+\maketitle
+\st
+\setcounter{tocdepth}{2}
+
+This L tutorial is based on the L specification by Evgenii Balai. The tutorial is easier-to-read but less detailed.
+
+\tableofcontents
+
+\setlength{\parskip}{\baselineskip}
+\pagebreak
+
+
+\begin{flushleft}
+
+
+\section{Syntax and Semantics}
+
+
+\subsection{Symbols}\label{symbols}
+
+L characters include letters ($A$ to $Z$ and $a$ to $z$) as well as digits ($0$ to $9$). L also uses these special characters:\\
+$>$ $<$ $=$ $!$ $\backslash$ $+$ $-$ $*$ $/$  $\%$  $.$ $,$ $|$ $\{$ $\}$ $($ $)$
+
+Each L symbol is a sequence of one or more of the above characters. Some such symbols are $brandon$ (an identifier) and \\ \texttt{!=} (the not-equal operator).
+
+\subsection{Basic Terms}
+
+To express the English clause ``the sky is blue'', you can write $is\_blue(sky)$ in L. In this case, $sky$ is a \textbf{\textit{basic term}}.
+
+A basic term can be a \textbf{\textit{constant}}, which in turn could be a non-negative integer (such as $0$ and $23$) or a constant name (a string starting with a lowercase letter). You can assign an integer to a constant name with a $constant~declaration$ (discussed later).
+
+A basic term can also be a \textbf{\textit{variable}}, such as $X$ or $UnknownNum$. A variable name shall start with an uppercase letter.
+
+A basic term may be a \textbf{\textit{typed variable}}. ($Type~declarations$ will be explained fully later. Basically, a type is non-empty finite set.) Assume you declared $type~student=\{ann,bob\}$. Then a typed variable could be $student~S$, where $student$ is the type name and $S$ is the variable belonging to type $student$ (meaning $S$ can stand for either $ann$ or $bob$).
+
+Also, a basic term might be an \textbf{\textit{arithmetic term}}, such as $1+5-2$, $3*X$ (variable $X$), or $2+numPeople$ (assuming constant name $numPeople$ was assigned some numeric value, such as $8$). The arithmetic operators are $+$ (addition), $-$ (subtraction), $*$ (multiplication), $/$ (floor division), and $\%$ (modulo).
+
+Lastly, a basic term can be a \textbf{\textit{functional term}}. For instance, the English phrase ``the color of my car'' can be written in L as $color(my\_car)$, which is a functional term where $color$ is the function name. Function names must begin with a lowercase letter. Another example is the functional term \\ $book(godel, title~T, year(1930+2))$, where $godel$ is a constant name, $T$ is a variable of type $title$, and $year(1930+2)$ is a ``smaller'' functional term.
+
+\subsection{Constant Declarations}\label{cd}
+
+To make your L program more meaningful and modifiable, you can assign integers to some constant names using \textbf{\textit{constant declarations}}. Some examples follow.
+\begin{verbatim}
+/* this is a comment */
+const speedOfSound = 340. /* a constant declaration to the left of this comment */
+const speedOfSound2 = speedOfSound + 3. /* another constant declaration */
+const speedOfSoundCurrentCondition = speedOfSound2. 
+\end{verbatim}
+
+\pagebreak
+
+
+\subsection{Set Expressions}\label{sexpr}
+
+In L, you can declare types (discussed in detail soon). Basically, a type is a non-empty finite set. To declare a type, you assign a \textbf{\textit{set expression}} to a type name (a string starting with a lowercase letter).
+
+A simple set expression is $\{honda, toyota, ford\}$.
+
+Now assume you have declared $const~height=180.$, then the set expression $\{height..height+10\}$ contains integers from $180$ to $190$.
+
+Assume you have type $t1$ is $\{1..3\}$ and type $t2$ is $\{2,4\}$. The following are set expressions:
+\begin{itemize}
+\item
+$t1$ \\
+The type name $t1$ now stands for its previously assigned set $\{1,2,3\}$.
+
+\item
+$coordinate(X,Y)~where~X~in~t1,~Y~in~t2$ (given $coordinate$ is a function name) \\
+The set expression above is equivalent to $\{coordinate(1,2), coordinate(1,4),
+coordinate(2,2), coordinate(2,4), coordinate(3,2), coordinate(3,4)\}$.
+
+\item
+$t1+t2$ (the set-theoretic union of $t1$ and $t2$ is $\{1,2,3,4\}$) \\
+Similarly, the intersection $t1*\{3..5\}$ is $\{3\}$. You can also use set complementation as in this more complicated set expression: \\
+$(f(X)~where~X~in~t1)~\backslash~(f(Y)~where~Y~in~t2$) \\
+(which evaluates to the set $\{f(1),f(3)\}$.
+\end{itemize}
+
+\subsection{Type Declarations}
+
+A \textbf{\textit{type declaration}} assigns a set expression to a type name (a string starting with a lowercase letter). The L program below illustrates the point.
+
+\begin{verbatim}
+const numSeats = 50. /* first, a constant declaration */
+
+type seatNum = {1..numSeats}.
+/* The above type declaration assigns the set {1, 2, 3,..., 50} to the type name ``seatNum'' */
+
+type vipSeatNum = {1..numSeats/10}.
+/* 10% of the total seats are VIP (seats 1 to 5) */
+
+type regularSeatNum = seatNum \ vipSeatNum.
+/* the remaining seats (from 6 to 50) are regular seats */
+
+type vipAttendee = attendee(X) where X in vipSeatNum.
+/* VIP attendees include attendee(1) through attendee(5) */
+
+type regularAttendee = attendee(X) where X in regularSeatNum.
+
+type attendee = vipAttendee + regularAttendee.
+/* all attendees */
+\end{verbatim}
+
+\pagebreak
+
+
+\subsection{Quantified Terms}
+
+If you declared $type~person=\{holly, maddie, lana\}.$, then you can make an assertion that applies to all members of type $person$ by using the \textbf{\textit{quantified term}} $every~person$. You can also refer to one unspecified member of the type by using another quantified term: $some~person$ (which can be either $holly$, $maddie$, or $lana$).
+
+\subsection{Terms}
+
+Assume \texttt{type storeNum = \{1..3\}.}
+
+A \textit{\textbf{term}} is either a basic term (such as \texttt{47} and \texttt{storeNum X}) or a quantified term (such as \texttt{every storeNum} and \texttt{some storeNum}).
+
+\subsection{Atoms}
+
+In English, the assertion ``Today is Monday'' is either true or false. Similarly, L supports the \textbf{\textit{atom}} \texttt{today(monday)}, whose value is Boolean. 
+
+The atom above is specifically a \textbf{\textit{predicate atom}}, where the predicate name is \texttt{today}. Another example predicate atom is \texttt{squareOf(num X, X*X)} (this atom means the first argument squared equals the second argument, provided type \texttt{num} contains only non-negative integers).
+
+An atom can also be a \textbf{\textit{built-in atom}}. Some instances are \texttt{0 < 1}, \texttt{X >= 3}, \texttt{2 * 1 = 2}, and  \texttt{5 != 7}.
+
+\subsection{Literals}
+
+A \textbf{\textit{literal}} is an atom that it possibly preceded by the keyword \texttt{not}. For instance, if the literal \texttt{colorOf(myCar, silver)} is true then the literal \texttt{not colorOf(myCar, silver)} is false, and vice versa.
+
+
+
+\subsection{Sentences}\label{sentsec}
+
+An L \textbf{\textit{sentence}} can be:
+\begin{itemize}
+\item
+a single literal, such as \texttt{not isBlue(ballon1)}
+
+\item
+multiple literals with \texttt{and}/\texttt{or} in between, such as:
+\begin{itemize}
+\item \texttt{moonIsClose and tideIsHigh}
+\item \texttt{not isGoodAt(tim, soccer) or enjoys(some student, badminton) and \\
+needsPracticeWith(student X, volleyball)}
+\end{itemize}
+\end{itemize}
+
+\pagebreak
+
+\subsection{Maybe Constructs}
+
+Sometimes, we reason by cases. For instance, a student Vi hesitates on whether to do a homework assignment. The cases here are: (1) to do the assignment and (2) not to do the assignment. Nothing bad happens if Vi chooses case (1), so this case is acceptable. But Vi chooses case (2), then her grades will decrease, and she might lose some scholarships, which is bad. So case (2) should be discarded. In summary, Vi's reasoning process splits into two branches at the decision point on whether to do the homework. Tracing down each branch, Vi finds that only the first branch is acceptable. Therefore, there is exactly one solution in this story: to do the assignment.
+
+To simulate such a  decision point in L, we can use a \textbf{\textit{maybe construct}}, such as \texttt{maybe doHomework}. This construct is a shorthand for the predicate sentence \texttt{doHomework or not doHomework}. Although the sentence seems to be a tautology and consequently redudant, it has a ``side effect'': spliting the current logic flow into two paths, where the first path contains \texttt{doHomework} and the second path contains \texttt{not doHomework}. Other parts of the L program will determine which path corresponds to a solution (possibly both paths or even no paths have solutions).
+
+Another illustrative maybe literal is \texttt{maybe hasA(student S, laptop)}.
+
+\subsection{Cardinality Constraints}
+
+Assume you have three friends: Ann, Bob, and Cher. You want to invite some of them to your apartment for your birthday party. But your apartment is small and can only accomodate at most two guests. Of course, you want to invite at least one friend to avoid celebrating your birthday alone. In short, the number of friends invited should be between 1 and 2. You want to generate all possible combinations of invites satisfying that limit. You need an L \textbf{\textit{cardinality constraint}}. See the L program below.
+
+\begin{verbatim}
+type friend = {ann, bob, cher}. /* just a type declaration */
+
+maybe invite(friend X). 
+/* maybe literal (excluding the dot): any friend is possibly invited */
+
+1 <= |{invite(friend X)}| <= 2. 
+/* cardinality constraint (excluding the dot): limit on the number of invites */
+\end{verbatim}
+
+Solving this L program produces six \textbf{\textit{models}} (acceptable cases):
+\begin{enumerate}
+\item invite(bob) invite(cher)
+\item invite(cher)
+\item invite(bob)
+\item invite(ann) invite(bob)
+\item invite(ann) invite(cher)
+\item invite(ann)
+\end{enumerate}
+
+\pagebreak
+
+\subsection{Rules} \label{rl}
+
+A \textbf{\textit{rule}} can be an unconditional assertion such as \texttt{skyIsBlue.} (this rule is simply an atom followed by a dot). 
+
+A rule can also be conditional. An example is \texttt{hasScholarships(student S) and hasInternships(S) if isOutstanding(S) or isWayTooLucky(S).}, notice that the variable \texttt{S} is known to be from the type \texttt{student} from its first occurence, whereas reoccurences of the same variable should not be typed.
+
+\subsection{Program} \label{progdef}
+
+Basically, an L \textbf{\textit{program}} is a sequence of constant declarations, type declarations, and rules in a logical order:
+\begin{enumerate}
+\item
+A constant/type name can only be used after the corresponding constant/type declaration.
+
+\item
+The scope of each variable is within one rule. Consider the following L program.
+\begin{verbatim}
+type person = {katie, mandie}.
+type car = {nissan, toyota}.
+
+canDrive(person X) if owns(X, some car).
+	/* 
+	Two occurences of the same variable ``X'' of type ``person''.
+	This rule is a shorthand for the rules:
+		canDrive(katie) if owns(katie, some car).
+		canDrive(mandie) if owns(mandie, some car). 
+	*/
+
+isCostly(car X) if hasPriceOver(X, 15000).
+	/* 
+	The variable ``X'' in this rule is different from ``X'' in the first rule.
+	Now, ``X'' is in type ``car''.
+	*/
+\end{verbatim}
+
+\item
+The first occurence of a variable in a rule must be be a typed variable (so that we know which type the variable belongs to). Latter occurences of the same variable in the rule should not be typed (to avoid redundancy and the possibility of mistakenly assigning a different type to the variable).
+\end{enumerate}
+
+\pagebreak
+
+\section{Example: L Program to Rank Students}
+
+\subsection{How to Write from Sratch}
+
+
+Let us write the complete L program \texttt{ranking.l} from sratch. Assume your are a teacher of a class. You want to rank your students according to their performance and according to your evaluation policy. 
+
+The first step is to declare an L type whose each member is a student.
+\begin{verbatim}
+type student = {ann, bree, cher, dale, flo, gray}. 
+\end{verbatim}
+
+Next, you specify that there will be two quizzes: $q(1)$ and $q(2)$.
+\begin{verbatim}
+const numQuizzes = 2.
+type quiz_num = {1..numQuizzes}. 
+type quiz = q(Num) where Num in quiz_num. 
+\end{verbatim}
+
+Now, you say there will be more exams than quizzes (the exams are numberred $e(1), e(2), \ldots$).
+\begin{verbatim}
+const numExams = numQuizzes + 1.
+type exam_num = {1..numExams}.
+type exam = e(Num) where Num in exam_num.
+\end{verbatim}
+
+Then an ``assessment'' is either a quiz or and exam.\\
+\texttt{type assessment = quiz + exam.}
+
+You use a common grading scale.
+\begin{verbatim}
+type quiz_grade = {pass, fail}.
+type exam_grade = {a, b, c, d, f}.
+type grade = quiz_grade + exam_grade.
+type acceptable_grade = grade \ {fail, f}.
+\end{verbatim}
+
+\pagebreak
+
+
+Below are the grades of your students on assessments.
+\begin{verbatim}
+assessment_score(ann, q(1), pass). /* Ann scored Pass on quiz 1 */
+assessment_score(ann, q(2), pass). 
+assessment_score(ann, e(1), a). /* Ann had an A on exam 1 */
+assessment_score(ann, e(2), a). 
+assessment_score(ann, e(3), a). 
+
+assessment_score(bree, q(1), pass). 
+assessment_score(bree, q(2), pass). 
+assessment_score(bree, e(1), a). 
+assessment_score(bree, e(2), a).
+assessment_score(bree, e(3), b). 
+
+assessment_score(cher, q(1), pass). 
+assessment_score(cher, q(2), pass). 
+assessment_score(cher, e(1), a). 
+assessment_score(cher, e(2), b). 
+assessment_score(cher, e(3), b).
+
+assessment_score(dale, q(1), pass). 
+assessment_score(dale, q(2), pass). 
+assessment_score(dale, e(1), b). 
+assessment_score(dale, e(2), b).
+assessment_score(dale, e(3), b).
+
+assessment_score(flo, q(1), pass). 
+assessment_score(flo, q(2), fail). 
+assessment_score(flo, e(1), d). 
+assessment_score(flo, e(2), d).
+assessment_score(flo, e(3), f). 
+
+assessment_score(gray, q(1), fail).
+assessment_score(gray, e(1), f).
+/* Gray skipped some classes! */
+\end{verbatim}
+
+An assessment (either a quiz or an exam) of a student is acceptable if its grade is either Pass or A/B/C/D.
+\begin{verbatim}
+acceptable_assessment(student S, assessment A) if
+    assessment_score(S, A, some acceptable_grade).
+\end{verbatim}
+
+\pagebreak
+
+Standard ranks:\\
+\texttt{type rank = \{outstanding, above\_average, average, below\_average, inferior\}.}
+
+
+
+Basic order among ranks:
+\begin{verbatim}
+higher_rank(outstanding, above_average).
+higher_rank(above_average, average).
+higher_rank(average, below_average).
+higher_rank(below_average, inferior).
+\end{verbatim}
+
+
+
+To introduce transitivity, we need the following two rules:
+\begin{verbatim}
+higher_rank_in_between(rank R1, rank R2, rank R3) if
+    higher_rank(R1, R2) and higher_rank(R2, R3).
+/* for instance, this atom is true: higher_rank_in_between(outstanding, above_average, average) */
+
+higher_rank(rank R1, rank R3) if
+    higher_rank_in_between(R1, some rank, R3).
+/* 
+For instance, we can now deduce higher_rank(outstanding, average),
+because we already know higher_rank_in_between(outstanding, above_average, average).
+
+Using higher_rank(outstanding, average) with the first of these two rules, 
+we can derive higher_rank_in_between(outstanding, average, below_average).
+
+Then from the latter rule, higher_rank_in_between(outstanding, average, below_average) implies
+higher_rank(outstanding, below_average).
+
+Continuing in this manner, we can deduce all true atoms of the form higher_rank(X, Y) .
+*/
+\end{verbatim}
+
+Now, your evaluation policy specifies the criterion for each rank. (Note that a student can meet the criteria of several ranks.)
+\begin{verbatim}
+student_meets_criterion(student S, outstanding) if
+    acceptable_assessment(S, every assessment) and
+    assessment_score(S, every exam, a).
+
+    
+student_meets_criterion(student S, above_average) if
+    acceptable_assessment(S, every assessment) and
+    student_scores_a_on_two_distinct_exams(S, some exam, some exam).
+    
+student_scores_a_on_two_distinct_exams(student S, exam E1, exam E2) if
+    assessment_score(S, E1, a) and assessment_score(S, E2, a) and
+    E1 != E2.
+    
+    
+student_meets_criterion(student S, average) if
+    acceptable_assessment(S, every assessment) and
+    assessment_score(S, some exam, a).
+
+    
+student_meets_criterion(student S, below_average) if
+    acceptable_assessment(S, every assessment).
+
+    
+/* default rank */
+student_meets_criterion(every student, inferior).
+\end{verbatim}
+
+\pagebreak
+
+Your evaluation policy continues: a student is \textbf{not} in a rank if:
+\begin{enumerate}
+\item
+she doesn't meet the criterion for this rank (of course), or
+\item
+she already meets the criterion for a higher rank (better for her that way)
+\end{enumerate}
+
+\begin{verbatim}
+not student_rank(student S, rank R2) if
+    not student_meets_criterion(S, R2) or
+    student_meets_criterion_for_higher_rank(S, some rank, R2).
+    
+student_meets_criterion_for_higher_rank(student S, rank R1, rank R2) if
+    student_meets_criterion(S, R1) and higher_rank(R1, R2).
+\end{verbatim}
+
+Because you cannot please all people at once:
+\begin{verbatim}
+student_dropped(gray).
+
+student_remaining(student S) if not student_dropped(S).
+\end{verbatim}
+
+Here is the hard part. You solve the ranking problem with two steps:
+\begin{enumerate}
+\item
+First generating many potential solutions
+\item
+Then among them, selecting only reasonable solutions
+\end{enumerate}
+
+\begin{verbatim}
+maybe student_rank(student S, rank R) if student_remaining(S).
+/* The rule above means each remaining student might be placed in any rank. */
+
+1 <= |{student_rank(student S, rank R)}| <= 1 if student_remaining(S).
+/*
+This rule states that each remaining student must be placed in exactly one rank.
+
+Q: Then how do we know which rank she will have?
+A: Our previous rules guarantee that she will have the best rank whose criterion is met by her grades.
+*/
+\end{verbatim}
+
+After clicking \texttt{Compute Models} in the \texttt{L Editor} Eclipe plugin, you will see that our L program has exactly one model. The model contains the expected atoms:
+\begin{enumerate}
+\item
+$student\_rank(ann,outstanding)$
+\item
+$student\_rank(bree,above\_average)$
+\item
+$student\_rank(cher,average)$
+\item
+$student\_rank(dale,below\_average)$
+\item
+$student\_rank(flo,inferior)$
+\end{enumerate}
+(Gray does not have a rank because he dropped.)
+
+\pagebreak
+
+
+\subsection{Source Code}
+\begin{verbatim}
+/*
+    AN ILLUSTRATIVE L PROGRAM
+    Written 2015/12/22, updated 2016/03/15
+    Vu Phan
+
+    This L program outputs ranks of students in an imaginary course
+*/
+
+type student = {ann, bree, cher, dale, flo, gray}. 
+    /* Comment: Define a set by listing its members */
+
+const numQuizzes = 2. /* Define a constant */
+type quiz_num = {1..numQuizzes}. /* Range of integers */
+type quiz = q(Num) where Num in quiz_num. /* Set-builder notation */
+
+const numExams = numQuizzes + 1.
+type exam_num = {1..numExams}.
+type exam = e(Num) where Num in exam_num.
+
+type assessment = quiz + exam. /* Union of sets */
+
+type quiz_grade = {pass, fail}.
+type exam_grade = {a, b, c, d, f}.
+type grade = quiz_grade + exam_grade.
+type acceptable_grade = grade \ {fail, f}. /* Difference of sets */
+
+        
+assessment_score(ann, q(1), pass). /* Student "ann" scores "pass" on assessment "q(1)" */
+assessment_score(ann, q(2), pass). 
+assessment_score(ann, e(1), a). 
+assessment_score(ann, e(2), a). 
+assessment_score(ann, e(3), a). 
+
+assessment_score(bree, q(1), pass). 
+assessment_score(bree, q(2), pass). 
+assessment_score(bree, e(1), a). 
+assessment_score(bree, e(2), a).
+assessment_score(bree, e(3), b). 
+
+assessment_score(cher, q(1), pass). 
+assessment_score(cher, q(2), pass). 
+assessment_score(cher, e(1), a). 
+assessment_score(cher, e(2), b). 
+assessment_score(cher, e(3), b).
+
+assessment_score(dale, q(1), pass). 
+assessment_score(dale, q(2), pass). 
+assessment_score(dale, e(1), b). 
+assessment_score(dale, e(2), b).
+assessment_score(dale, e(3), b).
+
+assessment_score(flo, q(1), pass). 
+assessment_score(flo, q(2), fail). 
+assessment_score(flo, e(1), d). 
+assessment_score(flo, e(2), d).
+assessment_score(flo, e(3), f). 
+
+assessment_score(gray, q(1), fail).
+assessment_score(gray, e(1), f).
+
+/* Assessment A of student S is acceptable if its grade is 
+    either: pass (for a quiz), or a/b/c/d (for an exam) */    
+acceptable_assessment(student S, assessment A) if
+    assessment_score(S, A, some acceptable_grade).
+
+    
+    
+type rank = {outstanding, above_average, average, below_average, inferior}.
+
+higher_rank(outstanding, above_average).
+higher_rank(above_average, average).
+higher_rank(average, below_average).
+higher_rank(below_average, inferior).
+
+
+/* the two rules below introduce transitivity */
+
+higher_rank_in_between(rank R1, rank R2, rank R3) if
+    higher_rank(R1, R2) and higher_rank(R2, R3).   
+
+higher_rank(rank R1, rank R3) if
+    higher_rank_in_between(R1, some rank, R3).
+
+
+/* Note below: If a student meets the criterion for a rank, 
+                then she also meets the criterion for each lower rank */
+    
+    
+student_meets_criterion(student S, outstanding) if
+    acceptable_assessment(S, every assessment) and
+    assessment_score(S, every exam, a).
+
+    
+student_meets_criterion(student S, above_average) if
+    acceptable_assessment(S, every assessment) and
+    student_scores_a_on_two_distinct_exams(S, some exam, some exam).
+    
+student_scores_a_on_two_distinct_exams(student S, exam E1, exam E2) if
+    assessment_score(S, E1, a) and assessment_score(S, E2, a) and
+    E1 != E2.
+    
+    
+student_meets_criterion(student S, average) if
+    acceptable_assessment(S, every assessment) and
+    assessment_score(S, some exam, a).
+    
+student_meets_criterion(student S, below_average) if
+    acceptable_assessment(S, every assessment).
+
+    
+/* Default rank's criterion is met by all students */
+student_meets_criterion(every student, inferior).
+
+    
+
+
+
+
+
+
+/* The two rules below mean: a student isn't in a rank if either:
+    she doesn't meet the criterion for that rank, or
+    she already meets the criterion for a higher rank */
+    
+    not student_rank(student S, rank R2) if
+        not student_meets_criterion(S, R2) or
+        student_meets_criterion_for_higher_rank(S, some rank, R2).
+        
+    student_meets_criterion_for_higher_rank(student S, rank R1, rank R2) if
+        student_meets_criterion(S, R1) and higher_rank(R1, R2).
+    
+    
+student_dropped(gray).
+student_remaining(student S) if not student_dropped(S).
+
+/* For each rank, a remaining student is possibly in that rank */
+maybe student_rank(student S, rank R) if student_remaining(S).
+
+
+/* Each remaining student is in precisely one rank */
+1 <= |{student_rank(student S, rank R)}| <= 1 if student_remaining(S).
+
+
+/* 
+The program has exactly one model containing, among other atoms, 
+a rank for every remaining student:
+    student_rank(dale,below_average) 
+    student_rank(cher,average) 
+    student_rank(ann,outstanding) 
+    student_rank(flo,inferior) 
+    student_rank(bree,above_average)
+*/
+
+\end{verbatim}
+
+\end{flushleft}
+
+\end{document}
