@@ -206,14 +206,14 @@ skip_link(n-1,1,right).
 /* L rules: */
 
     /* an old L rule */
-        adjusted_hop_sum(node N1, node N2, node N3, hopc Num) if
+        /*adjusted_hop_sum(node N1, node N2, node N3, hopc Num) if
                 hop_count(N2, N1, some hopc H1) and
                 hop_count(N3, N1, some hopc H2) and
                 hop_add(N2, N1, some hopc H3) and
                 hop_add(N3, N1, some hopc H4) and
-                H1 + H2 + H3 + H4 = Num.
+                H1 + H2 + H3 + H4 = Num.*/
     /* 2 new L rules, replacing `some typeName VarName` */
-        /*
+        /**/
         adjusted_hop_sum(node N1, node N2, node N3, hopc Num) if 
             aux_predicate(N1, N2, N3, Num, some hopc, some hopc, some hopc, some hopc).
             
@@ -223,7 +223,7 @@ skip_link(n-1,1,right).
             hop_add(N2, N1, H3) and
             hop_add(N3, N1, H4) and
             H1 + H2 + H3 + H4 = Num.
-        */
+        /**/
         
         /* WARNING: CWA for aux_predicate/8 will become roughly 
         n^8 ground negative literals (via Gringo) and exhaust memory */
