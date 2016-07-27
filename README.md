@@ -42,7 +42,7 @@
 [.sp]: https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.sp
 [.txt]: https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.txt
 [Lspec]: https://github.com/iensen/LtoASPtranslator/blob/master/Lspec/Lspec.pdf
-[parser]: https://github.com/iensen/LtoASPtranslator/blob/master/docs/Lparser_guide.md
-[translator_spec]: https://github.com/iensen/LtoASPtranslator/blob/master/docs/translator_spec.md
+[parser]: https://github.com/iensen/LtoASPtranslator/blob/master/docs/Lparser_guide.md#top
+[translator_spec]: https://github.com/iensen/LtoASPtranslator/blob/master/docs/translator_spec.md#top
 [Sparc]: https://github.com/iensen/sparc/blob/master/User_Manual/Sparc_Manual.pdf
 [Clingo]: http://sourceforge.net/projects/potassco/files/guide/2.0/guide-2.0.pdf
