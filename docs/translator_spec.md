@@ -1,3 +1,5 @@
+<h6>top
+
 # L-TO-ASP TRANSLATOR SPECIFICATION
 Given an L program, the translator produces a semantically equivalent (sorted) ASP program.
 
