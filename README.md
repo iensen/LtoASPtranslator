@@ -4,7 +4,7 @@
 - Description
   - Produces answer sets of programs written in logic programming language L
   - Combines
-    - L-ASP translator (Evgenii Balai & Vu Phan)
+    - L-ASP translator (Evgenii Balai & [Vu Phan][vuEmail])
     - Sparc (Evgenii Balai)
     - Clingo (Potassco)
 - Example
@@ -40,11 +40,23 @@
 - [Sparc manual][Sparc]
 - [Clingo guide][Clingo]
 
-[.l]: https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.l
-[.sp]: https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.sp
-[.txt]: https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.txt
-[Lspec]: https://github.com/iensen/LtoASPtranslator/blob/master/Lspec/Lspec.pdf
-[parser]: https://github.com/iensen/LtoASPtranslator/blob/master/docs/Lparser_guide.md#top
-[translator_spec]: https://github.com/iensen/LtoASPtranslator/blob/master/docs/translator_spec.md#top
-[Sparc]: https://github.com/iensen/sparc/blob/master/User_Manual/Sparc_Manual.pdf
-[Clingo]: http://sourceforge.net/projects/potassco/files/guide/2.0/guide-2.0.pdf
+[vuEmail]: 
+mailto:vuphan314@gmail.com
+
+[.l]: 
+https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.l
+[.sp]: 
+https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.sp
+[.txt]: 
+https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.txt
+
+[Lspec]: 
+https://github.com/iensen/LtoASPtranslator/blob/master/Lspec/Lspec.pdf
+[parser]: 
+https://github.com/iensen/LtoASPtranslator/blob/master/docs/Lparser_guide.md#top
+[translator_spec]: 
+https://github.com/iensen/LtoASPtranslator/blob/master/docs/translator_spec.md#top
+[Sparc]: 
+https://github.com/iensen/sparc/blob/master/User_Manual/Sparc_Manual.pdf
+[Clingo]: 
+http://sourceforge.net/projects/potassco/files/guide/2.0/guide-2.0.pdf
