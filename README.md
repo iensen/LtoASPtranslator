@@ -4,7 +4,7 @@
 - Description
   - Produces answer sets of programs written in logic programming language L
   - Combines
-    - L-ASP translator (Evgenii Balai & [Vu Phan][vuEmail])
+    - L-ASP translator (Evgenii Balai & [Vu Phan][vuCV])
     - Sparc (Evgenii Balai)
     - Clingo (Potassco)
 - Example
@@ -40,8 +40,8 @@
 - [Sparc manual][Sparc]
 - [Clingo guide][Clingo]
 
-[vuEmail]: 
-mailto:vuphan314@gmail.com
+[vuCV]: 
+https://github.com/vuphan314/VU_PHAN/blob/master/README.md#top
 
 [.l]: 
 https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.l
