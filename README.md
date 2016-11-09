@@ -11,8 +11,9 @@
   - [**_SOURCE L PROGRAM_**][.l]
   - [**_TRANSLATED ASP PROGRAM_**][.sp]
   - [**_OUTPUT MODELS_**][.txt]
+- [Demo video][youtubeL]
 
-## L SOLVER SOURCECODE
+## SOURCECODE
 - Python 3.4 or higher
 - Command-line syntax
   - Change current directory to `src`  
@@ -49,6 +50,9 @@ https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.l
 https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.sp
 [.txt]: 
 https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.txt
+
+[youtubeL]:
+https://www.youtube.com/playlist?list=PLIJKsTidP3ztShBMVE3yybcoF8rhtf8HB
 
 [Lspec]: 
 https://github.com/iensen/LtoASPtranslator/blob/master/Lspec/Lspec.pdf
