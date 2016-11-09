@@ -52,7 +52,7 @@ https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.sp
 https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.txt
 
 [youtubeL]:
-https://www.youtube.com/playlist?list=PLIJKsTidP3ztShBMVE3yybcoF8rhtf8HB
+https://youtu.be/VbqYOFqB3CQ?list=PLIJKsTidP3ztShBMVE3yybcoF8rhtf8HB
 
 [Lspec]: 
 https://github.com/iensen/LtoASPtranslator/blob/master/Lspec/Lspec.pdf
