@@ -42,7 +42,7 @@
 - [Clingo guide][Clingo]
 
 [vuCV]: 
-https://github.com/vuphan314/VU_PHAN/blob/master/README.md#top
+https://www.myweb.ttu.edu/vuphan/
 
 [.l]: 
 https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.l
