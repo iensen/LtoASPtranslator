@@ -18,7 +18,7 @@
 - Command-line syntax
   - Change current directory to `src`  
     *Example with Windows Command Prompt:*  
-    `cd/d E:\git\LtoASPtranslator\src`
+    `cd/d D:\repos\LtoASPtranslator\src`
   - Specify where to read source L program and OVERWRITE translated ASP program  
     `python translator.py examples/ranking.l > examples/ranking.sp`
   - Choose mode
