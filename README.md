@@ -13,7 +13,7 @@
   - [**_OUTPUT MODELS_**][.txt]
 - [Demo video][youtubeL]
 
-## SOURCECODE
+## SOURCE CODE
 - Python 3.4 or higher
 - Command-line syntax
   - Change current directory to `src`  
