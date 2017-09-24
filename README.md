@@ -2,7 +2,7 @@
 
 # L SOLVER
 - Description
-  - Produces models of programs written in logic programming language L
+  - Produces models and answers queries of programs written in logic programming language L
   - Combines
     - L-ASP translator (Evgenii Balai & [Vu Phan][vuCV])
     - Sparc (Evgenii Balai)
