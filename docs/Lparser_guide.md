@@ -7,7 +7,7 @@ This module generates an abstract syntax tree from an input L program. The form 
 Using a command-line interface:
 - Change current directory to `src`  
   *Example with Windows Command Prompt:*  
-  `cd/d D:\repos\LtoASPtranslator\src`
+  `cd/d D:\github\LtoASPtranslator\src`
 - Specify where to read source L program  
   `python main.py examples/pi2.l`  
   (if `python` fails, then try `python3`)
