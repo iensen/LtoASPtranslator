@@ -4,9 +4,9 @@
 - Description
   - Produces models and answers queries of programs written in logic programming language L
   - Combines
-    - L-ASP translator ([Evgenii Balai](https://github.com/iensen) & [Vu Phan][vuCV])
-    - Sparc (Evgenii Balai)
-    - Clingo (Potassco)
+    - L-ASP translator ([Evgenii Balai][evgeniiProfile] & [Vu Phan][vuProfile])
+    - Sparc ([Evgenii Balai][evgeniiProfile])
+    - Clingo ([Potassco](https://potassco.org))
 - Example
   - [**_SOURCE L PROGRAM_**][.l]
   - [**_TRANSLATED ASP PROGRAM_**][.sp]
@@ -41,26 +41,17 @@
 - [Sparc manual][Sparc]
 - [Clingo guide][Clingo]
 
-[vuCV]: 
-https://vuphan314.github.io/
+[evgeniiProfile]:https://scholar.google.com/citations?user=d6I2820AAAAJ
+[vuProfile]:https://vuphan314.github.io/
 
-[.l]: 
-https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.l
-[.sp]: 
-https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.sp
-[.txt]: 
-https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.txt
+[.l]:https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.l
+[.sp]:https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.sp
+[.txt]:https://github.com/iensen/LtoASPtranslator/blob/master/src/examples/ranking.txt
 
-[youtubeL]:
-https://youtu.be/VbqYOFqB3CQ?list=PLIJKsTidP3ztShBMVE3yybcoF8rhtf8HB
+[youtubeL]:https://youtu.be/VbqYOFqB3CQ?list=PLIJKsTidP3ztShBMVE3yybcoF8rhtf8HB
 
-[Lspec]: 
-https://github.com/iensen/LtoASPtranslator/blob/master/Lspec/Lspec.pdf
-[parser]: 
-https://github.com/iensen/LtoASPtranslator/blob/master/docs/Lparser_guide.md#top
-[translator_spec]: 
-https://github.com/iensen/LtoASPtranslator/blob/master/docs/translator_spec.md#top
-[Sparc]: 
-https://github.com/iensen/sparc/blob/master/User_Manual/Sparc_Manual.pdf
-[Clingo]: 
-http://sourceforge.net/projects/potassco/files/guide/2.0/guide-2.0.pdf
+[Lspec]:https://github.com/iensen/LtoASPtranslator/blob/master/Lspec/Lspec.pdf
+[parser]:https://github.com/iensen/LtoASPtranslator/blob/master/docs/Lparser_guide.md#top
+[translator_spec]:https://github.com/iensen/LtoASPtranslator/blob/master/docs/translator_spec.md#top
+[Sparc]:https://github.com/iensen/sparc/blob/master/User_Manual/Sparc_Manual.pdf
+[Clingo]:http://sourceforge.net/projects/potassco/files/guide/2.0/guide-2.0.pdf
