@@ -4,7 +4,7 @@
 - Description
   - Produces models and answers queries of programs written in logic programming language L
   - Combines
-    - L-ASP translator (Evgenii Balai & [Vu Phan][vuCV])
+    - L-ASP translator ([Evgenii Balai](https://github.com/iensen) & [Vu Phan][vuCV])
     - Sparc (Evgenii Balai)
     - Clingo (Potassco)
 - Example
