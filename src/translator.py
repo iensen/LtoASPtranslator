@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 '''
 This translator converts an L program into a semantically equivalent ASP program.
 '''
